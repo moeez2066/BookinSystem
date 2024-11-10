@@ -1,0 +1,41 @@
+.navbar {
+  background-color: #baada6;
+  padding: 1rem;
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 920px;
+  margin: 4px auto;
+  font-family: "Roboto", sans-serif;
+  font-size: 15px;
+  color: white;
+}
+
+.navItem {
+  text-decoration: none;
+  color: white;
+  margin: 8px 1.4rem;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+@media (max-width: 768px) {
+  .navItem {
+    margin: 0rem 7px;
+  }
+  .navContainer {
+    font-size: 8px;
+    margin: 0;
+  }
+  .logo {
+    width: 53px;
+    margin-left: 14px;
+  }
+}

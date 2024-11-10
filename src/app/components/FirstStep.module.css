@@ -1,0 +1,160 @@
+.container {
+  display: flex;
+  padding: 122px 0;
+  background-color: #efede9;
+  justify-content: center;
+}
+
+.leftColumn {
+  padding-right: 40px;
+  margin-bottom: 20px;
+  max-width: 266px;
+  margin-right: 135px;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 466px;
+}
+
+.title {
+  font-family: "Pinyon Script", Sans-serif;
+  font-size: 104px;
+  margin: 0;
+  color: #473a3a;
+}
+
+.stepDescription {
+  margin-top: 20px;
+  font-family: Sans-serif;
+  color: #473a3a;
+}
+
+.stepNumber {
+  font-weight: 550;
+  margin-bottom: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.descriptionText {
+  font-size: 14px;
+  color: #473a3a;
+}
+
+.roundNumber {
+  font-weight: 550;
+  border: 2px solid #473a3a;
+  border-radius: 50%;
+  padding: 1px 2.9px;
+  margin-bottom: 10px;
+  margin-right: 6px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.packageCard {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  text-align: center;
+  width: 433px;
+}
+
+.imageWrapper {
+  width: 200px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.packageInfo {
+  font-family: Sans-serif;
+}
+
+.packageTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: #473a3a;
+  font-family: "Roboto", sans-serif;
+}
+
+.packageDescription {
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  color: #473a3a;
+  padding: 0 12px;
+}
+
+.selectButton {
+  padding: 2px 23px;
+  border: 2px solid #b4a597;
+  border-radius: 20px;
+  background: none;
+  color: #b4a597;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 82px 0;
+  }
+
+  .leftColumn {
+    padding-right: 0px;
+    margin-right: 20px;
+    margin-left: 17px;
+  }
+
+  .rightColumn {
+    margin-right: 17px;
+  }
+
+  .title {
+    font-size: 38px;
+  }
+
+  .roundNumber {
+    font-weight: 550;
+    border: 2px solid #473a3a;
+    border-radius: 50%;
+    padding: 1px 2.9px;
+    font-size: 9px;
+    margin-right: 6px;
+    font-family: "Roboto", sans-serif;
+    color: #473a3a;
+  }
+
+  .stepNumber {
+    font-weight: 550;
+    font-family: "Roboto", sans-serif;
+    font-size: 9px;
+    color: #473a3a;
+  }
+
+  .descriptionText {
+    font-size: 9px;
+  }
+
+  .packageCard {
+    width: 193px;
+  }
+
+  .packageTitle {
+    font-size: 9px;
+  }
+
+  .packageDescription {
+    font-size: 9px;
+    padding: 2px;
+  }
+
+  .selectButton {
+    padding: 2px 13px;
+    font-size: 9px;
+    margin: auto;
+  }
+}

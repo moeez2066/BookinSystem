@@ -1,0 +1,73 @@
+.custom-dropdown .ant-select-item-option {
+  background-color: #f0eeeb !important;
+  color: #473a3a !important;
+}
+
+.custom-dropdown .ant-select-item-option-active {
+  background-color: #473a3a !important;
+  color: #f0eeeb !important;
+}
+
+.custom-dropdown .ant-select-item-option-selected {
+  background-color: #b2d8b2 !important;
+  color: #473a3a !important;
+}
+
+.custom-dropdown .ant-select-selector {
+  border-color: #b2d8b2 !important;
+}
+
+.ant-select-focused:where(.css-dev-only-do-not-override-apn68)
+  .ant-select-outlined:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: #b2d8b2 !important;
+}
+:where(.css-dev-only-do-not-override-apn68).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector:hover {
+  border: 1px solid #473a3a !important;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-select-focused
+  .ant-select-outlined:not(.ant-select-customize-input)
+  .ant-select-selector:focus {
+  border: 1px solid #473a3a !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border: 1px solid #473a3a !important;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
+}
+
+/* CalendarComponent.css */
+
+@media (max-width: 600px) {
+  .desktop-only-br {
+    display: none; /* Hide on mobile */
+  }
+  :where(.css-dev-only-do-not-override-apn68).ant-select-outlined:not(
+      .ant-select-customize-input
+    )
+    .ant-select-selector {
+    font-size: 9px;
+    height: 29px;
+    margin-left: -8px;
+  }
+}
+
+@media (min-width: 601px) {
+  .desktop-only-br {
+    display: inline; /* Show on desktop */
+  }
+}

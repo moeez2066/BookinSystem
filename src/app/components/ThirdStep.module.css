@@ -1,0 +1,199 @@
+.container {
+  display: flex;
+  padding: 122px 0;
+  justify-content: center;
+  background-color: #efede9;
+}
+
+.leftColumn {
+  margin-bottom: 20px;
+  max-width: 215px;
+  margin-right: 130px;
+}
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 666px;
+  margin-right: -183px;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.roundNumber {
+  font-weight: 550;
+  border: 2px solid #473a3a;
+  border-radius: 50%;
+  padding: 1px 2.9px;
+  font-size: 14px;
+  margin-right: 6px;
+  font-family: "Roboto", sans-serif;
+  color: #473a3a;
+}
+
+.stepNumber {
+  font-weight: 550;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: #473a3a;
+}
+
+.descriptionText {
+  font-size: 14px;
+  color: #473a3a;
+}
+
+.trainerCard {
+  display: flex;
+  border-radius: 10px;
+  padding: 0 90px;
+  align-items: center;
+}
+
+.imageWrapper {
+  width: 200px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.trainerInfo {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  line-height: 19px;
+  margin-top: auto;
+  margin-left: 42px;
+}
+
+.trainerName {
+  font-size: 16px;
+  font-weight: bold;
+  color: #473a3a;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+.specialty {
+  font-size: 14px;
+  color: #473a3a;
+  margin: 5px 0;
+}
+
+.description {
+  font-size: 14px;
+  color: #473a3a;
+  margin: 10px 0;
+  padding-right: 45px;
+}
+
+.selectButton {
+  padding: 3px 0px;
+  border: 2px solid #473a3a;
+  border-radius: 20px;
+  background: none;
+  color: #473a3a;
+  font-size: 14px;
+  cursor: pointer;
+  width: 89px;
+  padding-bottom: 6px;
+  margin-top: 10px;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 82px 0;
+  }
+
+  .leftColumn {
+    margin-bottom: 20px;
+    max-width: 35%;
+    margin-right: 12px;
+    margin-left: 15px;
+    padding-right: 8px;
+  }
+  .rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    max-width: 55%;
+    margin-right: 15px;
+  }
+
+  .stepHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .roundNumber {
+    font-weight: 550;
+    border: 2px solid #473a3a;
+    border-radius: 50%;
+    padding: 1px 2.9px;
+    font-size: 8px;
+    margin-right: 6px;
+    font-family: "Roboto", sans-serif;
+    color: #473a3a;
+  }
+
+  .stepNumber {
+    font-weight: 550;
+    font-family: "Roboto", sans-serif;
+    font-size: 8px;
+    color: #473a3a;
+  }
+
+  .descriptionText {
+    font-size: 8px;
+    color: #473a3a;
+  }
+
+  .trainerCard {
+    display: flex;
+    border-radius: 0px;
+    padding: 0 0px;
+    align-items: center;
+  }
+
+  .imageWrapper {
+    width: 580px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .trainerInfo {
+    display: flex;
+    flex-direction: column;
+    max-width: auto;
+    line-height: 11px;
+    margin-top: auto;
+    margin-left: 15px;
+  }
+
+  .trainerName {
+    font-size: 8px;
+    font-weight: bold;
+    color: #473a3a;
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+  }
+
+  .description {
+    font-size: 7px;
+    color: #473a3a;
+    margin: 5px 0;
+    padding-right: 0px;
+  }
+
+  .selectButton {
+    padding: 2px 13px;
+    font-size: 9px;
+    margin: auto 0;
+    padding: 3px;
+    width: 54px;
+  }
+}
