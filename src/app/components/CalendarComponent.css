@@ -54,6 +54,10 @@
   border: 1px solid #473a3a!important;
   background: #ffffff;
 }
+.ant-select-focused:where(.css-apn68).ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4)!important; /* Slight shadow with color #473a3a */
+
+}
 
 /* CalendarComponent.css */
 
