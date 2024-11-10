@@ -16,7 +16,7 @@ const FourthStep = () => {
         
       </div>
       <div className={styles.rightColumn}>
-        {/* <CalendarComponent /> */}
+        <CalendarComponent />
       </div>
     </div>
   );
