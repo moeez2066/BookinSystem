@@ -153,7 +153,7 @@ const CalendarComponent = () => {
       {selectedDay && selectedSlots[selectedDay] && (
         <div style={{ marginTop: "20px" }}>
           <Text
-            style={{ color: "#473a3a", fontSize: "clamp(8px, 1.5vw, 14px)" }}
+            style={{ color: "#473a3a", fontSize: "clamp(9px, 1.5vw, 14px)" }}
           >
             You selected <strong>{selectedSlots[selectedDay]}</strong> on{" "}
             <strong>{selectedDay}</strong>
