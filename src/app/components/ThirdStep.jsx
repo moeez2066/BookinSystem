@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "./ThirdStep.module.css";
 import Image from "next/image";
-import { trainers } from "@/trainers/dat";
+import { trainers } from "@/app/trainers/dat";
 
 const ThirdStep = ({ selectedData, onNext }) => {
   return (
