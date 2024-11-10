@@ -1,11 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FirstStep from "./components/FirstStep";
 import SecondStep from "./components/SecondStep";
 import ThirdStep from "./components/ThirdStep";
 import FourthStep from "./components/FourthStep";
 
 export default function Home() {
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("/api/get-data");
+      const json = await res.json();
+      console.log(4);
+      
+      console.log(json);
+      console.log(44);
+      
+    };
+    fetchData();
+  }, []);
   const [step, setStep] = useState(1);
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -23,7 +35,7 @@ export default function Home() {
 
   const handleTrainerSelection = (trainer) => {
     setSelectedTrainer(trainer);
-    setStep(4); // Assuming you want a fourth step or summary view
+    setStep(4);
   };
 
   return (
