@@ -1,23 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FirstStep from "./components/FirstStep";
 import SecondStep from "./components/SecondStep";
 import ThirdStep from "./components/ThirdStep";
 import FourthStep from "./components/FourthStep";
 
 export default function Home() {
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("/api/get-data");
-      const json = await res.json();
-      console.log(4);
-      
-      console.log(json);
-      console.log(44);
-      
-    };
-    fetchData();
-  }, []);
   const [step, setStep] = useState(1);
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -33,7 +21,7 @@ export default function Home() {
     setStep(3);
   };
 
-  const handleTrainerSelection = (trainer) => {
+  const handleTrainerSelection = async (trainer) => {
     setSelectedTrainer(trainer);
     setStep(4);
   };
@@ -56,10 +44,7 @@ export default function Home() {
         />
       )}
       {step >= 4 && (
-        <FourthStep
-          selectedData={{ selectedSpecialty, selectedPackage }}
-          onNext={(trainer) => handleTrainerSelection(trainer)}
-        />
+        <FourthStep data={selectedTrainer}/>
       )}
     </>
   );

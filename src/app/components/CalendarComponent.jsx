@@ -1,40 +1,32 @@
 import React, { useState } from "react";
-import { Button, Select, Typography, Space } from "antd";
+import { Button, Select, Typography, Space, Spin } from "antd";
 import "./CalendarComponent.css";
+import { days } from "../days/dat";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const CalendarComponent = () => {
+const CalendarComponent = ({ data }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState({});
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Saturday",
-    "Sunday",
-  ];
-
-  const timeSlots = [
-    "6:00 AM - 7:00 AM",
-    "7:00 AM - 8:00 AM",
-    "8:00 AM - 9:00 AM",
-    "9:00 AM - 10:00 AM",
-    "10:00 AM - 11:00 AM",
-    "11:00 AM - 12:00 PM",
-    "12:00 PM - 1:00 PM",
-    "1:00 PM - 2:00 PM",
-    "2:00 PM - 3:00 PM",
-    "3:00 PM - 4:00 PM",
-    "4:00 PM - 5:00 PM",
-    "5:00 PM - 6:00 PM",
-  ];
-
-  const handleDayClick = (day) => {
+  const handleDayClick = async (day) => {
     setSelectedDay(day);
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `/api/get-data?trainerId=${data._id}&day=${day}`
+      );
+      const result = await response.json();
+      setAvailableSlots(result.availableSlots || []);
+    } catch (error) {
+      console.error("Error fetching available slots:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSlotChange = (value) => {
@@ -102,12 +94,18 @@ const CalendarComponent = () => {
       >
         Available Time Slots
       </Title>
-      <span className="desktop-only-br">
-        {" "}
-        <br />
-      </span>
-      {selectedDay ? (
+
+      {loading ? (
+        <>
+          <br />
+          <Spin />
+        </>
+      ) : selectedDay ? (
         <div style={{ marginTop: "10px" }}>
+          <span className="desktop-only-br">
+            <br />
+          </span>
+
           <Text
             strong
             style={{ color: "#473a3a", fontSize: "clamp(9px, 1.5vw, 14px)" }}
@@ -129,7 +127,7 @@ const CalendarComponent = () => {
             onChange={handleSlotChange}
             optionLabelProp="label"
           >
-            {timeSlots.map((slot) => (
+            {availableSlots.map((slot) => (
               <Option key={slot} value={slot} label={slot}>
                 {slot}
               </Option>
