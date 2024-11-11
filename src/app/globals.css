@@ -231,3 +231,12 @@
     display: inline; /* Show on desktop */
   }
 }
+
+
+:where(.css-apn68).ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: #f0eeeb !important;
+}
+
+:where(.css-dev-only-do-not-override-apn68).ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+  background-color: #f0eeeb !important;
+}
