@@ -49,7 +49,7 @@ const MapComponent = ({ showCalendar, toggleCalendar }) => {
   }, [originCity, place]);
 
   if (loadError) return <div>Error loading maps</div>;
-  if (!isLoaded) return <div>Loading Maps...</div>;
+  if (!isLoaded) return <div>Loading Map...</div>;
 
   return (
     <div style={{ maxWidth: "800px", margin: "auto", position: "relative" }}>
