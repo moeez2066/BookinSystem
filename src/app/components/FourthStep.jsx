@@ -2,7 +2,8 @@ import React from "react";
 import styles from "./FourthStep.module.css";
 import CalendarComponent from "./CalendarComponent";
 
-const FourthStep = ({ data, loading }) => {
+const FourthStep = ({ data, sessionPackage }) => {
+  
   return (
     <div className={styles.container}>
       <div className={styles.leftColumn}>
@@ -11,11 +12,13 @@ const FourthStep = ({ data, loading }) => {
           <div className={styles.stepNumber}>SCHEDULE YOUR SESSIONS</div>
         </div>
         <p className={styles.descriptionText}>
-          Choose the days and times that suit you from our trainers' availability. We'll confirm your schedule so you can start working towards your fitness goals.
+          Choose the days and times that suit you from our trainers'
+          availability. We'll confirm your schedule so you can start working
+          towards your fitness goals.
         </p>
       </div>
       <div className={styles.rightColumn}>
-        <CalendarComponent data={data} loading={loading} />
+        <CalendarComponent data={data} sessionPackage={sessionPackage} />
       </div>
     </div>
   );

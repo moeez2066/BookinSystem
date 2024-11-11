@@ -44,7 +44,7 @@ export default function Home() {
         />
       )}
       {step >= 4 && (
-        <FourthStep data={selectedTrainer}/>
+        <FourthStep data={selectedTrainer} sessionPackage={selectedPackage} />
       )}
     </>
   );

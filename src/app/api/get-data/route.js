@@ -6,6 +6,7 @@ export async function GET(request) {
     const url = new URL(request.url);
     const trainerId = url.searchParams.get("trainerId");
     const day = url.searchParams.get("day");
+    const validity = url.searchParams.get("validity");
     const client = await clientPromise;
     const db = client.db("BookingSys");
     const trainer = await db
@@ -23,6 +24,22 @@ export async function GET(request) {
       if (period.trim().toLowerCase() === "am" && hours === 12) hours = 0;
       return hours;
     };
+    const parseValidity = (validity) => {
+      const now = new Date();
+      let endDate;
+      if (validity.includes("weeks")) {
+        const weeks = parseInt(validity.split(" ")[0], 10);
+        endDate = new Date(now);
+        endDate.setDate(now.getDate() + weeks * 7);
+      } else if (validity.includes("months")) {
+        const months = parseInt(validity.split(" ")[0], 10);
+        endDate = new Date(now);
+        endDate.setMonth(now.getMonth() + months);
+      }
+      return { startDate: now, endDate };
+    };
+    const { startDate: valid_start_date, endDate: valid_end_date } =
+      parseValidity(validity);
     const startHour = parseTime(startTime);
     const endHour = parseTime(endTime);
     const generateTimeSlots = (start, end) => {
@@ -30,17 +47,11 @@ export async function GET(request) {
       for (let hour = start; hour < end; hour++) {
         const slotTime = new Date(1970, 0, 1, hour).toLocaleTimeString(
           "en-US",
-          {
-            hour: "numeric",
-            hour12: true,
-          }
+          { hour: "numeric", hour12: true }
         );
         const nextHourTime = new Date(1970, 0, 1, hour + 1).toLocaleTimeString(
           "en-US",
-          {
-            hour: "numeric",
-            hour12: true,
-          }
+          { hour: "numeric", hour12: true }
         );
         slots.push(`${slotTime} - ${nextHourTime}`);
       }
@@ -51,16 +62,26 @@ export async function GET(request) {
 
     const bookings = await db
       .collection("Booking")
-      .find(
-        {
-          trainer_id: new ObjectId(trainerId),
-          bookedslots: { $elemMatch: { [day]: { $exists: true } } },
-        },
-        { projection: { bookedslots: 1 } }
-      )
+      .find({
+        trainer_id: new ObjectId(trainerId),
+        bookedslots: { $elemMatch: { [day]: { $exists: true } } },
+      })
       .toArray();
+    const isWithinRange = (date, rangeStart, rangeEnd) => {
+      return date >= rangeStart && date <= rangeEnd;
+    };
 
-    const bookedSlots = bookings.flatMap((booking) => {
+    const relevantBookings = bookings.filter((booking) => {
+      const bookingStart = new Date(booking.valid_start_date);
+      const bookingEnd = new Date(booking.valid_end_date);
+      console.log("Checking booking:", { bookingStart, bookingEnd });
+
+      return (
+        isWithinRange(valid_start_date, bookingStart, bookingEnd) ||
+        isWithinRange(valid_end_date, bookingStart, bookingEnd)
+      );
+    });
+    const bookedSlots = relevantBookings.flatMap((booking) => {
       const dayBooking = booking.bookedslots.find((slot) => slot[day]);
       return dayBooking ? dayBooking[day] : [];
     });

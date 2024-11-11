@@ -6,7 +6,7 @@ import { days } from "../days/dat";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const CalendarComponent = ({ data }) => {
+const CalendarComponent = ({ data, sessionPackage }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -18,7 +18,7 @@ const CalendarComponent = ({ data }) => {
 
     try {
       const response = await fetch(
-        `/api/get-data?trainerId=${data._id}&day=${day}`
+        `/api/get-data?trainerId=${data._id}&day=${day}&validity=${sessionPackage.validity}`
       );
       const result = await response.json();
       setAvailableSlots(result.availableSlots || []);
@@ -35,6 +35,7 @@ const CalendarComponent = ({ data }) => {
       [selectedDay]: value,
     }));
   };
+  console.log(sessionPackage.validity);
 
   return (
     <div
