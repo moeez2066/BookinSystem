@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./FourthStep.module.css";
 import CalendarComponent from "./CalendarComponent";
+import MapComponent from "./MapComponent";
 
 const FourthStep = ({ data, sessionPackage }) => {
-  
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  const toggleCalendar = () => {
+    setShowCalendar(true); // Show CalendarComponent and hide MapComponent
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.leftColumn}>
@@ -18,7 +24,11 @@ const FourthStep = ({ data, sessionPackage }) => {
         </p>
       </div>
       <div className={styles.rightColumn}>
-        <CalendarComponent data={data} sessionPackage={sessionPackage} />
+        {!showCalendar ? (
+          <MapComponent showCalendar={showCalendar} toggleCalendar={toggleCalendar} />
+        ) : (
+          <CalendarComponent data={data} sessionPackage={sessionPackage} />
+        )}
       </div>
     </div>
   );

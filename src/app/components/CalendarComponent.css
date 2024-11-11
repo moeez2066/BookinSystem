@@ -61,7 +61,22 @@
   .ant-select-selector {
   box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
 }
+.arrow-top {
+  border: 2px solid #473a3a;
+  width: min-content;
+  padding: 3px 6px;
+  border-radius: 50%;
+  position: absolute;
+  top: 144px;
+  right: -112px;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
 
+.arrow-top:hover {
+  cursor: pointer;
+  background-color: rgb(204, 203, 200);
+}
 /* CalendarComponent.css */
 
 @media (max-width: 600px) {
@@ -76,14 +91,17 @@
     height: 29px;
     margin-left: -8px;
   }
-  :where(.css-apn68).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-    border: 1px solid #473a3a !important;
-    background: #fff;
-    height: 2px;
+  .arrow-top {
+    border: 2px solid #473a3a;
+    width: min-content;
+    padding: 2px 3px;
+    border-radius: 50%;
+    position: absolute;
+    top: -16px;
+    right: 6px;
     font-size: 9px;
-    height: 29px;
-    margin-left: -8px;
-}
+  }
+  
 }
 
 @media (min-width: 601px) {
@@ -91,3 +109,4 @@
     display: inline; /* Show on desktop */
   }
 }
+
