@@ -250,6 +250,7 @@ const CalendarComponent = ({ data, sessionPackage, time }) => {
             top: "20px",
             backgroundColor: "#ff4d4f",
             border: "2px solid rgb(255 86 86)",
+            color:'#ebeaea '
           }}
         />
       )}

@@ -273,7 +273,9 @@
   .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
   background-color: #f0eeeb !important;
 }
-
+:where(.css-apn68).ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
+  border: none!important;
+}
 button:active,
 button:focus {
   border-color: #473a3a;
