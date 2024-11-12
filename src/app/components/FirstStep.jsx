@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import styles from "./FirstStep.module.css";
 
 const FirstStep = ({ onNext }) => {
+  useEffect(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [onNext]);
   return (
     <div className={styles.container}>
       <div className={styles.leftColumn}>
@@ -21,10 +27,7 @@ const FirstStep = ({ onNext }) => {
         </div>
       </div>
       <div className={styles.rightColumn}>
-        <div
-          className={styles.packageCard}
-          onClick={() => onNext("General Fitness")}
-        >
+        <div className={styles.packageCard}>
           <div className={styles.imageWrapper}>
             <Image
               src="/general-fitness.jpg"
@@ -40,7 +43,12 @@ const FirstStep = ({ onNext }) => {
             <p className={styles.packageDescription}>
               Includes weight loss, bodybuilding, CrossFit, and kickboxing.
             </p>
-            <button className={styles.selectButton}>select</button>
+            <button
+              className={styles.selectButton}
+              onClick={() => onNext("General Fitness")}
+            >
+              select
+            </button>
           </div>
         </div>
         <div className={styles.packageCard} onClick={() => onNext("Pilates")}>
@@ -60,7 +68,12 @@ const FirstStep = ({ onNext }) => {
               Features Reformer Pilates and Mat
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pilates.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </p>
-            <button className={styles.selectButton}>select</button>
+            <button
+              className={styles.selectButton}
+              onClick={() => onNext("General Fitness")}
+            >
+              select
+            </button>
           </div>
         </div>
       </div>

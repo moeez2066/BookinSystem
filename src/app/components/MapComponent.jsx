@@ -21,11 +21,13 @@ const defaultCenter = {
   lat: 24.7136,
   lng: 46.6753,
 };
+const defaultDestination = "Chaklala Scheme 3, Rawalpindi";
 
-const MapComponent = ({ showCalendar, toggleCalendar }) => {
+const MapComponent = ({ showCalendar, toggleCalendar, setTime, time }) => {
   const [originCity, setOriginCity] = useState("Riyadh");
   const [place, setPlace] = useState("");
   const [mapCenter, setMapCenter] = useState(defaultCenter);
+  const [mapPlace, setMapPlace] = useState(null);
   const destinationRef = useRef(null);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -37,12 +39,34 @@ const MapComponent = ({ showCalendar, toggleCalendar }) => {
   const handleSelectDestination = () => {
     const selectedPlace = destinationRef.current.getPlace();
     if (selectedPlace && selectedPlace.geometry) {
-      setMapCenter({
+      const newCenter = {
         lat: selectedPlace.geometry.location.lat(),
         lng: selectedPlace.geometry.location.lng(),
-      });
+      };
+      setMapCenter(newCenter);
       setPlace(selectedPlace.name);
+      setMapPlace(selectedPlace.name)
+      logDistanceAndDuration(newCenter);
     }
+  };
+
+  const logDistanceAndDuration = (destinationCoords) => {
+    const service = new window.google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [defaultDestination],
+        destinations: [destinationCoords],
+        travelMode: "DRIVING",
+      },
+      (response, status) => {
+        if (status === "OK") {
+          const { duration } = response.rows[0].elements[0];
+          setTime(duration.text);
+        } else {
+          console.error("Error calculating distance:", status);
+        }
+      }
+    );
   };
 
   const handleInputChange = (e) => {
@@ -122,17 +146,26 @@ const MapComponent = ({ showCalendar, toggleCalendar }) => {
             <Marker position={mapCenter} />
           </GoogleMap>
         </div>
-      </Space>
-
-      {place && (
         <div
-          className="arrow-top"
-          onClick={toggleCalendar}
-          style={{ cursor: "pointer" }}
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "-13px",
+          }}
         >
-          ➔
+          {place && mapPlace && (
+            <button
+              style={{ cursor: "pointer", marginTop: "12px" }}
+              className="arrow-top"
+              onClick={toggleCalendar}
+            >
+              next
+            </button>
+          )}
         </div>
-      )}
+      </Space>
     </div>
   );
 };

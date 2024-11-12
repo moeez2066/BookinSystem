@@ -11,6 +11,7 @@ const FourthStep = ({ data, sessionPackage }) => {
     });
   }, []);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [time, setTime] = useState(false);
 
   const toggleCalendar = () => {
     setShowCalendar(true);
@@ -34,9 +35,11 @@ const FourthStep = ({ data, sessionPackage }) => {
           <MapComponent
             showCalendar={showCalendar}
             toggleCalendar={toggleCalendar}
+            setTime={setTime}
+            time={time}
           />
         ) : (
-          <CalendarComponent data={data} sessionPackage={sessionPackage} />
+          <CalendarComponent data={data} time={time} sessionPackage={sessionPackage} />
         )}
       </div>
     </div>

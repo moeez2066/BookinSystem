@@ -249,7 +249,8 @@
 button:active,
 button:focus {
   border-color: #473a3a;
-  color: #473a3a;
+  color: #ebeaea!important;
+  background-color: #41365e;
   transform: 6px;
   outline: none;
 }

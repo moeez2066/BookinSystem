@@ -6,24 +6,26 @@ import { days } from "../days/dat";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const CalendarComponent = ({ data, sessionPackage }) => {
+const CalendarComponent = ({ data, sessionPackage, time }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [allSlotsBookedMessage, setAllSlotsBookedMessage] = useState("");
 
+  console.log(time);
+
   const handleDayClick = async (day) => {
     setSelectedDay(day);
     setLoading(true);
-    setAllSlotsBookedMessage(""); // Reset the message
+    setAllSlotsBookedMessage(""); 
 
     try {
       const response = await fetch(
         `/api/get-data?trainerId=${data._id}&day=${day}&validity=${sessionPackage.validity}`
       );
       const result = await response.json();
-      
+
       if (result.message === "All slots booked") {
         setAllSlotsBookedMessage("All slots booked for this day.");
         setAvailableSlots([]);
@@ -43,7 +45,6 @@ const CalendarComponent = ({ data, sessionPackage }) => {
       [selectedDay]: value,
     }));
   };
-  console.log(sessionPackage.validity);
 
   return (
     <div
