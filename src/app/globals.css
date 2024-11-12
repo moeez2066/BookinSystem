@@ -59,18 +59,21 @@
 
 @media (max-width: 600px) {
   .ant-input {
-    width: 80px !important;
-    border: 2px solid red;
-  }
-  .mapstep .ant-select-selector {
-    width: 87px !important;
+    width: 143px !important;
     height: 21px !important;
     position: relative;
-    right: -23%;
+    right: 29%;
+    font-size: 9px !important;
+  }
+  .mapstep .ant-select-selector {
+    width: 143px !important;
+    height: 21px !important;
+    position: relative;
+    right: 20%;
   }
   .dd {
     position: relative;
-    right: -15%;
+    right: 26%;
   }
   .mapstep .ant-select-item-option-content {
     font-size: 9px !important;
@@ -255,4 +258,8 @@ button:focus {
 .ant-loc-button:active{
   border-color: #5d5755!important;
   color: #ebeaea!important;
+}
+
+.gm-style-cc{
+  display: none;
 }

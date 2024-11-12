@@ -67,8 +67,8 @@
   padding: 3px 6px;
   border-radius: 50%;
   position: absolute;
-  top: 144px;
-  right: -112px;
+  top: 146px;
+  right: -146px;
   font-size: 18px;
   transition: background-color 0.3s ease;
 }
@@ -96,12 +96,18 @@
   .arrow-top {
     border: 2px solid #473a3a;
     width: min-content;
-    padding: 2px 3px;
+    padding: 2px 4px;
     border-radius: 50%;
     position: absolute;
-    top: -16px;
-    right: 6px;
+    top: -8px;
+    right: 4px;
     font-size: 9px;
+  }
+  .city{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
 }
 
