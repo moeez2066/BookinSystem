@@ -56,7 +56,35 @@
   border: 1px solid #473a3a !important;
   box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
 }
+/* Custom styles for DatePicker */
+.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-selected .ant-picker-cell-inner::selection {
+  background-color: #473a3a !important; /* Change the highlight color */
+  color: white !important; /* Ensures the text color is white */
+  border: none !important;
+  border-color: white !important;
+}
+.ant-picker-cell {
+  border: none !important;
+  border-color: white !important;
+}
+/* Hover state */
+.ant-picker-cell:hover .ant-picker-cell-inner,
+.ant-picker-cell:hover .ant-picker-cell-inner::selection {
+  background-color: #614949 !important; /* Slightly lighter or darker for hover */
+  border: none !important;
+  border-color: white !important;
+}
 
+:where(.css-dev-only-do-not-override-apn68).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-today
+  .ant-picker-cell-inner::before {
+  border: none !important;
+}
+.ant-picker-cell-inner {
+  border: none !important;
+  border-color: white !important;
+}
 @media (max-width: 600px) {
   .ant-input {
     width: 143px !important;
@@ -65,6 +93,7 @@
     right: 29%;
     font-size: 9px !important;
   }
+
   .mapstep .ant-select-selector {
     width: 143px !important;
     height: 21px !important;
@@ -245,22 +274,30 @@
   background-color: #f0eeeb !important;
 }
 
-
 button:active,
 button:focus {
   border-color: #473a3a;
-  color: #ebeaea!important;
+  color: #ebeaea !important;
   background-color: #41365e;
   transform: 6px;
   outline: none;
 }
 
 .ant-loc-button:focus,
-.ant-loc-button:active{
-  border-color: #5d5755!important;
-  color: #ebeaea!important;
+.ant-loc-button:active {
+  border-color: #5d5755 !important;
+  color: #ebeaea !important;
 }
 
-.gm-style-cc{
+.gm-style-cc {
   display: none;
 }
+
+:where(.css-dev-only-do-not-override-apn68).ant-picker-outlined:hover {
+  border-color: #473a3a !important;
+  background-color: #ffffff;
+}
+
+.ant-btn span{
+  color:#473a3a!important;
+    }

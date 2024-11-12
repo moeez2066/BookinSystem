@@ -1,7 +1,16 @@
-import React, { useState } from "react";
-import { Button, Select, Typography, Space, Spin } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Select,
+  Typography,
+  Space,
+  Spin,
+  DatePicker,
+  Alert,
+} from "antd";
 import "./CalendarComponent.css";
 import { days } from "../days/dat";
+import moment from "moment";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -12,30 +21,61 @@ const CalendarComponent = ({ data, sessionPackage, time }) => {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [allSlotsBookedMessage, setAllSlotsBookedMessage] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedDay(null);
+    setAllSlotsBookedMessage("");
+    setSelectedSlots({});
+  };
+  const [alertInfo, setAlertInfo] = useState({
+    visible: false,
+    type: "",
+    message: "",
+  });
+  useEffect(() => {
+    let timer;
+    if (alertInfo.visible) {
+      // Set the alert to auto-close after 3000 milliseconds (3 seconds)
+      timer = setTimeout(() => {
+        setAlertInfo({ ...alertInfo, visible: false });
+      }, 3000);
+    }
 
-  console.log(time);
-
+    // Clean up the timer when alert is closed manually or if component unmounts
+    return () => clearTimeout(timer);
+  }, [alertInfo.visible]);
   const handleDayClick = async (day) => {
-    setSelectedDay(day);
-    setLoading(true);
-    setAllSlotsBookedMessage(""); 
+    if (selectedDate) {
+      setSelectedDay(day);
+      setLoading(true);
+      setAllSlotsBookedMessage("");
 
-    try {
-      const response = await fetch(
-        `/api/get-data?trainerId=${data._id}&day=${day}&validity=${sessionPackage.validity}`
-      );
-      const result = await response.json();
+      try {
+        const response = await fetch(
+          `/api/get-data?trainerId=${data._id}&day=${day}&validity=${
+            sessionPackage.validity
+          }&date=${selectedDate.format("YYYY-MM-DD")}`
+        );
+        const result = await response.json();
 
-      if (result.message === "All slots booked") {
-        setAllSlotsBookedMessage("All slots booked for this day.");
-        setAvailableSlots([]);
-      } else {
-        setAvailableSlots(result.availableSlots || []);
+        if (result.message === "All slots booked") {
+          setAllSlotsBookedMessage("All slots booked for this day.");
+          setAvailableSlots([]);
+        } else {
+          setAvailableSlots(result.availableSlots || []);
+        }
+      } catch (error) {
+        console.error("Error fetching available slots:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching available slots:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      setAlertInfo({
+        visible: true,
+        type: "info",
+        message: "Select Starting Date",
+      });
     }
   };
 
@@ -56,6 +96,22 @@ const CalendarComponent = ({ data, sessionPackage, time }) => {
         maxWidth: "100%",
       }}
     >
+      <Title
+        level={4}
+        style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
+      >
+        Select Your Starting Date
+      </Title>
+      <DatePicker
+        onChange={handleDateChange}
+        style={{
+          marginBottom: "20px",
+          borderColor: "#473a3a",
+          boxShadow: "0 0 5px rgba(71, 58, 58, 0.4)",
+        }}
+        disabledDate={current => current && current < moment().startOf('day')}
+        placeholder="Select date"
+      />
       <Title
         level={4}
         style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
@@ -182,6 +238,20 @@ const CalendarComponent = ({ data, sessionPackage, time }) => {
             <strong>{selectedDay}</strong>
           </Text>
         </div>
+      )}
+      {alertInfo.visible && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          closable
+          onClose={() => setAlertInfo({ ...alertInfo, visible: false })}
+          style={{
+            position: "fixed",
+            top: "20px",
+            backgroundColor: "#ff4d4f",
+            border: "2px solid rgb(255 86 86)",
+          }}
+        />
       )}
     </div>
   );

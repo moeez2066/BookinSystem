@@ -7,8 +7,14 @@ export async function GET(request) {
     const trainerId = url.searchParams.get("trainerId");
     const day = url.searchParams.get("day");
     const validity = url.searchParams.get("validity");
+    const startDate = url.searchParams.get("date");
 
-    console.log("Received parameters:", { trainerId, day, validity });
+    console.log("Received parameters:", {
+      trainerId,
+      day,
+      validity,
+      startDate,
+    });
 
     const client = await clientPromise;
     const db = client.db("BookingSys");
@@ -24,7 +30,7 @@ export async function GET(request) {
 
     const workingHours = trainer.working_hours;
     const [startTime, endTime] = workingHours.split(" - ");
-    
+
     const parseTime = (timeStr) => {
       const [hour, period] = timeStr.match(/\d+|\D+/g);
       let hours = parseInt(hour, 10);
@@ -34,7 +40,7 @@ export async function GET(request) {
     };
 
     const parseValidity = (validity) => {
-      const now = new Date();
+      const now = new Date(startDate);
       let endDate;
       if (validity.includes("weeks")) {
         const weeks = parseInt(validity.split(" ")[0], 10);
@@ -49,8 +55,8 @@ export async function GET(request) {
     };
 
     const { startDate: valid_start_date, endDate: valid_end_date } =
-    parseValidity(validity);
-    
+      parseValidity(validity);
+
     console.log("Parsed validity range:", { valid_start_date, valid_end_date });
 
     const startHour = parseTime(startTime);
