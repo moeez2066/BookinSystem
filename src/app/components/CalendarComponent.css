@@ -70,6 +70,8 @@
   font-size: 14px;
   cursor: pointer;
   margin: auto;
+  position: relative;
+  right: -295px;
 }
 
 /* CalendarComponent.css */
@@ -90,12 +92,15 @@
     padding: 2px 13px;
     font-size: 9px;
     margin: auto;
+    position: relative;
+    right: -35%;
   }
   .city {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
   }
 }
 
