@@ -7,16 +7,24 @@ export async function GET(request) {
     const trainerId = url.searchParams.get("trainerId");
     const day = url.searchParams.get("day");
     const validity = url.searchParams.get("validity");
+
+    console.log("Received parameters:", { trainerId, day, validity });
+
     const client = await clientPromise;
     const db = client.db("BookingSys");
+
     const trainer = await db
       .collection("Trainers")
       .findOne(
         { _id: new ObjectId(trainerId) },
         { projection: { working_hours: 1 } }
       );
-    const workingHours = trainer.working_hours || "6 AM - 8 PM";
+
+    console.log("Fetched trainer data:", trainer);
+
+    const workingHours = trainer.working_hours;
     const [startTime, endTime] = workingHours.split(" - ");
+    
     const parseTime = (timeStr) => {
       const [hour, period] = timeStr.match(/\d+|\D+/g);
       let hours = parseInt(hour, 10);
@@ -24,6 +32,7 @@ export async function GET(request) {
       if (period.trim().toLowerCase() === "am" && hours === 12) hours = 0;
       return hours;
     };
+
     const parseValidity = (validity) => {
       const now = new Date();
       let endDate;
@@ -38,10 +47,17 @@ export async function GET(request) {
       }
       return { startDate: now, endDate };
     };
+
     const { startDate: valid_start_date, endDate: valid_end_date } =
-      parseValidity(validity);
+    parseValidity(validity);
+    
+    console.log("Parsed validity range:", { valid_start_date, valid_end_date });
+
     const startHour = parseTime(startTime);
     const endHour = parseTime(endTime);
+
+    console.log("Parsed working hours:", { startHour, endHour });
+
     const generateTimeSlots = (start, end) => {
       const slots = [];
       for (let hour = start; hour < end; hour++) {
@@ -60,6 +76,8 @@ export async function GET(request) {
 
     const allSlots = generateTimeSlots(startHour, endHour);
 
+    console.log("Generated time slots:", allSlots);
+
     const bookings = await db
       .collection("Booking")
       .find({
@@ -67,6 +85,9 @@ export async function GET(request) {
         bookedslots: { $elemMatch: { [day]: { $exists: true } } },
       })
       .toArray();
+
+    console.log("Fetched bookings:", bookings);
+
     const isWithinRange = (date, rangeStart, rangeEnd) => {
       return date >= rangeStart && date <= rangeEnd;
     };
@@ -80,14 +101,35 @@ export async function GET(request) {
         isWithinRange(valid_end_date, bookingStart, bookingEnd)
       );
     });
+
+    console.log("Filtered relevant bookings:", relevantBookings);
+
     const bookedSlots = relevantBookings.flatMap((booking) => {
       const dayBooking = booking.bookedslots.find((slot) => slot[day]);
       return dayBooking ? dayBooking[day] : [];
     });
 
+    console.log("Compiled booked slots:", bookedSlots);
+
+    // Check if booked slots reach the maximum allowed for the day
+    if (bookedSlots.length >= 8) {
+      return new Response(
+        JSON.stringify({
+          message: "All slots booked",
+          workingHours: `${startTime} - ${endTime}`,
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     const availableSlots = allSlots.filter(
       (slot) => !bookedSlots.includes(slot)
     );
+
+    console.log("Available slots:", availableSlots);
 
     return new Response(
       JSON.stringify({

@@ -41,7 +41,7 @@ const MapComponent = ({ showCalendar, toggleCalendar }) => {
         lat: selectedPlace.geometry.location.lat(),
         lng: selectedPlace.geometry.location.lng(),
       });
-      setPlace(selectedPlace.name); // Update the input with selected place name
+      setPlace(selectedPlace.name);
     }
   };
 
@@ -105,8 +105,8 @@ const MapComponent = ({ showCalendar, toggleCalendar }) => {
               <Input
                 type="text"
                 placeholder="e.g., fahd road"
-                value={place} // Bind the value to the `place` state
-                onChange={handleInputChange} // Update place state on input change
+                value={place}
+                onChange={handleInputChange}
               />
             </Autocomplete>
             <br />

@@ -11,17 +11,25 @@ const CalendarComponent = ({ data, sessionPackage }) => {
   const [selectedSlots, setSelectedSlots] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [allSlotsBookedMessage, setAllSlotsBookedMessage] = useState("");
 
   const handleDayClick = async (day) => {
     setSelectedDay(day);
     setLoading(true);
+    setAllSlotsBookedMessage(""); // Reset the message
 
     try {
       const response = await fetch(
         `/api/get-data?trainerId=${data._id}&day=${day}&validity=${sessionPackage.validity}`
       );
       const result = await response.json();
-      setAvailableSlots(result.availableSlots || []);
+      
+      if (result.message === "All slots booked") {
+        setAllSlotsBookedMessage("All slots booked for this day.");
+        setAvailableSlots([]);
+      } else {
+        setAvailableSlots(result.availableSlots || []);
+      }
     } catch (error) {
       console.error("Error fetching available slots:", error);
     } finally {
@@ -102,39 +110,54 @@ const CalendarComponent = ({ data, sessionPackage }) => {
           <Spin />
         </>
       ) : selectedDay ? (
-        <div style={{ marginTop: "10px" }}>
-          <span className="desktop-only-br">
-            <br />
-          </span>
-
+        allSlotsBookedMessage ? (
           <Text
-            strong
-            style={{ color: "#473a3a", fontSize: "clamp(9px, 1.5vw, 14px)" }}
-          >
-            Available Time Slots for {selectedDay}
-          </Text>
-          <Select
-            placeholder="Select a time slot"
+            italic
             style={{
-              width: "100%",
-              maxWidth: 200,
-              marginLeft: "10px",
+              display: "block",
+              marginTop: "10px",
               color: "#473a3a",
-              borderColor: "#b2d8b2",
-              fontSize: "clamp(8px, 1.5vw, 12px)",
+              fontSize: "clamp(10px, 1.5vw, 14px)",
             }}
-            dropdownClassName="custom-dropdown"
-            value={selectedSlots[selectedDay] || null}
-            onChange={handleSlotChange}
-            optionLabelProp="label"
           >
-            {availableSlots.map((slot) => (
-              <Option key={slot} value={slot} label={slot}>
-                {slot}
-              </Option>
-            ))}
-          </Select>
-        </div>
+            <br />
+            {allSlotsBookedMessage}
+          </Text>
+        ) : (
+          <div style={{ marginTop: "10px" }}>
+            <span className="desktop-only-br">
+              <br />
+            </span>
+
+            <Text
+              strong
+              style={{ color: "#473a3a", fontSize: "clamp(9px, 1.5vw, 14px)" }}
+            >
+              Available Time Slots for {selectedDay}
+            </Text>
+            <Select
+              placeholder="Select a time slot"
+              style={{
+                width: "100%",
+                maxWidth: 200,
+                marginLeft: "10px",
+                color: "#473a3a",
+                borderColor: "#b2d8b2",
+                fontSize: "clamp(8px, 1.5vw, 12px)",
+              }}
+              dropdownClassName="custom-dropdown"
+              value={selectedSlots[selectedDay] || null}
+              onChange={handleSlotChange}
+              optionLabelProp="label"
+            >
+              {availableSlots.map((slot) => (
+                <Option key={slot} value={slot} label={slot}>
+                  {slot}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        )
       ) : (
         <Text
           italic
