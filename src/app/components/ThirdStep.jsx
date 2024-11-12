@@ -1,10 +1,16 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ThirdStep.module.css";
 import Image from "next/image";
 import { trainers } from "@/app/trainers/dat";
 
 const ThirdStep = ({ selectedData, onNext }) => {
+  useEffect(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.leftColumn}>

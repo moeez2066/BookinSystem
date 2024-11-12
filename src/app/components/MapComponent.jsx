@@ -112,6 +112,7 @@ const MapComponent = ({ showCalendar, toggleCalendar }) => {
           style={{ textAlign: "center", marginTop: "-4px", padding: "-4px" }}
         >
           <Button
+          className="ant-loc-button"
             type="primary"
             onClick={updateMapLocation}
             style={{

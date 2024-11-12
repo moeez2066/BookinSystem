@@ -75,7 +75,9 @@
 
 .arrow-top:hover {
   cursor: pointer;
-  background-color: rgb(204, 203, 200);
+  background-color: #b4a597;
+  color: #f0eeeb;
+  border-color: #b4a597;
 }
 /* CalendarComponent.css */
 
@@ -101,7 +103,6 @@
     right: 6px;
     font-size: 9px;
   }
-  
 }
 
 @media (min-width: 601px) {
@@ -109,4 +110,3 @@
     display: inline; /* Show on desktop */
   }
 }
-

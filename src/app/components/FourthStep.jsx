@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FourthStep.module.css";
 import CalendarComponent from "./CalendarComponent";
 import MapComponent from "./MapComponent";
 
 const FourthStep = ({ data, sessionPackage }) => {
+  useEffect(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  }, []);
   const [showCalendar, setShowCalendar] = useState(false);
 
   const toggleCalendar = () => {
-    setShowCalendar(true); // Show CalendarComponent and hide MapComponent
+    setShowCalendar(true);
   };
 
   return (
@@ -25,7 +31,10 @@ const FourthStep = ({ data, sessionPackage }) => {
       </div>
       <div className={styles.rightColumn}>
         {!showCalendar ? (
-          <MapComponent showCalendar={showCalendar} toggleCalendar={toggleCalendar} />
+          <MapComponent
+            showCalendar={showCalendar}
+            toggleCalendar={toggleCalendar}
+          />
         ) : (
           <CalendarComponent data={data} sessionPackage={sessionPackage} />
         )}

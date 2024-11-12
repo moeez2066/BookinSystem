@@ -74,7 +74,6 @@ export async function GET(request) {
     const relevantBookings = bookings.filter((booking) => {
       const bookingStart = new Date(booking.valid_start_date);
       const bookingEnd = new Date(booking.valid_end_date);
-      console.log("Checking booking:", { bookingStart, bookingEnd });
 
       return (
         isWithinRange(valid_start_date, bookingStart, bookingEnd) ||

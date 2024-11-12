@@ -1,9 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SecondStep.module.css";
 import { packages } from "../sessions/dat";
 
 const SecondStep = ({ selectedSpecialty, onNext }) => {
+  useEffect(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, []);
+
   const [activePackage, setActivePackage] = useState(null);
 
   const togglePackage = (index) => {
