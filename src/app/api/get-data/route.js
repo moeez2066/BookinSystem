@@ -9,14 +9,14 @@ export async function GET(request) {
     const day = url.searchParams.get("day");
     const validity = url.searchParams.get("validity");
     const startDate = url.searchParams.get("date");
-    const placeChords=url.searchParams.get("placeChords");
-    const distanceAndDuration = await calculateDistanceAndDuration('Scheme 3', placeChords);
+    const placeChords = url.searchParams.get("placeChords");
 
     console.log("Received parameters:", {
       trainerId,
       day,
       validity,
       startDate,
+      placeChords,
     });
 
     const client = await clientPromise;
@@ -113,12 +113,24 @@ export async function GET(request) {
 
     console.log("Filtered relevant bookings:", relevantBookings);
 
-    const bookedSlots = relevantBookings.flatMap((booking) => {
+    const bookedSlots = [];
+    for (const booking of relevantBookings) {
       const dayBooking = booking.bookedslots.find((slot) => slot[day]);
-      return dayBooking
-        ? dayBooking[day].map((slot) => `${slot.time} (${slot.location})`)
-        : [];
-    });
+      if (dayBooking) {
+        for (const slot of dayBooking[day]) {
+          const distanceAndDuration = await calculateDistanceAndDuration(
+            placeChords,
+            slot.location
+          );
+          bookedSlots.push({
+            time: slot.time,
+            location: slot.location,
+            distance: distanceAndDuration.distance,
+            duration: distanceAndDuration.duration,
+          });
+        }
+      }
+    }
 
     console.log("Compiled booked slots:", bookedSlots);
     if (bookedSlots.length >= 8) {
@@ -135,7 +147,7 @@ export async function GET(request) {
     }
 
     const availableSlots = allSlots.filter(
-      (slot) => !bookedSlots.some((bookedSlot) => bookedSlot.startsWith(slot))
+      (slot) => !bookedSlots.some((bookedSlot) => bookedSlot.time === slot)
     );
 
     console.log("Available slots:", availableSlots);
