@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.0",
     "@react-google-maps/api": "^2.20.3",
     "antd": "^5.21.6",
     "moment": "^2.30.1",

@@ -1,3 +1,4 @@
+import calculateDistanceAndDuration from "@/app/distanceMatrix";
 import clientPromise from "../../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
@@ -8,6 +9,8 @@ export async function GET(request) {
     const day = url.searchParams.get("day");
     const validity = url.searchParams.get("validity");
     const startDate = url.searchParams.get("date");
+    const placeChords=url.searchParams.get("placeChords");
+    const distanceAndDuration = await calculateDistanceAndDuration('Scheme 3', placeChords);
 
     console.log("Received parameters:", {
       trainerId,
@@ -112,12 +115,12 @@ export async function GET(request) {
 
     const bookedSlots = relevantBookings.flatMap((booking) => {
       const dayBooking = booking.bookedslots.find((slot) => slot[day]);
-      return dayBooking ? dayBooking[day] : [];
+      return dayBooking
+        ? dayBooking[day].map((slot) => `${slot.time} (${slot.location})`)
+        : [];
     });
 
     console.log("Compiled booked slots:", bookedSlots);
-
-    // Check if booked slots reach the maximum allowed for the day
     if (bookedSlots.length >= 8) {
       return new Response(
         JSON.stringify({
@@ -132,7 +135,7 @@ export async function GET(request) {
     }
 
     const availableSlots = allSlots.filter(
-      (slot) => !bookedSlots.includes(slot)
+      (slot) => !bookedSlots.some((bookedSlot) => bookedSlot.startsWith(slot))
     );
 
     console.log("Available slots:", availableSlots);

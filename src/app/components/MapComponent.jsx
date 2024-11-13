@@ -23,7 +23,7 @@ const defaultCenter = {
 };
 const defaultDestination = "Chaklala Scheme 3, Rawalpindi";
 
-const MapComponent = ({ showCalendar, toggleCalendar, setTime, time }) => {
+const MapComponent = ({ showCalendar, toggleCalendar, setPlaceChords }) => {
   const [originCity, setOriginCity] = useState("Riyadh");
   const [place, setPlace] = useState("");
   const [mapCenter, setMapCenter] = useState(defaultCenter);
@@ -45,28 +45,9 @@ const MapComponent = ({ showCalendar, toggleCalendar, setTime, time }) => {
       };
       setMapCenter(newCenter);
       setPlace(selectedPlace.name);
-      setMapPlace(selectedPlace.name)
-      logDistanceAndDuration(newCenter);
+      setMapPlace(selectedPlace.name);
+      setPlaceChords(`${newCenter.lat},${newCenter.lng}`);
     }
-  };
-
-  const logDistanceAndDuration = (destinationCoords) => {
-    const service = new window.google.maps.DistanceMatrixService();
-    service.getDistanceMatrix(
-      {
-        origins: [defaultDestination],
-        destinations: [destinationCoords],
-        travelMode: "DRIVING",
-      },
-      (response, status) => {
-        if (status === "OK") {
-          const { duration } = response.rows[0].elements[0];
-          setTime(duration.text);
-        } else {
-          console.error("Error calculating distance:", status);
-        }
-      }
-    );
   };
 
   const handleInputChange = (e) => {

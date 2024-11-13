@@ -15,7 +15,7 @@ import moment from "moment";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const CalendarComponent = ({ data, sessionPackage, time }) => {
+const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -52,11 +52,10 @@ const CalendarComponent = ({ data, sessionPackage, time }) => {
       setAllSlotsBookedMessage("");
 
       try {
-        const response = await fetch(
-          `/api/get-data?trainerId=${data._id}&day=${day}&validity=${
+        const response = await fetch(`/api/get-data?trainerId=${data._id}&day=${day}&validity=${
             sessionPackage.validity
-          }&date=${selectedDate.format("YYYY-MM-DD")}`
-        );
+          }&date=${selectedDate.format("YYYY-MM-DD")}&placeChords=${placeChords}`)
+
         const result = await response.json();
 
         if (result.message === "All slots booked") {
