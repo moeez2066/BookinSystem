@@ -12,6 +12,7 @@ import "./CalendarComponent.css";
 import { days } from "../days/dat";
 import moment from "moment";
 import { parseValidity } from "../trainers/dat";
+import CheckSignInModal from "./AuthenticationModal";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -23,6 +24,8 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
   const [loading, setLoading] = useState(false);
   const [allSlotsBookedMessage, setAllSlotsBookedMessage] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loadingBook, setLoadingBook] = useState(false);
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setSelectedDay(null);
@@ -88,16 +91,12 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
   };
 
   const handleRegister = async () => {
-    if (!Object.keys(selectedSlots).length) {
-      setAlertInfo({
-        visible: true,
-        type: "error",
-        message:
-          "Please select at least one day and time slot before registering.",
-      });
+    const isSignedIn = sessionStorage.getItem("isSignedIn");
+
+    if (!isSignedIn) {
+      setIsModalVisible(true);
       return;
     }
-
     const { valid_start_date, valid_end_date } = parseValidity(
       sessionPackage.validity,
       selectedDate.toISOString()
@@ -119,9 +118,11 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       valid_start_date: { $date: valid_start_date },
       valid_end_date: { $date: valid_end_date },
       date_of_creation: { $date: new Date().toISOString() },
+      client_id: { $oid: sessionStorage.getItem("userId") },
     };
 
     try {
+      setLoadingBook(true);
       const response = await fetch("/api/save-booking", {
         method: "POST",
         headers: {
@@ -139,6 +140,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       } else {
         throw new Error("Failed to save booking.");
       }
+      setLoadingBook(false);
     } catch (error) {
       console.error("Error saving booking:", error);
       setAlertInfo({
@@ -147,6 +149,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         message:
           "An error occurred while saving your booking. Please try again.",
       });
+      setLoadingBook(false);
     }
   };
 
@@ -304,14 +307,28 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         </div>
       )}
       {selectedDay && selectedSlots[selectedDay] && (
-        <button
-          style={{ cursor: "pointer", marginTop: "12px" }}
-          className="arrow-top"
-          onClick={handleRegister}
-        >
-          Register
-        </button>
+        <>
+          <Button
+            className="arrow-top "
+            style={{
+              backgroundColor: "#a88a7d",
+              borderColor: "#a88a7d",
+              color: "#ffffff",
+              marginRight:'25px',
+              marginTop:'12px'
+            }}
+            loading={loadingBook}
+            onClick={handleRegister}
+          >
+            {" "}
+            Register
+          </Button>
+        </>
       )}
+      <CheckSignInModal
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+      />
       {alertInfo.visible && (
         <Alert
           message={alertInfo.message}
@@ -324,16 +341,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             left: "50%",
             transform: "translateX(-50%)",
             color: "black",
-            // backgroundColor:
-            // alertInfo.type === "success"
-            //   ? "green"
-            //   : alertInfo.type === "error"
-            //   ? "red"
-            //   : alertInfo.type === "info"
-            //   ? "blue"
-            //   : "gray",
           }}
-          
         />
       )}
     </div>
