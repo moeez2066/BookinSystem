@@ -74,7 +74,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
     } else {
       setAlertInfo({
         visible: true,
-        type: "info",
+        type: "error",
         message: "Select Starting Date",
       });
     }
@@ -324,7 +324,16 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             left: "50%",
             transform: "translateX(-50%)",
             color: "black",
+            // backgroundColor:
+            // alertInfo.type === "success"
+            //   ? "green"
+            //   : alertInfo.type === "error"
+            //   ? "red"
+            //   : alertInfo.type === "info"
+            //   ? "blue"
+            //   : "gray",
           }}
+          
         />
       )}
     </div>
