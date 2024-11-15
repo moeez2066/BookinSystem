@@ -14,3 +14,22 @@ export const trainers = [
       image: "/general-fitness.jpg",
     },
   ];
+  export const parseValidity = (validity, startDate) => {
+    const start = new Date(startDate); // Parse the starting date
+    let endDate;
+  
+    if (validity.includes("weeks")) {
+      const weeks = parseInt(validity.split(" ")[0], 10); // Extract number of weeks
+      endDate = new Date(start);
+      endDate.setDate(start.getDate() + weeks * 7); // Add weeks
+    } else if (validity.includes("months")) {
+      const months = parseInt(validity.split(" ")[0], 10); // Extract number of months
+      endDate = new Date(start);
+      endDate.setMonth(start.getMonth() + months); // Add months
+    }
+  
+    return {
+      valid_start_date: start.toISOString(),
+      valid_end_date: endDate.toISOString(),
+    };
+  };

@@ -11,11 +11,12 @@ import {
 import "./CalendarComponent.css";
 import { days } from "../days/dat";
 import moment from "moment";
+import { parseValidity } from "../trainers/dat";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
+const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState({});
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -36,13 +37,10 @@ const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
   useEffect(() => {
     let timer;
     if (alertInfo.visible) {
-      // Set the alert to auto-close after 3000 milliseconds (3 seconds)
       timer = setTimeout(() => {
         setAlertInfo({ ...alertInfo, visible: false });
       }, 3000);
     }
-
-    // Clean up the timer when alert is closed manually or if component unmounts
     return () => clearTimeout(timer);
   }, [alertInfo.visible]);
   const handleDayClick = async (day) => {
@@ -52,9 +50,13 @@ const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
       setAllSlotsBookedMessage("");
 
       try {
-        const response = await fetch(`/api/get-data?trainerId=${data._id}&day=${day}&validity=${
+        const response = await fetch(
+          `/api/get-data?trainerId=${data._id}&day=${day}&validity=${
             sessionPackage.validity
-          }&date=${selectedDate.format("YYYY-MM-DD")}&placeChords=${placeChords}`)
+          }&date=${selectedDate.format(
+            "YYYY-MM-DD"
+          )}&placeChords=${placeChords}`
+        );
 
         const result = await response.json();
 
@@ -85,6 +87,69 @@ const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
     }));
   };
 
+  const handleRegister = async () => {
+    if (!Object.keys(selectedSlots).length) {
+      setAlertInfo({
+        visible: true,
+        type: "error",
+        message:
+          "Please select at least one day and time slot before registering.",
+      });
+      return;
+    }
+
+    const { valid_start_date, valid_end_date } = parseValidity(
+      sessionPackage.validity,
+      selectedDate.toISOString()
+    );
+
+    // Construct the `bookedslots` array from all selected slots
+    const bookedslots = Object.entries(selectedSlots).map(([day, time]) => ({
+      [day]: [
+        {
+          time,
+          location: placeChords,
+        },
+      ],
+    }));
+
+    const payload = {
+      trainer_id: { $oid: data._id },
+      bookedslots,
+      valid_start_date: { $date: valid_start_date },
+      valid_end_date: { $date: valid_end_date },
+      date_of_creation: { $date: new Date().toISOString() },
+    };
+
+    try {
+      const response = await fetch("/api/save-booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setAlertInfo({
+          visible: true,
+          type: "success",
+          message: "Booking saved successfully!",
+        });
+      } else {
+        throw new Error("Failed to save booking.");
+      }
+    } catch (error) {
+      console.error("Error saving booking:", error);
+      setAlertInfo({
+        visible: true,
+        type: "error",
+        message:
+          "An error occurred while saving your booking. Please try again.",
+      });
+    }
+  };
+
   return (
     <div
       style={{
@@ -108,7 +173,7 @@ const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
           borderColor: "#473a3a",
           boxShadow: "0 0 5px rgba(71, 58, 58, 0.4)",
         }}
-        disabledDate={current => current && current < moment().startOf('day')}
+        disabledDate={(current) => current && current < moment().startOf("day")}
         placeholder="Select date"
       />
       <Title
@@ -238,6 +303,15 @@ const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
           </Text>
         </div>
       )}
+      {selectedDay && selectedSlots[selectedDay] && (
+        <button
+          style={{ cursor: "pointer", marginTop: "12px" }}
+          className="arrow-top"
+          onClick={handleRegister}
+        >
+          Register
+        </button>
+      )}
       {alertInfo.visible && (
         <Alert
           message={alertInfo.message}
@@ -247,9 +321,9 @@ const CalendarComponent = ({ data, sessionPackage,placeChords }) => {
           style={{
             position: "fixed",
             top: "20px",
-            backgroundColor: "#ff4d4f",
-            border: "2px solid rgb(255 86 86)",
-            color:'#ebeaea '
+            left: "50%",
+            transform: "translateX(-50%)",
+            color: "black",
           }}
         />
       )}
