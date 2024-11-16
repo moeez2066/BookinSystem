@@ -8,10 +8,17 @@ const MyContext = createContext();
 export const MyContextProvider = ({ children }) => {
   const [isSignedIn, setIsSignedIn] = useState(false); // State for tracking sign-in status
   const [userName, setUserName] = useState("");
-
+  const [userRole, setUserRole] = useState("");
   return (
     <MyContext.Provider
-      value={{ isSignedIn, setIsSignedIn, userName, setUserName }}
+      value={{
+        isSignedIn,
+        setIsSignedIn,
+        userName,
+        setUserName,
+        userRole,
+        setUserRole,
+      }}
     >
       {children}
     </MyContext.Provider>

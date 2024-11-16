@@ -31,7 +31,8 @@ export async function POST(req) {
       name,
       email,
       whatsapp,
-      password, 
+      password,
+      role: "client",
     };
 
     const result = await db.collection("users").insertOne(userDocument);
@@ -41,6 +42,7 @@ export async function POST(req) {
         message: "User registered successfully.",
         userId: result.insertedId,
         name: result.name,
+        role: result.role,
       }),
       { status: 201 }
     );

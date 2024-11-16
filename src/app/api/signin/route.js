@@ -48,6 +48,7 @@ export async function POST(req) {
         message: "Login successful!",
         userId: user._id.toString(), // Return user ID (convert ObjectId to string)
         name: user.name.toString(),
+        role: user.role.toString(),
       }),
       { status: 200 }
     );

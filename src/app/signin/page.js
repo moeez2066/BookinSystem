@@ -28,6 +28,7 @@ const SignUpComponent = () => {
   const [activeTabKey, setActiveTabKey] = useState("signin"); // Track active tab
   const { isSignedIn, setIsSignedIn } = useMyContext();
   const { userName, setUserName } = useMyContext();
+  const { userRole, setUserRole } = useMyContext();
   const router = useRouter();
   useEffect(() => {
     if (isSignedIn) {
@@ -59,9 +60,11 @@ const SignUpComponent = () => {
       if (response.ok) {
         sessionStorage.setItem("isSignedIn", "true");
         sessionStorage.setItem("userId", data.userId);
+        sessionStorage.setItem("userRole", data.role);
         sessionStorage.setItem("userName", data.name || values.name);
         setIsSignedIn(true);
         setUserName(data.name || values.name);
+        setUserRole(data.role);
         // setAlertInfo({
         //   visible: true,
         //   message: data.message || "Sign In / Sign Up successful!",

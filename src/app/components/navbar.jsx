@@ -13,7 +13,9 @@ const { Text } = Typography;
 export default function Navbar() {
   const { isSignedIn, setIsSignedIn } = useMyContext();
   const { userName, setUserName } = useMyContext();
+  const { userRole, setUserRole } = useMyContext();
   const router = useRouter();
+  console.log(userRole);
 
   useEffect(() => {
     const signedIn = sessionStorage.getItem("isSignedIn");
@@ -82,7 +84,9 @@ export default function Navbar() {
               >
                 <UserOutlined color="white" style={{ color: "#f0eeeb" }} />{" "}
                 <span style={{ color: "#f0eeeb" }}>{userName}</span>
-                <DownOutlined style={{ color: "#f0eeeb" }} />
+                <DownOutlined
+                  style={{ color: "#f0eeeb", marginBottom: "-4px" }}
+                />
               </Button>
             </Dropdown>
           </div>
