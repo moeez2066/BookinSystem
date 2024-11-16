@@ -7,7 +7,7 @@ const SecondStep = ({ selectedSpecialty, onNext }) => {
   useEffect(() => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, []);
 
@@ -75,9 +75,13 @@ const SecondStep = ({ selectedSpecialty, onNext }) => {
                     </p>
                     <button
                       className={styles.selectButton}
-                      onClick={() =>
-                        onNext({ name: pkg.name, ...session })
-                      }
+                      onClick={() => {
+                        onNext({ name: pkg.name, ...session });
+                        window.scrollTo({
+                          top: document.documentElement.scrollHeight,
+                          behavior: "smooth",
+                        });
+                      }}
                     >
                       select
                     </button>

@@ -1,14 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import styles from "./FirstStep.module.css";
 
 const FirstStep = ({ onNext }) => {
-  useEffect(() => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [onNext]);
   return (
     <div className={styles.container}>
       <div className={styles.leftColumn}>
@@ -45,13 +39,28 @@ const FirstStep = ({ onNext }) => {
             </p>
             <button
               className={styles.selectButton}
-              onClick={() => onNext("General Fitness")}
+              onClick={() => {
+                onNext("General Fitness");
+                window.scrollTo({
+                  top: document.documentElement.scrollHeight,
+                  behavior: "smooth",
+                });
+              }}
             >
               select
             </button>
           </div>
         </div>
-        <div className={styles.packageCard} onClick={() => onNext("Pilates")}>
+        <div
+          className={styles.packageCard}
+          onClick={() => {
+            onNext("Pilates");
+            window.scrollTo({
+              top: document.documentElement.scrollHeight,
+              behavior: "smooth",
+            });
+          }}
+        >
           <div className={styles.imageWrapper}>
             <Image
               src="/pilates.jpg"

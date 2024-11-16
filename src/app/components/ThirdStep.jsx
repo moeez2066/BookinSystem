@@ -8,7 +8,7 @@ const ThirdStep = ({ selectedData, onNext }) => {
   useEffect(() => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, []);
   return (
@@ -42,7 +42,13 @@ const ThirdStep = ({ selectedData, onNext }) => {
               <p className={styles.description}>{trainer.description}</p>
               <button
                 className={styles.selectButton}
-                onClick={() => onNext(trainer)}
+                onClick={() => {
+                  onNext(trainer);
+                  window.scrollTo({
+                    top: document.documentElement.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }}
               >
                 select
               </button>

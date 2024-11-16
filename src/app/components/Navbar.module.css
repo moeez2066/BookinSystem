@@ -1,6 +1,7 @@
 .navbar {
   background-color: #baada6;
   padding: 1rem;
+  position: relative;
 }
 
 .navContainer {
@@ -25,6 +26,30 @@
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+}
+.navBtn {
+  position: absolute;
+  top: 35px;
+  right: 22px;
+}
+
+.navBtn button {
+  padding: 20px !important;
+  font-size: 16px;
+  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important;
+  height: 33px;
+  color: #473a3a !important;
+}
+.navBtn button:hover {
+  color: #ebeaea !important;
+  border: none !important;
+  background-color: #473a3a !important;
+}
+
+.navBtn button:active,
+.navBtn button:focus {
+  background-color: #473a3a !important;
+  color: #ebeaea !important;
 }
 @media (max-width: 768px) {
   .navItem {

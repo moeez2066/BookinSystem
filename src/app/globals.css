@@ -286,7 +286,11 @@ button:focus {
   transform: 6px;
   outline: none;
 }
-
+.navBtn button:active,
+.navBtn button:focus {
+  background-color: #473a3a!important;
+  color: #ebeaea !important;
+}
 .ant-loc-button:focus,
 .ant-loc-button:active {
   border-color: #5d5755 !important;
