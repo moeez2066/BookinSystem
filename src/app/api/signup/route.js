@@ -16,6 +16,7 @@ export async function POST(req) {
     const client = await clientPromise;
     const db = client.db("BookingSys");
 
+    // Check if the email already exists
     const existingUser = await db.collection("users").findOne({ email });
     if (existingUser) {
       return new Response(
@@ -27,26 +28,30 @@ export async function POST(req) {
       );
     }
 
+    // Create the user document
     const userDocument = {
       name,
       email,
       whatsapp,
       password,
-      role: "client",
+      role: "client", // Default role
     };
 
+    // Insert the user document into the collection
     const result = await db.collection("users").insertOne(userDocument);
 
+    // Respond with the inserted user details
     return new Response(
       JSON.stringify({
         message: "User registered successfully.",
-        userId: result.insertedId,
-        name: result.name,
-        role: result.role,
+        userId: result.insertedId, // MongoDB's generated ObjectId
+        name: userDocument.name, // Use the original userDocument
+        role: userDocument.role, // Use the original userDocument
       }),
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error registering user:", error); // Log error for debugging
     return new Response(
       JSON.stringify({ message: "Failed to register user." }),
       { status: 500 }

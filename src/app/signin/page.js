@@ -38,9 +38,11 @@ const SignUpComponent = () => {
   useEffect(() => {
     const signedIn = sessionStorage.getItem("isSignedIn");
     const storedName = sessionStorage.getItem("userName");
+    const storedRole = sessionStorage.getItem("userRole");
     if (signedIn === "true" && storedName) {
       setIsSignedIn(true);
       setUserName(storedName);
+      setUserRole(storedRole)
       router.push("/");
     }
   }, []);
@@ -65,6 +67,8 @@ const SignUpComponent = () => {
         setIsSignedIn(true);
         setUserName(data.name || values.name);
         setUserRole(data.role);
+        console.log(data);
+        
         // setAlertInfo({
         //   visible: true,
         //   message: data.message || "Sign In / Sign Up successful!",

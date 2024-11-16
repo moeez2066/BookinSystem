@@ -7,6 +7,7 @@ export async function POST(req) {
 
     const {
       trainer_id,
+      client_id,
       bookedslots,
       valid_start_date,
       valid_end_date,
@@ -34,6 +35,7 @@ export async function POST(req) {
     // Construct the booking document
     const bookingDocument = {
       trainer_id: new ObjectId(trainer_id.$oid),
+      client_id: new ObjectId(client_id.$oid),
       bookedslots,
       valid_start_date: new Date(valid_start_date.$date),
       valid_end_date: new Date(valid_end_date.$date),

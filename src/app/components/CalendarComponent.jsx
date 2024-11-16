@@ -146,6 +146,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
 
     const payload = {
       trainer_id: { $oid: data._id },
+      client_id:{ $oid: sessionStorage.getItem('userId')},
       bookedslots,
       valid_start_date: { $date: valid_start_date },
       valid_end_date: { $date: valid_end_date },

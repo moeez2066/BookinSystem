@@ -6,7 +6,15 @@ import styles from "./Navbar.module.css";
 import { Button, Dropdown, Menu, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "../MyContext";
-import { DownOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  DownOutlined,
+  LogoutOutlined,
+  UserOutlined,
+  DashboardOutlined,
+  ClusterOutlined,
+  ControlOutlined,
+  ProfileOutlined,
+} from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -15,30 +23,47 @@ export default function Navbar() {
   const { userName, setUserName } = useMyContext();
   const { userRole, setUserRole } = useMyContext();
   const router = useRouter();
-  console.log(userRole);
-
   useEffect(() => {
     const signedIn = sessionStorage.getItem("isSignedIn");
     const storedName = sessionStorage.getItem("userName");
-    if (signedIn === "true" && storedName) {
+    const storedRole = sessionStorage.getItem("userRole");
+    if (signedIn === "true" && storedName && storedRole) {
       setIsSignedIn(true);
       setUserName(storedName);
+      setUserRole(storedRole);
     }
   }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("isSignedIn");
     sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("userRole");
     sessionStorage.removeItem("userId");
     setIsSignedIn(false);
     setUserName("");
+    setUserRole("");
     router.push("/");
+  };
+
+  const getDashboardLink = () => {
+    if (userRole === "client") return "/user";
+    if (userRole === "admin") return "/admin";
+    if (userRole === "trainer") return "/trainer";
+    return "/"; // Fallback if role is undefined
   };
 
   const menu = (
     <Menu>
+      <Menu.Item key="dashboard">
+        <Link href={getDashboardLink()}>
+          <ProfileOutlined
+            style={{ fontSize: "17px", marginBottom: "-12px" }}
+          />
+          &nbsp;Dashboard
+        </Link>
+      </Menu.Item>
       <Menu.Item key="logout" onClick={handleLogout}>
-        <LogoutOutlined style={{ fontSize: "17px", marginBottom: "-12px" }} />{" "}
+        <LogoutOutlined style={{ fontSize: "17px", marginBottom: "-12px" }} />
         &nbsp;Logout
       </Menu.Item>
     </Menu>
@@ -82,7 +107,7 @@ export default function Navbar() {
                   color: "white",
                 }}
               >
-                <UserOutlined color="white" style={{ color: "#f0eeeb" }} />{" "}
+                <UserOutlined color="white" style={{ color: "#f0eeeb" }} />
                 <span style={{ color: "#f0eeeb" }}>{userName}</span>
                 <DownOutlined
                   style={{ color: "#f0eeeb", marginBottom: "-4px" }}
