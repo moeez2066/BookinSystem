@@ -314,14 +314,14 @@ button:focus {
   .ant-tabs-tab-btn {
   color: #473a3a !important;
 }
-.ant-tabs-tab-btn{
+.ant-tabs-tab-btn {
   color: #473a3a !important;
 }
-.ant-tabs-nav-list{
-  border: none!important;
+.ant-tabs-nav-list {
+  border: none !important;
 }
-.ant-tabs-tab .ant-tabs-tab-active{
-    border: none!important;
+.ant-tabs-tab .ant-tabs-tab-active {
+  border: none !important;
 }
 /* Change the color of the active tab underline */
 .ant-tabs-ink-bar {
@@ -332,11 +332,10 @@ button:focus {
 .ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #473a3a !important; /* Match your desired text color */
 }
-.modal-in{
-
-    width: 100% !important;
-    height: 100% !important;
-    right: 0%;
-    font-size: 15px !important;
-
+.modal-in {
+  width: 100% !important;
+  height: 100% !important;
+  right: 0%;
+  font-size: 15px !important;
+  padding: 6px;
 }

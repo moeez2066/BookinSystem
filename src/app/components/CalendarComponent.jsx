@@ -24,6 +24,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
   const [loading, setLoading] = useState(false);
   const [allSlotsBookedMessage, setAllSlotsBookedMessage] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [numberOfSessions, setNumberOfSessions] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loadingBook, setLoadingBook] = useState(false);
   const handleDateChange = (date) => {
@@ -37,6 +38,16 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
     type: "",
     message: "",
   });
+  const handleNumberOfSessionsChange = (value) => {
+    setNumberOfSessions(value);
+    setSelectedDay(null);
+    setSelectedSlots({});
+    setAlertInfo({
+      visible: false,
+      type: "",
+      message: "",
+    });
+  };
   useEffect(() => {
     let timer;
     if (alertInfo.visible) {
@@ -47,39 +58,60 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
     return () => clearTimeout(timer);
   }, [alertInfo.visible]);
   const handleDayClick = async (day) => {
-    if (selectedDate) {
-      setSelectedDay(day);
-      setLoading(true);
-      setAllSlotsBookedMessage("");
-
-      try {
-        const response = await fetch(
-          `/api/get-data?trainerId=${data._id}&day=${day}&validity=${
-            sessionPackage.validity
-          }&date=${selectedDate.format(
-            "YYYY-MM-DD"
-          )}&placeChords=${placeChords}`
-        );
-
-        const result = await response.json();
-
-        if (result.message === "All slots booked") {
-          setAllSlotsBookedMessage("All slots booked for this day.");
-          setAvailableSlots([]);
-        } else {
-          setAvailableSlots(result.availableSlots || []);
-        }
-      } catch (error) {
-        console.error("Error fetching available slots:", error);
-      } finally {
-        setLoading(false);
-      }
-    } else {
+    if (!selectedDate) {
       setAlertInfo({
         visible: true,
         type: "error",
         message: "Select Starting Date",
       });
+      return;
+    }
+
+    if (!numberOfSessions) {
+      setAlertInfo({
+        visible: true,
+        type: "error",
+        message: "Select the number of sessions",
+      });
+      return;
+    }
+
+    // Allow navigating to days with already selected slots
+    if (
+      Object.keys(selectedSlots).length >= numberOfSessions &&
+      !selectedSlots[day]
+    ) {
+      setAlertInfo({
+        visible: true,
+        type: "error",
+        message: `You can only select slots for ${numberOfSessions} days`,
+      });
+      return;
+    }
+
+    setSelectedDay(day);
+    setLoading(true);
+    setAllSlotsBookedMessage("");
+
+    try {
+      const response = await fetch(
+        `/api/get-data?trainerId=${data._id}&day=${day}&validity=${
+          sessionPackage.validity
+        }&date=${selectedDate.format("YYYY-MM-DD")}&placeChords=${placeChords}`
+      );
+
+      const result = await response.json();
+
+      if (result.message === "All slots booked") {
+        setAllSlotsBookedMessage("All slots booked for this day.");
+        setAvailableSlots([]);
+      } else {
+        setAvailableSlots(result.availableSlots || []);
+      }
+    } catch (error) {
+      console.error("Error fetching available slots:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -183,7 +215,43 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         level={4}
         style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
       >
-        Select Your Day
+        Select No Of Sessions
+      </Title>
+      <Select
+        placeholder="Select no of sessions"
+        style={{
+          width: "172px",
+          maxWidth: 200,
+          marginLeft: "10px",
+          color: "#473a3a",
+          borderColor: "#b2d8b2",
+          fontSize: "clamp(8px, 1.5vw, 12px)",
+        }}
+        dropdownClassName="custom-dropdown"
+        optionLabelProp="label"
+        onChange={handleNumberOfSessionsChange}
+      >
+        {[1, 2, 3, 4, 5, 6].map((sessions) => (
+          <Option
+            key={sessions}
+            value={sessions}
+            label={`${sessions} sessions / week`}
+          >
+            {`${sessions} sessions / week`}
+          </Option>
+        ))}
+      </Select>
+      <span >
+        <br />
+      </span>
+      <span className="desktop-only-br">
+        <br />
+      </span>
+      <Title
+        level={4}
+        style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
+      >
+        Select Your Days
       </Title>
       <span className="desktop-only-br">
         <br />
@@ -306,7 +374,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           </Text>
         </div>
       )}
-      {selectedDay && selectedSlots[selectedDay] && (
+      {Object.keys(selectedSlots).length === numberOfSessions && (
         <>
           <Button
             className="arrow-top "
@@ -314,13 +382,12 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
               backgroundColor: "#a88a7d",
               borderColor: "#a88a7d",
               color: "#ffffff",
-              marginRight:'25px',
-              marginTop:'12px'
+              marginRight: "25px",
+              marginTop: "12px",
             }}
             loading={loadingBook}
             onClick={handleRegister}
           >
-            {" "}
             Register
           </Button>
         </>

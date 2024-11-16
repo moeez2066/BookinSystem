@@ -13,7 +13,7 @@ const { Title, Text } = Typography;
 
 const mapContainerStyle = {
   width: "100%",
-  height: "254px",
+  height: "324px",
   marginTop: "-40px",
 };
 
