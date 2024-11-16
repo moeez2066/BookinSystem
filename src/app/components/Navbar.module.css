@@ -36,9 +36,9 @@
 .navBtn button {
   padding: 20px !important;
   font-size: 16px;
-  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important;
+  /* box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; */
   height: 33px;
-  color: #473a3a !important;
+  color: #baada6 !important;
 }
 .navBtn button:hover {
   color: #ebeaea !important;

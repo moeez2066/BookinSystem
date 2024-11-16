@@ -29,7 +29,11 @@ const SignUpComponent = () => {
   const { isSignedIn, setIsSignedIn } = useMyContext();
   const { userName, setUserName } = useMyContext();
   const router = useRouter();
-
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/");
+    }
+  }, []);
   useEffect(() => {
     const signedIn = sessionStorage.getItem("isSignedIn");
     const storedName = sessionStorage.getItem("userName");
@@ -39,15 +43,6 @@ const SignUpComponent = () => {
       router.push("/");
     }
   }, []);
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("isSignedIn");
-    sessionStorage.removeItem("userName");
-    sessionStorage.removeItem("userId");
-    setIsSignedIn(false);
-    setUserName("");
-    router.push("/");
-  };
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -86,8 +81,6 @@ const SignUpComponent = () => {
         });
       }
     } catch (error) {
-      console.log(error + "ff");
-
       setAlertInfo({
         visible: true,
         message: "Failed to communicate with the server. Please try again.",
@@ -104,66 +97,41 @@ const SignUpComponent = () => {
     }
   }, 3000);
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="logout" onClick={handleLogout}>
-        Logout
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
-    <>
-      <div style={{ padding: "17px" }}>
-        <section
-          style={{
-            maxWidth: "450px",
-            margin: "auto",
-            backgroundColor: "#f0eeeb",
-            padding: "20px",
-            margin: "50px auto",
-          }}
-        >
-          <div
+    !isSignedIn && (
+      <>
+        <div style={{ padding: "17px" }}>
+          <section
             style={{
-              textAlign: "center",
+              maxWidth: "450px",
+              margin: "auto",
+              backgroundColor: "#f0eeeb",
               padding: "20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
+              margin: "50px auto",
             }}
           >
-            <Image
-              src="https://mayra.majetics.com/wp-content/uploads/2024/09/logo-removebg_edited_edited.png"
-              alt="Logo"
-              width={205}
-              height={93}
-              style={{ backgroundColor: "#baada6", marginBottom: "15px" }}
-            />
-            <Text style={{ color: "#473a3a" }}>
-              Please sign in or sign up to proceed with your registration.
-            </Text>
-          </div>
-
-          {isSignedIn ? (
-            <div style={{ textAlign: "center" }}>
-              <Text style={{ fontSize: "16px", color: "#473a3a" }}>
-                Welcome, {userName}
+            <div
+              style={{
+                textAlign: "center",
+                padding: "20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Image
+                src="https://mayra.majetics.com/wp-content/uploads/2024/09/logo-removebg_edited_edited.png"
+                alt="Logo"
+                width={205}
+                height={93}
+                style={{ backgroundColor: "#baada6", marginBottom: "15px" }}
+              />
+              <Text style={{ color: "#473a3a" }}>
+                Please sign in or sign up to proceed with your registration.
               </Text>
-              <Dropdown overlay={menu} placement="bottomRight">
-                <Button
-                  style={{
-                    marginLeft: "10px",
-                    backgroundColor: "#a88a7d",
-                    color: "#ffffff",
-                  }}
-                >
-                  Options
-                </Button>
-              </Dropdown>
             </div>
-          ) : (
+
             <Tabs
               activeKey={activeTabKey}
               onChange={(key) => setActiveTabKey(key)}
@@ -355,27 +323,27 @@ const SignUpComponent = () => {
                 </Form>
               </TabPane>
             </Tabs>
-          )}
 
-          {alertInfo.visible && (
-            <Alert
-              message={alertInfo.message}
-              type={alertInfo.type}
-              closable
-              onClose={() => setAlertInfo({ ...alertInfo, visible: false })}
-              style={{
-                position: "fixed",
-                top: "20px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                color: "black",
-                zIndex: 11111,
-              }}
-            />
-          )}
-        </section>
-      </div>
-    </>
+            {alertInfo.visible && (
+              <Alert
+                message={alertInfo.message}
+                type={alertInfo.type}
+                closable
+                onClose={() => setAlertInfo({ ...alertInfo, visible: false })}
+                style={{
+                  position: "fixed",
+                  top: "20px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  color: "black",
+                  zIndex: 11111,
+                }}
+              />
+            )}
+          </section>
+        </div>
+      </>
+    )
   );
 };
 
