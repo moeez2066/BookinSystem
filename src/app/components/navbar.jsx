@@ -36,7 +36,8 @@ export default function Navbar() {
   const menu = (
     <Menu>
       <Menu.Item key="logout" onClick={handleLogout}>
-        <LogoutOutlined style={{fontSize:'17px',marginBottom:'-12px'}} /> &nbsp;Logout
+        <LogoutOutlined style={{ fontSize: "17px", marginBottom: "-12px" }} />{" "}
+        &nbsp;Logout
       </Menu.Item>
     </Menu>
   );
