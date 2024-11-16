@@ -40,6 +40,7 @@ export async function POST(req) {
       JSON.stringify({
         message: "User registered successfully.",
         userId: result.insertedId,
+        name: result.name,
       }),
       { status: 201 }
     );

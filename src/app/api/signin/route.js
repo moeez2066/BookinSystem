@@ -35,7 +35,8 @@ export async function POST(req) {
       return new Response(
         JSON.stringify({
           error: "incorrect_credentials",
-          message: "Incorrect credentials. Please check your email or password.",
+          message:
+            "Incorrect credentials. Please check your email or password.",
         }),
         { status: 401 }
       );
@@ -46,6 +47,7 @@ export async function POST(req) {
       JSON.stringify({
         message: "Login successful!",
         userId: user._id.toString(), // Return user ID (convert ObjectId to string)
+        name: user.name.toString(),
       }),
       { status: 200 }
     );
