@@ -6,7 +6,7 @@ import styles from "./Navbar.module.css";
 import { Button, Dropdown, Menu, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "../MyContext";
-import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import { DownOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -36,7 +36,7 @@ export default function Navbar() {
   const menu = (
     <Menu>
       <Menu.Item key="logout" onClick={handleLogout}>
-        Logout
+        <LogoutOutlined style={{fontSize:'17px',marginBottom:'-12px'}} /> &nbsp;Logout
       </Menu.Item>
     </Menu>
   );
@@ -81,7 +81,7 @@ export default function Navbar() {
               >
                 <UserOutlined color="white" style={{ color: "#f0eeeb" }} />{" "}
                 <span style={{ color: "#f0eeeb" }}>{userName}</span>
-                <DownOutlined style={{color:'#f0eeeb'}} />
+                <DownOutlined style={{ color: "#f0eeeb" }} />
               </Button>
             </Dropdown>
           </div>
