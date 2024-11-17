@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, Button, Typography, Tabs, Alert } from "antd";
 import Image from "next/image";
+import { useMyContext } from "../MyContext";
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -14,7 +15,9 @@ const AuthenticationModal = ({ visible, onCancel }) => {
   });
   const [loading, setLoading] = useState(false);
   const [activeTabKey, setActiveTabKey] = useState("signin"); // Track active tab
-
+  const { isSignedIn, setIsSignedIn } = useMyContext();
+  const { userName, setUserName } = useMyContext();
+  const { userRole, setUserRole } = useMyContext();
   const onFinish = async (values) => {
     setLoading(true);
     try {
@@ -30,6 +33,11 @@ const AuthenticationModal = ({ visible, onCancel }) => {
       if (response.ok) {
         sessionStorage.setItem("isSignedIn", "true");
         sessionStorage.setItem("userId", data.userId);
+        sessionStorage.setItem("userRole", data.role);
+        sessionStorage.setItem("userName", data.name || values.name);
+        setIsSignedIn(true);
+        setUserName(data.name || values.name);
+        setUserRole(data.role);
         setAlertInfo({
           visible: true,
           message: data.message || "Sign In / Sign Up successful!",

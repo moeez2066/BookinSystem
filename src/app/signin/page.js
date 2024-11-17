@@ -67,7 +67,6 @@ const SignUpComponent = () => {
         setIsSignedIn(true);
         setUserName(data.name || values.name);
         setUserRole(data.role);
-        console.log(data);
         
         // setAlertInfo({
         //   visible: true,

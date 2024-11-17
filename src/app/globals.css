@@ -211,6 +211,9 @@
 }
 
 /* CalendarComponent.css */
+.bookingCard {
+  padding: 20px !important;
+}
 
 @media (max-width: 600px) {
   .desktop-only-br {
@@ -256,6 +259,12 @@
     height: 29px;
     margin-left: -8px;
   }
+  .bookingCard {
+    padding: 1px !important;
+  }
+  .cardHead{
+    padding: 9px !important;
+  }
 }
 
 @media (min-width: 601px) {
@@ -288,7 +297,7 @@ button:focus {
 }
 .navBtn button:active,
 .navBtn button:focus {
-  background-color: #473a3a!important;
+  background-color: #473a3a !important;
   color: #ebeaea !important;
 }
 .ant-loc-button:focus,
@@ -344,12 +353,29 @@ button:focus {
   padding: 6px;
 }
 
-
-:where(.css-dev-only-do-not-override-49qm).ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
-  border: none!important;
+:where(.css-dev-only-do-not-override-49qm).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-today
+  .ant-picker-cell-inner::before {
+  border: none !important;
 }
 
-.ant-select-selector{
+.ant-select-selector {
   border: 1px solid #473a3a !important;
-box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
+  box-shadow: 0 0 5px rgba(71, 58, 58, 0.4) !important; /* Slight shadow with color #473a3a */
+}
+
+:where(.css-dev-only-do-not-override-49qm).ant-pagination
+  .ant-pagination-item-active
+  a {
+  color: #473a3a !important;
+}
+
+:where(.css-dev-only-do-not-override-49qm).ant-pagination
+  .ant-pagination-item-active {
+  border: 1px solid #473a3a !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #464242 !important; /* Change the highlight color */
+  color: white !important;
 }

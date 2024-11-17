@@ -1,50 +1,49 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Typography, Tabs, Card, Row, Col, Spin, Alert, Divider } from "antd";
+import {
+  Typography,
+  Tabs,
+  Table,
+  Spin,
+  Alert,
+  Card,
+  Row,
+  Col,
+  Divider,
+} from "antd";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
-
 const mapContainerStyle = {
   width: "100%",
   height: "324px",
   marginTop: "20px",
 };
 
-const UserPanel = () => {
-  const [activeTabKey, setActiveTabKey] = useState("Profile");
-  const [clientData, setClientData] = useState(null);
+const AdminPanel = () => {
+  const [activeTabKey, setActiveTabKey] = useState("Clients");
+  const [clients, setClients] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey:
-      "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly", // Replace with your API key
+      "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly",
   });
-
   useEffect(() => {
-    const fetchClientData = async () => {
+    const fetchAdminData = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const clientId = sessionStorage.getItem("userId");
-        if (!clientId) {
-          throw new Error("Client ID is missing");
-        }
-
-        const response = await fetch(`/api/client?clientId=${clientId}`);
+        const response = await fetch("/api/admin");
         const data = await response.json();
 
         if (!response.ok) {
-          console.log(error);
-
-          throw new Error(data.error || "Failed to fetch client data");
+          throw new Error(data.error || "Failed to fetch admin data");
         }
 
-        setClientData(data.client);
+        setClients(data.clients);
         setBookings(data.bookings);
       } catch (err) {
         setError(err.message);
@@ -53,44 +52,53 @@ const UserPanel = () => {
       }
     };
 
-    fetchClientData();
+    fetchAdminData();
   }, []);
 
-  const renderProfile = () => {
-    if (!clientData) {
-      return <Text>No profile data available.</Text>;
-    }
+  const clientColumns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "WhatsApp",
+      dataIndex: "whatsapp",
+      key: "whatsapp",
+    },
+  ];
 
-    return (
-      <Card
-        bordered={false}
-        style={{
-          backgroundColor: "#ffffff",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          borderRadius: "12px",
-          padding: "20px",
+  const renderClients = () => (
+    <Card
+      bordered={false}
+      style={{
+        backgroundColor: "#ffffff",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        borderRadius: "12px",
+        padding: "0px",
+      }}
+    >
+      <Title level={4} style={{ color: "#a88a7d", marginBottom: "16px" }}>
+        Clients
+      </Title>
+      <Table
+        dataSource={clients}
+        columns={clientColumns}
+        rowKey={(record) => record.id}
+        pagination={{
+          pageSizeOptions: ["5", "10", "15"],
+          showSizeChanger: true,
+          defaultPageSize: 5,
         }}
-      >
-        <Title level={4} style={{ color: "#a88a7d", marginBottom: "16px" }}>
-          Profile Information
-        </Title>
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
-            <Text strong>Name:</Text>
-            <Text style={{ marginLeft: "8px" }}>{clientData.name}</Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Email:</Text>
-            <Text style={{ marginLeft: "8px" }}>{clientData.email}</Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>WhatsApp:</Text>
-            <Text style={{ marginLeft: "8px" }}>{clientData.whatsapp}</Text>
-          </Col>
-        </Row>
-      </Card>
-    );
-  };
+        scroll={{ x: 100 }} // Adjust the value based on your needs
+      />
+    </Card>
+  );
 
   const renderBookings = () =>
     bookings.map((booking, index) => (
@@ -117,6 +125,18 @@ const UserPanel = () => {
         </Title>
         <Divider style={{ margin: "12px 0", backgroundColor: " #d9cccc" }} />
         <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Text strong>Client Name:</Text>
+            <Text style={{ marginLeft: "8px" }}>
+              {booking.clientName || "N/A"}
+            </Text>
+          </Col>
+          <Col span={24}>
+            <Text strong>Client Email:</Text>
+            <Text style={{ marginLeft: "8px" }}>
+              {booking.clientEmail || "N/A"}
+            </Text>
+          </Col>
           <Col span={24}>
             <Text strong>Trainer Name:</Text>
             <Text style={{ marginLeft: "8px" }}>
@@ -149,9 +169,11 @@ const UserPanel = () => {
                   <li key={`${index}-${idx}`}>
                     <Text strong>{day}:</Text>
                     <span style={{ marginLeft: "8px" }}>
-                      {details.map((detail, i) => (
-                        <span key={i}>{detail.time}</span>
-                      ))}
+                      {Array.isArray(details)
+                        ? details.map((detail, i) => (
+                            <span key={i}>{detail.time}</span>
+                          ))
+                        : "Invalid details format"}
                     </span>
                   </li>
                 ))
@@ -205,7 +227,7 @@ const UserPanel = () => {
   return (
     <div style={{ padding: "17px" }}>
       <section
-        className="cardHead"
+      className="cardHead"
         style={{
           maxWidth: "790px",
           margin: "50px auto",
@@ -235,7 +257,7 @@ const UserPanel = () => {
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             }}
           >
-            Client Panel
+            Admin Panel
           </Title>
         </div>
 
@@ -265,8 +287,8 @@ const UserPanel = () => {
             }}
             type="line"
           >
-            <TabPane tab="Profile" key="Profile">
-              {renderProfile()}
+            <TabPane tab="Clients" key="Clients">
+              {renderClients()}
             </TabPane>
             <TabPane tab="Bookings" key="Bookings">
               {bookings.length > 0 ? (
@@ -291,4 +313,4 @@ const UserPanel = () => {
   );
 };
 
-export default UserPanel;
+export default AdminPanel;
