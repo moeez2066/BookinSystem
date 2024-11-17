@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Tabs, Card, Row, Col, Spin, Alert, Divider } from "antd";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import { useRouter } from "next/navigation";
+import { useMyContext } from "../MyContext";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -23,7 +25,13 @@ const UserPanel = () => {
     googleMapsApiKey:
       "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly", // Replace with your API key
   });
-
+  const router = useRouter();
+  const { isSignedIn, setIsSignedIn } = useMyContext();
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/");
+    }
+  }, []);
   useEffect(() => {
     const fetchClientData = async () => {
       setLoading(true);

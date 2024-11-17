@@ -12,6 +12,8 @@ import {
   Divider,
 } from "antd";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import { useMyContext } from "../MyContext";
+import { useRouter } from "next/navigation";
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 const mapContainerStyle = {
@@ -26,6 +28,13 @@ const AdminPanel = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
+  const { isSignedIn, setIsSignedIn } = useMyContext();
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/");
+    }
+  }, []);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey:
       "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly",
@@ -55,6 +64,7 @@ const AdminPanel = () => {
     fetchAdminData();
   }, []);
 
+  
   const clientColumns = [
     {
       title: "Name",
