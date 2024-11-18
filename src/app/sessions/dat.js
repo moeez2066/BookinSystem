@@ -1,6 +1,6 @@
 export const packages = [
   {
-    name: "SOLO PACKAGES (1 Partner)",
+    name: "SOLO PACKAGES",
     sessions: [
       { count: 10, price: "SAR 9,375", validity: "6 weeks", rate: "SAR 937.5 / session" },
       { count: 20, price: "SAR 18,000", validity: "12 weeks", rate: "SAR 900 / session" },
