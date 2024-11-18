@@ -58,61 +58,49 @@
 
 @media (max-width: 767px) {
   .container {
-    padding: 82px 0;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
   }
 
   .leftColumn {
-    max-width: 32%;
-    margin-left: 15px;
-    margin-right: auto;
-  }
-
-  .rightColumn {
+    padding-right: 0;
+    margin-right: 0;
+    margin-bottom: 40px;
+    text-align: center;
     display: flex;
-    justify-content: center;
-    width: 56%;
-    overflow: hidden;
-    background-color: #f0eeeb;
-    height: 555px;
-    margin-right: 0px;
-    padding-top: 12px;
-    margin-right: 15px;
-  }
-
-  .stepHeader {
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 8px;
+    justify-content: center;
   }
 
-  .roundNumber {
-    font-weight: 550;
-    border: 2px solid #473a3a;
-    border-radius: 50%;
-    padding: 1px 2.9px;
-    font-size: 8px;
-    margin-right: 6px;
-    font-family: "Roboto", sans-serif;
-    color: #473a3a;
+  .title {
+    font-size: 64px;
+  }
+
+  .stepDescription {
+    margin-top: 15px;
   }
 
   .stepNumber {
-    font-weight: 550;
-    font-family: "Roboto", sans-serif;
-    font-size: 8px;
-    color: #473a3a;
+    font-size: 14px;
   }
 
   .descriptionText {
-    font-size: 8px;
-    color: #473a3a;
-    margin-bottom: 20px;
-    margin-right: 0px;
+    font-size: 12px;
+    margin-right: 0;
   }
 
-  .formPlaceholder {
-    font-size: 24px;
-    color: #473a3a;
-    font-family: "Roboto", sans-serif;
+  .roundNumber {
+    font-size: 14px;
+    padding: 3px 6px;
+  }
+
+  .rightColumn {
+    gap: 15px;
+    max-width: 100%;
+    width: 100%;
+    margin-right: 0;
+    height: 555px;
   }
 }

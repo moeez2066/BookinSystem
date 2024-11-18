@@ -86,34 +86,28 @@
   border-color: white !important;
 }
 @media (max-width: 600px) {
-  .ant-input {
-    width: 143px !important;
-    height: 21px !important;
-    position: relative;
-    right: 29%;
-    font-size: 9px !important;
+  .origin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .origin .ant-select{
+    width: 180px!important;
+    display: block;
+    max-width:123%!important;
+    margin-bottom: 12px;
   }
 
   .mapstep .ant-select-selector {
-    width: 143px !important;
-    height: 21px !important;
-    position: relative;
-    right: 20%;
   }
   .dd {
-    position: relative;
-    right: 26%;
   }
   .mapstep .ant-select-item-option-content {
-    font-size: 9px !important;
   }
 
   .mapstep .ant-select-dropdown {
-    height: 27px !important;
-    width: 33px;
   }
   .mapstep .ant-select-item {
-    height: 25px !important;
   }
   .mapstep .ant-select-arrow {
     font-size: 0px !important;
@@ -123,18 +117,11 @@
       .ant-select-customize-input
     )
     .ant-select-selector {
-    font-size: 9px;
-    height: 29px;
-    margin-left: -8px;
   }
   :where(.css-apn68).ant-select-outlined:not(.ant-select-customize-input)
     .ant-select-selector {
     border: 1px solid #473a3a !important;
     background: #fff;
-    height: 2px;
-    font-size: 9px;
-    height: 29px;
-    margin-left: -8px;
   }
 }
 @media (max-width: 768px) {
@@ -233,10 +220,8 @@
   .custom-drop .ant-select-item-option-selected {
     background-color: #ffffff !important;
     color: #473a3a !important;
-    font-size: 10px;
   }
   .custom-drop .rc-virtual-list-holder-inner {
-    height: 23px !important;
   }
 
   .custom-drop .ant-select-selector {
@@ -246,24 +231,25 @@
       .ant-select-customize-input
     )
     .ant-select-selector {
-    font-size: 9px;
-    height: 29px;
-    margin-left: -8px;
   }
   :where(.css-apn68).ant-select-outlined:not(.ant-select-customize-input)
     .ant-select-selector {
     border: 1px solid #473a3a !important;
     background: #fff;
-    height: 2px;
-    font-size: 9px;
-    height: 29px;
-    margin-left: -8px;
   }
   .bookingCard {
     padding: 1px !important;
   }
-  .cardHead{
+  .cardHead {
     padding: 9px !important;
+  }
+
+  .map-cont {
+    margin: 0 !important;
+    position: relative;
+  }
+  .google-map {
+    width: 300px;
   }
 }
 
@@ -318,9 +304,6 @@ button:focus {
 /* .ant-btn span{
   color:#473a3a!important;
     } */
-.ant-tabs-tab .ant-tabs-tab-active {
-  border-bottom: 2px solid red !important;
-}
 
 :where(.css-dev-only-do-not-override-apn68).ant-tabs
   .ant-tabs-tab.ant-tabs-tab-active
@@ -385,4 +368,12 @@ button:focus {
 .ant-select-item-option-selected {
   background-color: #464242 !important; /* Change the highlight color */
   color: white !important;
+}
+
+/* map */
+
+.map-cont {
+  max-width: 800px;
+  margin: auto;
+  position: relative;
 }

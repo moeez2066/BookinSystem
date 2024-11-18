@@ -84,23 +84,23 @@
       .ant-select-customize-input
     )
     .ant-select-selector {
-    font-size: 9px;
-    height: 29px;
-    margin-left: -8px;
+
   }
   .arrow-top {
     padding: 2px 13px;
-    font-size: 9px;
+    font-size: 14px;
     margin: auto;
-    position: relative;
-    right: -35%;
+    position: absolute;
+    right: 0;
+    bottom: 8px;
   }
   .city {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
+    padding: 0;
+    margin: 0;
   }
 }
 

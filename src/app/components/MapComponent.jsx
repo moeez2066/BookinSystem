@@ -58,23 +58,23 @@ const MapComponent = ({ showCalendar, toggleCalendar, setPlaceChords }) => {
   if (!isLoaded) return <div>Loading Map...</div>;
 
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", position: "relative" }}>
+    <div className="map-cont">
       <Title
         level={4}
         style={{
           textAlign: "center",
           color: "#473a3a",
-          fontSize: "clamp(10px, 2vw, 16px)",
+          fontSize: "clamp(14px, 2vw, 18px)",
         }}
       >
         Confirm Your Location
       </Title>
 
-      <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+      <Space direction="vertical" size="middle" style={{ width: "100%" }} className="origin">
         <Row gutter={16} className="city">
-          <Col span={12}>
+          <Col>
             <Text
-              style={{ color: "#473a3a", fontSize: "clamp(8px, 1.5vw, 14px)" }}
+              style={{ color: "#473a3a", fontSize: "clamp(12px, 1.5vw, 14px)" }}
               className="dd"
             >
               Select Origin City
@@ -86,9 +86,8 @@ const MapComponent = ({ showCalendar, toggleCalendar, setPlaceChords }) => {
                 maxWidth: 200,
                 color: "#473a3a",
                 borderColor: "#b2d8b2",
-                fontSize: "clamp(8px, 1.5vw, 12px)",
+                fontSize: "clamp(12px, 1.5vw, 12px)",
               }}
-              className="mapstep"
               dropdownClassName="custom-drop"
               onChange={(value) => setOriginCity(value)}
             >
@@ -96,10 +95,9 @@ const MapComponent = ({ showCalendar, toggleCalendar, setPlaceChords }) => {
             </Select>
           </Col>
 
-          <Col span={12}>
+          <Col>
             <Text
-              className="dd"
-              style={{ color: "#473a3a", fontSize: "clamp(8px, 1.5vw, 14px)" }}
+              style={{ color: "#473a3a", fontSize: "clamp(12px, 1.5vw, 14px)" }}
             >
               Enter Place
             </Text>
@@ -118,7 +116,7 @@ const MapComponent = ({ showCalendar, toggleCalendar, setPlaceChords }) => {
           </Col>
         </Row>
 
-        <div style={{ marginTop: "20px" }}>
+        <div style={{ marginTop: "20px" }} className="google-map">
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={mapCenter}
@@ -133,7 +131,7 @@ const MapComponent = ({ showCalendar, toggleCalendar, setPlaceChords }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginTop: "-13px",
+            marginTop: "-13px"
           }}
         >
           {place && mapPlace && (
