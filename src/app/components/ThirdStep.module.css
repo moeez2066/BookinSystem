@@ -93,10 +93,10 @@
 
 .selectButton {
   padding: 3px 0px;
-  border: 2px solid #b4a597;;
+  border: 2px solid #b4a597;
   border-radius: 20px;
   background: none;
-  color: #b4a597;;
+  color: #b4a597;
   font-size: 14px;
   cursor: pointer;
   width: 89px;
@@ -106,95 +106,78 @@
 
 @media (max-width: 767px) {
   .container {
-    padding: 82px 0;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
   }
 
   .leftColumn {
-    margin-bottom: 20px;
-    max-width: 35%;
-    margin-right: 12px;
-    margin-left: 15px;
-    padding-right: 8px;
-  }
-  .rightColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 17px;
-    max-width: 55%;
-    margin-right: 15px;
+    padding-right: 0;
+    margin-right: 0;
+    margin-bottom: 40px;
+    text-align: center;
   }
 
-  .stepHeader {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .roundNumber {
-    font-weight: 550;
-    border: 2px solid #473a3a;
-    border-radius: 50%;
-    padding: 1px 2.9px;
-    font-size: 8px;
-    margin-right: 6px;
-    font-family: "Roboto", sans-serif;
-    color: #473a3a;
+  .stepDescription {
+    margin-top: 15px;
   }
 
   .stepNumber {
-    font-weight: 550;
-    font-family: "Roboto", sans-serif;
-    font-size: 8px;
-    color: #473a3a;
+    font-size: 14px;
   }
 
   .descriptionText {
-    font-size: 8px;
-    color: #473a3a;
+    font-size: 12px;
+  }
+
+  .roundNumber {
+    font-size: 14px;
+    padding: 3px 6px;
+  }
+  .rightColumn {
+    gap: 20px;
+    max-width: 100%;
+    margin-right: 0;
+    width: 100%;
   }
 
   .trainerCard {
-    display: flex;
-    border-radius: 0px;
-    padding: 0 0px;
+    flex-direction: row; /* Ensure picture stays on the left and info on the right */
     align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+    width: 100%;
+    margin-bottom: 24px;
   }
 
   .imageWrapper {
-    width: 580px;
-    height: 100%;
-    overflow: hidden;
+    width: 140px; /* Adjust image size for smaller screens */
+    height: auto;
+    flex-shrink: 0; /* Prevent shrinking of the image */
   }
 
   .trainerInfo {
-    display: flex;
-    flex-direction: column;
-    max-width: auto;
-    line-height: 11px;
-    margin-top: auto;
-    margin-left: 15px;
+    margin-left: 15px; /* Adjust spacing between image and text */
+    max-width: calc(100% - 140px); /* Ensure text takes up remaining space */
+    line-height: 1.4;
   }
 
   .trainerName {
-    font-size: 8px;
-    font-weight: bold;
-    color: #473a3a;
-    font-family: "Roboto", sans-serif;
-    margin: 0;
+    font-size: 14px;
+  }
+
+  .specialty {
+    font-size: 12px;
   }
 
   .description {
-    font-size: 7px;
-    color: #473a3a;
+    font-size: 12px;
     margin: 5px 0;
-    padding-right: 0px;
+    padding-right: 0;
   }
 
   .selectButton {
-    padding: 2px 13px;
-    font-size: 9px;
-    margin: auto 0;
-    padding: 3px;
-    width: 54px;
+    font-size: 12px;
+    padding: 5px 2px;
   }
 }
