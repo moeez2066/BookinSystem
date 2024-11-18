@@ -100,61 +100,80 @@
 
 @media (max-width: 767px) {
   .container {
-    padding: 82px 0;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
   }
 
   .leftColumn {
-    padding-right: 0px;
-    margin-right: 20px;
-    margin-left: 17px;
-  }
-
-  .rightColumn {
-    margin-right: 17px;
+    padding-right: 0;
+    margin-right: 0;
+    margin-bottom: 40px;
+    text-align: center;
   }
 
   .title {
-    font-size: 38px;
+    font-size: 64px;
   }
 
-  .roundNumber {
-    font-weight: 550;
-    border: 2px solid #473a3a;
-    border-radius: 50%;
-    padding: 1px 2.9px;
-    font-size: 9px;
-    margin-right: 6px;
-    font-family: "Roboto", sans-serif;
-    color: #473a3a;
+  .stepDescription {
+    margin-top: 15px;
   }
 
   .stepNumber {
-    font-weight: 550;
-    font-family: "Roboto", sans-serif;
-    font-size: 9px;
-    color: #473a3a;
+    font-size: 14px;
   }
 
   .descriptionText {
-    font-size: 9px;
+    font-size: 12px;
+  }
+
+  .roundNumber {
+    font-size: 14px;
+    padding: 3px 6px;
+  }
+
+  .rightColumn {
+    gap: 15px;
+    max-width: 100%;
+    width: 100%;
   }
 
   .packageCard {
-    width: 193px;
+    flex-direction: row; /* Ensure image stays on the left */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional for better visuals */
+  }
+
+  .imageWrapper {
+    width: 120px; /* Adjust width for mobile view */
+    height: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .packageInfo {
+    padding-left: 20px; /* Add spacing between image and text */
+    text-align: left;
+    width: 100%;
   }
 
   .packageTitle {
-    font-size: 9px;
+    font-size: 16px;
+    margin: 0;
   }
 
   .packageDescription {
-    font-size: 9px;
-    padding: 2px;
+    font-size: 12px;
+    margin: 5px 0;
+    padding: 0;
   }
 
   .selectButton {
-    padding: 2px 13px;
-    font-size: 9px;
-    margin: auto;
+    font-size: 12px;
+    padding: 5px 15px;
+    margin-top: 10px;
   }
 }
