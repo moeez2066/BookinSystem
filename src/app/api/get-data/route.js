@@ -145,9 +145,11 @@ export async function GET(request) {
         const endHour = parseHour(endTime);
         const endMinute = parseMinute(endTime);
     
+        // Adding 10 minutes (buffer time) to the duration
         const durationInMinutes = parseInt(slot.duration.split(" ")[0]);
+        const bufferTime = 10; // Buffer time in minutes
         const endHourWithDuration =
-          endHour + (endMinute + durationInMinutes) / 60;
+          endHour + (endMinute + durationInMinutes + bufferTime) / 60;
     
         return {
           start: startHour + startMinute / 60,
@@ -159,7 +161,10 @@ export async function GET(request) {
       let currentHour = start;
       let currentMinute = 0; // Always start at 0 if no booked slots
     
-      while (currentHour < end || (currentHour === end && currentMinute === 0)) {
+      while (
+        currentHour < end ||
+        (currentHour === end && currentMinute === 0)
+      ) {
         const currentTime = currentHour + currentMinute / 60;
     
         // Check if the current time overlaps with any booked range
@@ -179,7 +184,10 @@ export async function GET(request) {
         const slotEnd = new Date(1970, 0, 1, currentHour + 1, currentMinute);
     
         // Ensure the slot end time does not exceed the `end` hour
-        if (slotEnd.getHours() > end || (slotEnd.getHours() === end && slotEnd.getMinutes() > 0)) {
+        if (
+          slotEnd.getHours() > end ||
+          (slotEnd.getHours() === end && slotEnd.getMinutes() > 0)
+        ) {
           break;
         }
     
@@ -210,6 +218,7 @@ export async function GET(request) {
     
       return slots;
     };
+    
     
 
     const allSlots = generateTimeSlots(startHour, endHour, bookedSlots);
