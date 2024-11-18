@@ -72,6 +72,7 @@ const UserPanel = () => {
     return (
       <Card
         bordered={false}
+        className="bookingCard"
         style={{
           backgroundColor: "#ffffff",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -125,6 +126,10 @@ const UserPanel = () => {
         </Title>
         <Divider style={{ margin: "12px 0", backgroundColor: " #d9cccc" }} />
         <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Text strong>Booking Id:</Text>
+            <Text style={{ marginLeft: "8px" }}>{booking._id || "N/A"}</Text>
+          </Col>
           <Col span={24}>
             <Text strong>Trainer Name:</Text>
             <Text style={{ marginLeft: "8px" }}>

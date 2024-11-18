@@ -4,12 +4,38 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request) {
   try {
+    const client = await clientPromise;
+    const db = client.db("BookingSys");
     const url = new URL(request.url);
-    const trainerId = url.searchParams.get("trainerId");
-    const day = url.searchParams.get("day");
-    const validity = url.searchParams.get("validity");
+    const bookingId = url.searchParams.get("bookingId");
+    let booking;
+    try {
+      booking = await db
+        .collection("Booking")
+        .findOne({ _id: new ObjectId(bookingId) }); // Use findOne for a single document
+    } catch (err) {
+      return new Response(JSON.stringify({ error: "Booking not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (!booking) {
+      return new Response(JSON.stringify({ error: "Booking not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const trainerId = booking.trainer_id;
     const startDate = url.searchParams.get("date");
-    const placeChords = url.searchParams.get("placeChords");
+    const day = new Date(startDate).toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const validity = "1 day";
+    const firstDay = booking.bookedslots[0];
+    const firstDayKey = Object.keys(firstDay)[0];
+    const placeChords = firstDay[firstDayKey][0].location;
 
     console.log("Received parameters:", {
       trainerId,
@@ -18,9 +44,6 @@ export async function GET(request) {
       startDate,
       placeChords,
     });
-
-    const client = await clientPromise;
-    const db = client.db("BookingSys");
 
     const trainer = await db
       .collection("Trainers")
@@ -45,6 +68,7 @@ export async function GET(request) {
     const parseValidity = (validity) => {
       const now = new Date(startDate);
       let endDate;
+
       if (validity.includes("weeks")) {
         const weeks = parseInt(validity.split(" ")[0], 10);
         endDate = new Date(now);
@@ -53,7 +77,14 @@ export async function GET(request) {
         const months = parseInt(validity.split(" ")[0], 10);
         endDate = new Date(now);
         endDate.setMonth(now.getMonth() + months);
+      } else if (validity.includes("day")) {
+        const days = parseInt(validity.split(" ")[0], 10);
+        endDate = new Date(now);
+        endDate.setDate(now.getDate() + days);
+      } else {
+        throw new Error("Invalid validity format");
       }
+
       return { startDate: now, endDate };
     };
 
@@ -128,7 +159,7 @@ export async function GET(request) {
 
     const generateTimeSlots = (start, end, bookedSlots) => {
       const slots = [];
-    
+
       // Parse booked ranges into start and end times in fractional hours
       const bookedRanges = bookedSlots.map((slot) => {
         const [startTime, endTime] = slot.time.split(" - ");
@@ -139,57 +170,63 @@ export async function GET(request) {
             : parseInt(hour);
         };
         const parseMinute = (time) => parseInt(time.split(":")[1] || 0);
-    
+
         const startHour = parseHour(startTime);
         const startMinute = parseMinute(startTime);
         const endHour = parseHour(endTime);
         const endMinute = parseMinute(endTime);
-    
+
         const durationInMinutes = parseInt(slot.duration.split(" ")[0]);
         const endHourWithDuration =
           endHour + (endMinute + durationInMinutes) / 60;
-    
+
         return {
           start: startHour + startMinute / 60,
           end: endHourWithDuration,
           exactStart: { hour: startHour, minute: startMinute }, // Exact start time for comparison
         };
       });
-    
+
       let currentHour = start;
       let currentMinute = 0; // Always start at 0 if no booked slots
-    
-      while (currentHour < end || (currentHour === end && currentMinute === 0)) {
+
+      while (
+        currentHour < end ||
+        (currentHour === end && currentMinute === 0)
+      ) {
         const currentTime = currentHour + currentMinute / 60;
-    
+
         // Check if the current time overlaps with any booked range
         const overlappingRange = bookedRanges.find(
           (range) => currentTime >= range.start && currentTime < range.end
         );
-    
+
         if (overlappingRange) {
           // Skip this time range and adjust currentHour and currentMinute
           currentHour = Math.floor(overlappingRange.end);
           currentMinute = Math.round((overlappingRange.end % 1) * 60);
           continue;
         }
-    
+
         // Format the start and end times for the time slot
         const slotStart = new Date(1970, 0, 1, currentHour, currentMinute);
         const slotEnd = new Date(1970, 0, 1, currentHour + 1, currentMinute);
-    
+
         // Ensure the slot end time does not exceed the `end` hour
-        if (slotEnd.getHours() > end || (slotEnd.getHours() === end && slotEnd.getMinutes() > 0)) {
+        if (
+          slotEnd.getHours() > end ||
+          (slotEnd.getHours() === end && slotEnd.getMinutes() > 0)
+        ) {
           break;
         }
-    
+
         // Check if the end time matches the start time of any booked slot
         const isExcluded = bookedRanges.some(
           (range) =>
             slotEnd.getHours() === range.exactStart.hour &&
             slotEnd.getMinutes() === range.exactStart.minute
         );
-    
+
         if (!isExcluded) {
           slots.push(
             `${slotStart.toLocaleTimeString("en-US", {
@@ -203,14 +240,13 @@ export async function GET(request) {
             })}`
           );
         }
-    
+
         // Increment the time by 1 hour
         currentHour++;
       }
-    
+
       return slots;
     };
-    
 
     const allSlots = generateTimeSlots(startHour, endHour, bookedSlots);
     console.log("Generated time slots:", allSlots);
@@ -222,6 +258,10 @@ export async function GET(request) {
 
     return new Response(
       JSON.stringify({
+        placeChords,
+        valid_start_date,
+        valid_end_date,
+        booking,
         availableSlots,
         bookedSlots,
         workingHours: `${startTime} - ${endTime}`,

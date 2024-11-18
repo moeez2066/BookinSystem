@@ -78,6 +78,7 @@ export async function GET(request) {
           ...clientData
         },
         bookings: enrichedBookings.map((booking) => ({
+          _id: booking._id,
           trainerName: booking.trainer?.name || "N/A",
           trainerEmail: booking.trainer?.email || "N/A",
           validStartDate: booking.valid_start_date,

@@ -36,6 +36,7 @@ export async function GET() {
       );
       return {
         ...booking,
+        _id: booking._id,
         clientName: client ? client.name : "N/A",
         clientEmail: client ? client.email : "N/A",
         trainerName: trainer ? trainer.name : "N/A",

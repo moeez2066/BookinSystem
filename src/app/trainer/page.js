@@ -4,6 +4,7 @@ import { Typography, Tabs, Card, Row, Col, Spin, Alert, Divider } from "antd";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useMyContext } from "../MyContext";
 import { useRouter } from "next/navigation";
+import Rescheduling from "../components/reschedule";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -70,6 +71,7 @@ const TrainerPanel = () => {
     return (
       <Card
         bordered={false}
+        className="bookingCard"
         style={{
           backgroundColor: "#ffffff",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -123,6 +125,12 @@ const TrainerPanel = () => {
         </Title>
         <Divider style={{ margin: "12px 0", backgroundColor: "#d9cccc" }} />
         <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Text strong>Booking Id:</Text>
+            <Text style={{ marginLeft: "8px" }}>
+              {booking._id || "N/A"}
+            </Text>
+          </Col>
           <Col span={24}>
             <Text strong>Client Name:</Text>
             <Text style={{ marginLeft: "8px" }}>
@@ -289,6 +297,9 @@ const TrainerPanel = () => {
                   No bookings found.
                 </div>
               )}
+            </TabPane>
+            <TabPane tab="Rescheduling" key="Rescheduling">
+              {<Rescheduling trainerData={trainerData} />}
             </TabPane>
           </Tabs>
         )}

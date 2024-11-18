@@ -42,7 +42,7 @@ export async function GET(request) {
         JSON.stringify({
           trainer: trainerData,
           bookings: [],
-          message: "No bookings found for this trainer."
+          message: "No bookings found for this trainer.",
         }),
         {
           status: 200,
@@ -56,7 +56,10 @@ export async function GET(request) {
 
     const clients = await db
       .collection("users")
-      .find({ _id: { $in: clientIds.map((id) => new ObjectId(id)) }, role: "client" })
+      .find({
+        _id: { $in: clientIds.map((id) => new ObjectId(id)) },
+        role: "client",
+      })
       .toArray();
 
     console.log("Enriching bookings with client data");
@@ -74,11 +77,13 @@ export async function GET(request) {
     return new Response(
       JSON.stringify({
         trainer: {
+          trainer_id: trainerData.trainer_id,
           name: trainerData.name,
           email: trainerData.email,
           whatsapp: trainerData.whatsapp,
         },
         bookings: enrichedBookings.map((booking) => ({
+          _id: booking._id,
           clientName: booking.client?.name || "N/A",
           clientEmail: booking.client?.email || "N/A",
           validStartDate: booking.valid_start_date,

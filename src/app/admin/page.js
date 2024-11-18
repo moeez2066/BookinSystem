@@ -64,7 +64,6 @@ const AdminPanel = () => {
     fetchAdminData();
   }, []);
 
-  
   const clientColumns = [
     {
       title: "Name",
@@ -86,6 +85,7 @@ const AdminPanel = () => {
   const renderClients = () => (
     <Card
       bordered={false}
+      className="bookingCard"
       style={{
         backgroundColor: "#ffffff",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -135,6 +135,10 @@ const AdminPanel = () => {
         </Title>
         <Divider style={{ margin: "12px 0", backgroundColor: " #d9cccc" }} />
         <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Text strong>Booking Id:</Text>
+            <Text style={{ marginLeft: "8px" }}>{booking._id || "N/A"}</Text>
+          </Col>
           <Col span={24}>
             <Text strong>Client Name:</Text>
             <Text style={{ marginLeft: "8px" }}>
@@ -237,7 +241,7 @@ const AdminPanel = () => {
   return (
     <div style={{ padding: "17px" }}>
       <section
-      className="cardHead"
+        className="cardHead"
         style={{
           maxWidth: "790px",
           margin: "50px auto",
