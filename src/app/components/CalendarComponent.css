@@ -80,12 +80,6 @@
   .desktop-only-br {
     display: none; /* Hide on mobile */
   }
-  :where(.css-dev-only-do-not-override-apn68).ant-select-outlined:not(
-      .ant-select-customize-input
-    )
-    .ant-select-selector {
-
-  }
   .arrow-top {
     padding: 2px 13px;
     font-size: 14px;

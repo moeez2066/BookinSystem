@@ -91,10 +91,10 @@
     align-items: center;
     justify-content: center;
   }
-  .origin .ant-select{
-    width: 180px!important;
+  .origin .ant-select {
+    width: 180px !important;
     display: block;
-    max-width:123%!important;
+    max-width: 123% !important;
     margin-bottom: 12px;
   }
 
@@ -201,6 +201,11 @@
 .bookingCard {
   padding: 20px !important;
 }
+.register-top {
+  position: absolute;
+  right: -70px;
+  bottom: 23px;
+}
 
 @media (max-width: 600px) {
   .desktop-only-br {
@@ -251,6 +256,12 @@
   .google-map {
     width: 300px;
   }
+  .register-top {
+    position: absolute;
+    right: 0px;
+    bottom: 23px;
+  }
+  
 }
 
 @media (min-width: 601px) {
@@ -377,3 +388,4 @@ button:focus {
   margin: auto;
   position: relative;
 }
+

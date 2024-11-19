@@ -146,7 +146,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
 
     const payload = {
       trainer_id: { $oid: data._id },
-      client_id:{ $oid: sessionStorage.getItem('userId')},
+      client_id: { $oid: sessionStorage.getItem("userId") },
       bookedslots,
       valid_start_date: { $date: valid_start_date },
       valid_end_date: { $date: valid_end_date },
@@ -194,11 +194,12 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         backgroundColor: "#f0eeeb",
         borderRadius: "10px",
         maxWidth: "100%",
+        position:'relative'
       }}
     >
       <Title
         level={4}
-        style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
+        style={{ color: "#473a3a", fontSize: "clamp(13px, 2vw, 16px)" }}
       >
         Select Your Starting Date
       </Title>
@@ -214,7 +215,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       />
       <Title
         level={4}
-        style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
+        style={{ color: "#473a3a", fontSize: "clamp(13px, 2vw, 16px)" }}
       >
         Select No Of Sessions
       </Title>
@@ -222,11 +223,9 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         placeholder="Select no of sessions"
         style={{
           width: "172px",
-          maxWidth: 200,
-          marginLeft: "10px",
           color: "#473a3a",
           borderColor: "#b2d8b2",
-          fontSize: "clamp(8px, 1.5vw, 12px)",
+          fontSize: "clamp(13px, 1.5vw, 12px)",
         }}
         dropdownClassName="custom-dropdown"
         optionLabelProp="label"
@@ -242,15 +241,15 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           </Option>
         ))}
       </Select>
-      <span >
+      <span>
         <br />
       </span>
-      <span className="desktop-only-br">
+      <span>
         <br />
       </span>
       <Title
         level={4}
-        style={{ color: "#473a3a", fontSize: "clamp(10px, 2vw, 16px)" }}
+        style={{ color: "#473a3a", fontSize: "clamp(13px, 2vw, 16px)" }}
       >
         Select Your Days
       </Title>
@@ -276,7 +275,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
                   : selectedSlots[day]
                   ? "#b2d8b2"
                   : "#473a3a",
-              fontSize: "clamp(8px, 1.5vw, 14px)",
+              fontSize: "clamp(11px, 1.5vw, 14px)",
               padding: "5px 10px",
             }}
             onClick={() => handleDayClick(day)}
@@ -291,7 +290,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         style={{
           marginTop: "20px",
           color: "#473a3a",
-          fontSize: "clamp(10px, 2vw, 16px)",
+          fontSize: "clamp(14px, 2vw, 16px)",
         }}
       >
         Available Time Slots
@@ -310,7 +309,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
               display: "block",
               marginTop: "10px",
               color: "#473a3a",
-              fontSize: "clamp(10px, 1.5vw, 14px)",
+              fontSize: "clamp(12px, 1.5vw, 14px)",
             }}
           >
             <br />
@@ -318,13 +317,9 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           </Text>
         ) : (
           <div style={{ marginTop: "10px" }}>
-            <span className="desktop-only-br">
-              <br />
-            </span>
-
             <Text
               strong
-              style={{ color: "#473a3a", fontSize: "clamp(9px, 1.5vw, 14px)" }}
+              style={{ color: "#473a3a", fontSize: "clamp(12px, 1.5vw, 14px)" }}
             >
               Available Time Slots for {selectedDay}
             </Text>
@@ -336,7 +331,8 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
                 marginLeft: "10px",
                 color: "#473a3a",
                 borderColor: "#b2d8b2",
-                fontSize: "clamp(8px, 1.5vw, 12px)",
+                fontSize: "clamp(12px, 1.5vw, 12px)",
+                marginTop: "12px",
               }}
               dropdownClassName="custom-dropdown"
               value={selectedSlots[selectedDay] || null}
@@ -358,7 +354,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             display: "block",
             marginTop: "10px",
             color: "#473a3a",
-            fontSize: "clamp(10px, 1.5vw, 14px)",
+            fontSize: "clamp(12px, 1.5vw, 14px)",
           }}
         >
           Select a day to view time slots.
@@ -368,7 +364,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       {selectedDay && selectedSlots[selectedDay] && (
         <div style={{ marginTop: "20px" }}>
           <Text
-            style={{ color: "#473a3a", fontSize: "clamp(9px, 1.5vw, 14px)" }}
+            style={{ color: "#473a3a", fontSize: "clamp(12px, 1.5vw, 14px)" }}
           >
             You selected <strong>{selectedSlots[selectedDay]}</strong> on{" "}
             <strong>{selectedDay}</strong>
@@ -378,7 +374,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       {Object.keys(selectedSlots).length === numberOfSessions && (
         <>
           <Button
-            className="arrow-top "
+            className="register-top"
             style={{
               backgroundColor: "#a88a7d",
               borderColor: "#a88a7d",
