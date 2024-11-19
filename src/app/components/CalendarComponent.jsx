@@ -242,7 +242,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             support_email: "sara@shaped.com",
           };
 
-          // await sendEmail(emailParams);
+          await sendEmail(emailParams);
           await sendTrainerEmail(emailTrainerParams);
           console.log("Confirmation email sent successfully.");
         } catch (emailError) {
