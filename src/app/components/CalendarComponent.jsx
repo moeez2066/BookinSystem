@@ -13,6 +13,7 @@ import { days } from "../days/dat";
 import moment from "moment";
 import { parseValidity } from "../trainers/dat";
 import CheckSignInModal from "./AuthenticationModal";
+import { sendEmail } from "../sendEmail";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -75,8 +76,6 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       });
       return;
     }
-
-    // Allow navigating to days with already selected slots
     if (
       Object.keys(selectedSlots).length >= numberOfSessions &&
       !selectedSlots[day]
@@ -121,6 +120,28 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       [selectedDay]: value,
     }));
   };
+  const fetchLocationName = async (location) => {
+    const apiKey = "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o";
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location}&key=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.status === "OK") {
+        return data.results[0]?.formatted_address || "Location not found";
+      } else {
+        throw new Error("Failed to fetch location name.");
+      }
+    } catch (error) {
+      console.error("Error fetching location:", error);
+      return "Location not found";
+    }
+  };
 
   const handleRegister = async () => {
     const isSignedIn = sessionStorage.getItem("isSignedIn");
@@ -133,8 +154,6 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       sessionPackage.validity,
       selectedDate.toISOString()
     );
-
-    // Construct the `bookedslots` array from all selected slots
     const bookedslots = Object.entries(selectedSlots).map(([day, time]) => ({
       [day]: [
         {
@@ -165,11 +184,49 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       });
 
       if (response.ok) {
+        const result = await response.json();
         setAlertInfo({
           visible: true,
           type: "success",
           message: "Booking saved successfully!",
         });
+        console.log(bookedslots);
+        const schedulingDates = bookedslots
+          .map((slot) =>
+            Object.entries(slot)
+              .map(([day, times]) => {
+                const timeRanges = times.map((t) => t.time).join(", ");
+                return `${day}: ${timeRanges}`;
+              })
+              .join("\n")
+          )
+          .join("\n");
+        try {
+          const emailParams = {
+            recipient_email: result.clientData.email,
+            customer_name: result.clientData.name,
+            company_name: "Shaped",
+            booking_reference: result.booking._id,
+            client_name: result.clientData.name,
+            client_email: result.clientData.email.toString(),
+            trainer_name: result.trainerData.name,
+            trainer_email: result.trainerData.email.toString(),
+            package_size: sessionPackage.name.toString(),
+            package_price: sessionPackage.price.toString(),
+            start_period: result.booking.valid_start_date.toString(),
+            scheduling_dates: schedulingDates,
+            end_date: result.booking.valid_end_date.toString(),
+            location: await fetchLocationName(result.location),
+            client_panel_url: "https://bookin-system.vercel.app/user",
+            policy: "None",
+            support_email: "sara@shaped.com",
+          };
+
+          await sendEmail(emailParams);
+          console.log("Confirmation email sent successfully.");
+        } catch (emailError) {
+          console.error("Failed to send confirmation email:", emailError);
+        }
       } else {
         throw new Error("Failed to save booking.");
       }
@@ -194,7 +251,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
         backgroundColor: "#f0eeeb",
         borderRadius: "10px",
         maxWidth: "100%",
-        position:'relative'
+        position: "relative",
       }}
     >
       <Title

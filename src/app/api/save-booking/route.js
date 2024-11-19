@@ -44,11 +44,25 @@ export async function POST(req) {
 
     // Insert the booking into the database
     const result = await db.collection("Booking").insertOne(bookingDocument);
+    const insertedBooking = await db.collection("Booking").findOne({
+      _id: result.insertedId,
+    });
 
+    const clientData = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(client_id.$oid) });
+    const trainerData = await db
+      .collection("Trainers")
+      .findOne({ _id: new ObjectId(trainer_id.$oid) });
     return new Response(
       JSON.stringify({
         message: "Booking saved successfully.",
         bookingId: result.insertedId,
+        clientData,
+        booking: insertedBooking,
+        trainerData,
+        location:
+          bookedslots[0][Object.keys(bookedslots[0])[0]][0].location,
       }),
       { status: 201 }
     );
