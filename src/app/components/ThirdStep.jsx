@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import styles from "./ThirdStep.module.css";
 import Image from "next/image";
-import { trainers } from "@/app/trainers/dat";
+import { trainers, pilates } from "@/app/trainers/dat";
 
 const ThirdStep = ({ selectedData, onNext }) => {
   useEffect(() => {
@@ -10,6 +10,7 @@ const ThirdStep = ({ selectedData, onNext }) => {
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
+    console.log(selectedData);
   }, []);
   return (
     <div className={styles.container}>
@@ -25,7 +26,10 @@ const ThirdStep = ({ selectedData, onNext }) => {
         </p>
       </div>
       <div className={styles.rightColumn}>
-        {trainers.map((trainer, index) => (
+        {(selectedData.selectedSpecialty === "General Fitness"
+          ? trainers
+          : pilates
+        ).map((trainer, index) => (
           <div key={index} className={styles.trainerCard}>
             <div className={styles.imageWrapper}>
               <Image
