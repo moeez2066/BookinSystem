@@ -190,6 +190,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           type: "success",
           message: "Booking saved successfully!",
         });
+        setLoadingBook(false);
         console.log(bookedslots);
         const schedulingDates = bookedslots
           .map((slot) =>
