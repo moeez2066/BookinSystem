@@ -52,15 +52,39 @@
   color: #ebeaea !important;
 }
 @media (max-width: 768px) {
+  .navbar {
+   padding-left:0 ;
+  }
   .navItem {
     margin: 0rem 7px;
+    padding-right: 0px;
   }
   .navContainer {
     font-size: 8px;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 70px;
+    margin-top: 2px;
+  }
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
   }
   .logo {
     width: 53px;
-    margin-left: 14px;
+    margin-left: 0px;
+  }
+  .navBtn button {
+    padding: 10px !important;
+    font-size: 10px;
+    height: 13px;
+    color: #baada6 !important;
+    position: absolute;
+    right: -12px;
+    top: -18px;
   }
 }
