@@ -13,7 +13,7 @@ import { days } from "../days/dat";
 import moment from "moment";
 import { parseValidity } from "../trainers/dat";
 import CheckSignInModal from "./AuthenticationModal";
-import { sendEmail } from "../sendEmail";
+import { sendEmail, sendTrainerEmail } from "../sendEmail";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -222,7 +222,28 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             support_email: "sara@shaped.com",
           };
 
-          await sendEmail(emailParams);
+          const emailTrainerParams = {
+            recipient_email: result.trainerData.email,
+            customer_name: result.clientData.name,
+            company_name: "Shaped",
+            booking_reference: result.booking._id,
+            client_name: result.clientData.name,
+            client_email: result.clientData.email.toString(),
+            trainer_name: result.trainerData.name,
+            trainer_email: result.trainerData.email.toString(),
+            package_size: sessionPackage.name.toString(),
+            package_price: sessionPackage.price.toString(),
+            start_period: result.booking.valid_start_date.toString(),
+            scheduling_dates: schedulingDates,
+            end_date: result.booking.valid_end_date.toString(),
+            location: await fetchLocationName(result.location),
+            client_panel_url: "https://bookin-system.vercel.app/trainer",
+            policy: "None",
+            support_email: "sara@shaped.com",
+          };
+
+          // await sendEmail(emailParams);
+          await sendTrainerEmail(emailTrainerParams);
           console.log("Confirmation email sent successfully.");
         } catch (emailError) {
           console.error("Failed to send confirmation email:", emailError);
