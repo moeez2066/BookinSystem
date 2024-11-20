@@ -10,7 +10,6 @@ const ThirdStep = ({ selectedData, onNext }) => {
       top: document.documentElement.scrollHeight,
       behavior: "smooth",
     });
-    console.log(selectedData);
   }, []);
   return (
     <div className={styles.container}>

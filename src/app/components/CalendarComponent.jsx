@@ -191,7 +191,6 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           message: "Booking saved successfully!",
         });
         setLoadingBook(false);
-        console.log(bookedslots);
         const schedulingDates = bookedslots
           .map((slot) =>
             Object.entries(slot)
@@ -203,6 +202,8 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           )
           .join("\n");
         try {
+          console.log(sessionPackage.count.toString());
+          
           const emailParams = {
             recipient_email: result.clientData.email,
             customer_name: result.clientData.name,
@@ -218,8 +219,9 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             scheduling_dates: schedulingDates,
             end_date: result.booking.valid_end_date.toString(),
             location: await fetchLocationName(result.location),
-            client_panel_url: "https://bookin-system.vercel.app/user",
+            client_panel_url: "https://bookin-system.vercel.app/signin",
             policy: "None",
+            no_of_sessions: sessionPackage.count.toString(),
             support_email: "sara@shaped.com",
           };
 
@@ -234,17 +236,18 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             trainer_email: result.trainerData.email.toString(),
             package_size: sessionPackage.name.toString(),
             package_price: sessionPackage.price.toString(),
+            no_of_sessions: sessionPackage.count.toString(),
             start_period: result.booking.valid_start_date.toString(),
             scheduling_dates: schedulingDates,
             end_date: result.booking.valid_end_date.toString(),
             location: await fetchLocationName(result.location),
-            client_panel_url: "https://bookin-system.vercel.app/trainer",
+            client_panel_url: "https://bookin-system.vercel.app/signin",
             policy: "None",
             support_email: "sara@shaped.com",
           };
 
           await sendEmail(emailParams);
-          await sendTrainerEmail(emailTrainerParams);
+          // await sendTrainerEmail(emailTrainerParams);
           console.log("Confirmation email sent successfully.");
         } catch (emailError) {
           console.error("Failed to send confirmation email:", emailError);
