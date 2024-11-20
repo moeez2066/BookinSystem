@@ -1,22 +1,17 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import styles from "./Navbar.module.css";
-import { Button, Dropdown, Menu, Typography } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "../MyContext";
 import {
   DownOutlined,
   LogoutOutlined,
   UserOutlined,
-  DashboardOutlined,
-  ClusterOutlined,
-  ControlOutlined,
   ProfileOutlined,
 } from "@ant-design/icons";
-
-const { Text } = Typography;
 
 export default function Navbar() {
   const { isSignedIn, setIsSignedIn } = useMyContext();
@@ -49,7 +44,7 @@ export default function Navbar() {
     if (userRole === "client") return "/user";
     if (userRole === "admin") return "/admin";
     if (userRole === "trainer") return "/trainer";
-    return "/"; // Fallback if role is undefined
+    return "/";
   };
 
   const menu = (
