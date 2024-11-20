@@ -39,6 +39,7 @@ export const sendEmail = async (params) => {
     policy: params.policy,
     support_email: params.support_email,
     current_year: params.current_year,
+    no_of_sessions: params.no_of_sessions
   };
 
   try {
@@ -96,6 +97,7 @@ export const sendTrainerEmail = async (params) => {
     policy: params.policy,
     support_email: params.support_email,
     current_year: params.current_year,
+    no_of_sessions: params.no_of_sessions
   };
 
   try {

@@ -202,7 +202,8 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           )
           .join("\n");
         try {
-          console.log(sessionPackage.count.toString());
+          const count= await sessionPackage.count.toString();
+          console.log(count);
           
           const emailParams = {
             recipient_email: result.clientData.email,
@@ -215,13 +216,13 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             trainer_email: result.trainerData.email.toString(),
             package_size: sessionPackage.name.toString(),
             package_price: sessionPackage.price.toString(),
+            no_of_sessions: count,
             start_period: result.booking.valid_start_date.toString(),
             scheduling_dates: schedulingDates,
             end_date: result.booking.valid_end_date.toString(),
             location: await fetchLocationName(result.location),
             client_panel_url: "https://bookin-system.vercel.app/signin",
             policy: "None",
-            no_of_sessions: sessionPackage.count.toString(),
             support_email: "sara@shaped.com",
           };
 
@@ -236,7 +237,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             trainer_email: result.trainerData.email.toString(),
             package_size: sessionPackage.name.toString(),
             package_price: sessionPackage.price.toString(),
-            no_of_sessions: sessionPackage.count.toString(),
+            no_of_sessions: count,
             start_period: result.booking.valid_start_date.toString(),
             scheduling_dates: schedulingDates,
             end_date: result.booking.valid_end_date.toString(),
@@ -247,7 +248,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           };
 
           await sendEmail(emailParams);
-          // await sendTrainerEmail(emailTrainerParams);
+          await sendTrainerEmail(emailTrainerParams);
           console.log("Confirmation email sent successfully.");
         } catch (emailError) {
           console.error("Failed to send confirmation email:", emailError);
