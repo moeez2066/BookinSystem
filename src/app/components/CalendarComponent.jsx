@@ -202,9 +202,6 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
           )
           .join("\n");
         try {
-          const count= await sessionPackage.count.toString();
-          console.log(count);
-          
           const emailParams = {
             recipient_email: result.clientData.email,
             customer_name: result.clientData.name,
@@ -216,7 +213,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             trainer_email: result.trainerData.email.toString(),
             package_size: sessionPackage.name.toString(),
             package_price: sessionPackage.price.toString(),
-            no_of_sessions: count,
+            no_of_sessions: sessionPackage.count.toString(),
             start_period: result.booking.valid_start_date.toString(),
             scheduling_dates: schedulingDates,
             end_date: result.booking.valid_end_date.toString(),
@@ -237,7 +234,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             trainer_email: result.trainerData.email.toString(),
             package_size: sessionPackage.name.toString(),
             package_price: sessionPackage.price.toString(),
-            no_of_sessions: count,
+            no_of_sessions: sessionPackage.count.toString(),
             start_period: result.booking.valid_start_date.toString(),
             scheduling_dates: schedulingDates,
             end_date: result.booking.valid_end_date.toString(),
