@@ -1,4 +1,4 @@
-import calculateDistanceAndDuration from "@/app/distanceMatrix";
+import calculateDistanceAndDuration from "../../distanceMatrix";
 import clientPromise from "../../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
