@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import styles from "./ThirdStep.module.css";
 import Image from "next/image";
-import { trainers, pilates } from "@/app/trainers/dat";
+import { pilates, trainers } from "../trainers/dat";
 
 const ThirdStep = ({ selectedData, onNext }) => {
   useEffect(() => {

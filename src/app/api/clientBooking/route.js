@@ -4,12 +4,38 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request) {
   try {
+    const client = await clientPromise;
+    const db = client.db("BookingSys");
     const url = new URL(request.url);
-    const trainerId = url.searchParams.get("trainerId");
-    const day = url.searchParams.get("day");
-    const validity = "1 day";
+    const bookingId = url.searchParams.get("bookingId");
+    let booking;
+    try {
+      booking = await db
+        .collection("Booking")
+        .findOne({ _id: new ObjectId(bookingId) });
+    } catch (err) {
+      return new Response(JSON.stringify({ error: "Booking not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (!booking) {
+      return new Response(JSON.stringify({ error: "Booking not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const trainerId = booking.trainer_id;
     const startDate = url.searchParams.get("date");
-    const placeChords = url.searchParams.get("placeChords");
+    const day = new Date(startDate).toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const validity = "1 day";
+    const firstDay = booking.bookedslots[0];
+    const firstDayKey = Object.keys(firstDay)[0];
+    const placeChords = firstDay[firstDayKey][0].location;
 
     console.log("Received parameters:", {
       trainerId,
@@ -18,9 +44,6 @@ export async function GET(request) {
       startDate,
       placeChords,
     });
-
-    const client = await clientPromise;
-    const db = client.db("BookingSys");
 
     const trainer = await db
       .collection("Trainers")
