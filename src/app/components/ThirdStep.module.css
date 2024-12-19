@@ -103,7 +103,14 @@
   padding-bottom: 6px;
   margin-top: 10px;
 }
-
+.selectButton:active,
+.selectButton:focus {
+  border-color: #473a3a;
+  color: #ebeaea !important;
+  background-color: #41365e;
+  transform: 6px;
+  outline: none;
+}
 @media (max-width: 767px) {
   .container {
     flex-direction: column;

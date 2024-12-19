@@ -284,14 +284,7 @@
   .ant-picker-cell-inner::before {
   border: none !important;
 }
-/* button:active, */
-/* button:focus {
-  border-color: #473a3a;
-  color: #ebeaea !important;
-  background-color: #41365e;
-  transform: 6px;
-  outline: none;
-} */
+
 .navBtn button:active,
 .navBtn button:focus {
   background-color: #473a3a !important;
