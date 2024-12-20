@@ -88,9 +88,7 @@ const Rescheduling = () => {
       const response = await fetch(
         `/api/clientBooking?bookingId=${bookingId}&bookedDate=${selectedSlotDate.format(
           "YYYY-MM-DD"
-        )}&date=${selectedScheduleDate.format(
-          "YYYY-MM-DD"
-        )}`
+        )}&date=${selectedScheduleDate.format("YYYY-MM-DD")}`
       );
       const data = await response.json();
 
@@ -272,7 +270,10 @@ const Rescheduling = () => {
               <DatePicker
                 placeholder="Select Booked Slot Date"
                 value={selectedSlotDate}
-                onChange={(date) => setSelectedSlotDate(date)}
+                onChange={(date) => {
+                  setAvailableSlots([]);
+                  setSelectedSlotDate(date);
+                }}
                 style={{
                   width: "100%",
                   marginTop: "8px",
@@ -293,7 +294,10 @@ const Rescheduling = () => {
               <DatePicker
                 placeholder="Select schedule date"
                 value={selectedScheduleDate}
-                onChange={(date) => setSelectedScheduleDate(date)}
+                onChange={(date) => {
+                  setAvailableSlots([]);
+                  setSelectedScheduleDate(date);
+                }}
                 style={{
                   width: "100%",
                   marginTop: "8px",
