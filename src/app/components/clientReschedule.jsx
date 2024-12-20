@@ -86,21 +86,23 @@ const Rescheduling = () => {
 
     try {
       const response = await fetch(
-        `/api/clientBooking?bookingId=${bookingId}&date=${selectedScheduleDate.format(
+        `/api/clientBooking?bookingId=${bookingId}&bookedDate=${selectedSlotDate.format(
+          "YYYY-MM-DD"
+        )}&date=${selectedScheduleDate.format(
           "YYYY-MM-DD"
         )}`
       );
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to fetch available slots.");
+        throw new Error(data.error || "Failed to fetch available slots.");
       }
       setAvailableSlots(data.availableSlots || []);
     } catch (err) {
       setAlertInfo({
         visible: true,
         type: "error",
-        message: "Failed to fetch available slots.",
+        message: err.message,
       });
     } finally {
       setCheckSlotsLoading(false);
@@ -268,7 +270,7 @@ const Rescheduling = () => {
             <Col xs={24} sm={12} md={10}>
               <Text strong>Select Booked Slot Date</Text>
               <DatePicker
-                placeholder="Select a new date"
+                placeholder="Select Booked Slot Date"
                 value={selectedSlotDate}
                 onChange={(date) => setSelectedSlotDate(date)}
                 style={{

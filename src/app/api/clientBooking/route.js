@@ -32,6 +32,10 @@ export async function GET(request) {
     const day = new Date(startDate).toLocaleDateString("en-US", {
       weekday: "long",
     });
+    const bookedDate = url.searchParams.get("bookedDate");
+    const BookedDay = new Date(bookedDate).toLocaleDateString("en-US", {
+      weekday: "long",
+    });
     const validity = "1 day";
     const firstDay = booking.bookedslots[0];
     const firstDayKey = Object.keys(firstDay)[0];
@@ -43,8 +47,38 @@ export async function GET(request) {
       validity,
       startDate,
       placeChords,
+      bookedDate,
     });
 
+    if (booking) {
+      const checkDay = booking.bookedslots.find((slot) => {
+        return Object.keys(slot).includes(BookedDay);
+      });
+      if (!checkDay) {
+        return new Response(
+          JSON.stringify({ error: "You are not having booking on this day" }),
+          {
+            status: 404,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
+    if (booking) {
+      const slotFound = booking.free_slots.some((slot) => {
+        return new Date(slot).getDate() === new Date(bookedDate).getDate();
+      });
+
+      if (slotFound) {
+        return new Response(
+          JSON.stringify({ error: "You are not having booking on this day" }),
+          {
+            status: 404,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
     const trainer = await db
       .collection("Trainers")
       .findOne(
@@ -110,21 +144,21 @@ export async function GET(request) {
 
     const relevantBookings = bookings.filter((booking) => {
       if (
-        booking.free_slots?.some((slot) => 
-          new Date(slot).getDate() === new Date(startDate).getDate()
+        booking.free_slots?.some(
+          (slot) => new Date(slot).getDate() === new Date(startDate).getDate()
         )
       ) {
         return false;
       }
       const bookingStart = new Date(booking.valid_start_date);
       const bookingEnd = new Date(booking.valid_end_date);
-    
+
       return (
         isWithinRange(valid_start_date, bookingStart, bookingEnd) ||
         isWithinRange(valid_end_date, bookingStart, bookingEnd)
       );
     });
-  
+
     console.log("Filtered relevant bookings:", relevantBookings);
 
     const bookedSlots = [];
@@ -252,8 +286,6 @@ export async function GET(request) {
 
       return slots;
     };
-
-
 
     const allSlots = generateTimeSlots(startHour, endHour, bookedSlots);
     console.log("Generated time slots:", allSlots);
