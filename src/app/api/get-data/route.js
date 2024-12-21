@@ -7,7 +7,7 @@ export async function GET(request) {
     const url = new URL(request.url);
     const trainerId = url.searchParams.get("trainerId");
     const day = url.searchParams.get("day");
-    const validity = "1 day";
+    const validity = url.searchParams.get("validity");
     const startDate = url.searchParams.get("date");
     const placeChords = url.searchParams.get("placeChords");
 
@@ -53,10 +53,6 @@ export async function GET(request) {
         const months = parseInt(validity.split(" ")[0], 10);
         endDate = new Date(now);
         endDate.setMonth(now.getMonth() + months);
-      } else if (validity.includes("day")) {
-        const days = parseInt(validity.split(" ")[0], 10);
-        endDate = new Date(now);
-        endDate.setDate(now.getDate() + days);
       }
       return { startDate: now, endDate };
     };
@@ -86,22 +82,15 @@ export async function GET(request) {
     };
 
     const relevantBookings = bookings.filter((booking) => {
-      if (
-        booking.free_slots?.some((slot) => 
-          new Date(slot).getDate() === new Date(startDate).getDate()
-        )
-      ) {
-        return false;
-      }
       const bookingStart = new Date(booking.valid_start_date);
       const bookingEnd = new Date(booking.valid_end_date);
-    
+
       return (
         isWithinRange(valid_start_date, bookingStart, bookingEnd) ||
         isWithinRange(valid_end_date, bookingStart, bookingEnd)
       );
     });
-  
+
     console.log("Filtered relevant bookings:", relevantBookings);
 
     const bookedSlots = [];
@@ -139,7 +128,7 @@ export async function GET(request) {
 
     const generateTimeSlots = (start, end, bookedSlots) => {
       const slots = [];
-
+    
       // Parse booked ranges into start and end times in fractional hours
       const bookedRanges = bookedSlots.map((slot) => {
         const [startTime, endTime] = slot.time.split(" - ");
@@ -150,50 +139,50 @@ export async function GET(request) {
             : parseInt(hour);
         };
         const parseMinute = (time) => parseInt(time.split(":")[1] || 0);
-
+    
         const startHour = parseHour(startTime);
         const startMinute = parseMinute(startTime);
         const endHour = parseHour(endTime);
         const endMinute = parseMinute(endTime);
-
+    
         // Adding 10 minutes (buffer time) to the duration
         const durationInMinutes = parseInt(slot.duration.split(" ")[0]);
         const bufferTime = 10; // Buffer time in minutes
         const endHourWithDuration =
           endHour + (endMinute + durationInMinutes + bufferTime) / 60;
-
+    
         return {
           start: startHour + startMinute / 60,
           end: endHourWithDuration,
           exactStart: { hour: startHour, minute: startMinute }, // Exact start time for comparison
         };
       });
-
+    
       let currentHour = start;
       let currentMinute = 0; // Always start at 0 if no booked slots
-
+    
       while (
         currentHour < end ||
         (currentHour === end && currentMinute === 0)
       ) {
         const currentTime = currentHour + currentMinute / 60;
-
+    
         // Check if the current time overlaps with any booked range
         const overlappingRange = bookedRanges.find(
           (range) => currentTime >= range.start && currentTime < range.end
         );
-
+    
         if (overlappingRange) {
           // Skip this time range and adjust currentHour and currentMinute
           currentHour = Math.floor(overlappingRange.end);
           currentMinute = Math.round((overlappingRange.end % 1) * 60);
           continue;
         }
-
+    
         // Format the start and end times for the time slot
         const slotStart = new Date(1970, 0, 1, currentHour, currentMinute);
         const slotEnd = new Date(1970, 0, 1, currentHour + 1, currentMinute);
-
+    
         // Ensure the slot end time does not exceed the `end` hour
         if (
           slotEnd.getHours() > end ||
@@ -201,14 +190,14 @@ export async function GET(request) {
         ) {
           break;
         }
-
+    
         // Check if the end time matches the start time of any booked slot
         const isExcluded = bookedRanges.some(
           (range) =>
             slotEnd.getHours() === range.exactStart.hour &&
             slotEnd.getMinutes() === range.exactStart.minute
         );
-
+    
         if (!isExcluded) {
           slots.push(
             `${slotStart.toLocaleTimeString("en-US", {
@@ -222,15 +211,15 @@ export async function GET(request) {
             })}`
           );
         }
-
+    
         // Increment the time by 1 hour
         currentHour++;
       }
-
+    
       return slots;
     };
-
-
+    
+    
 
     const allSlots = generateTimeSlots(startHour, endHour, bookedSlots);
     console.log("Generated time slots:", allSlots);
