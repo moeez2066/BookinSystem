@@ -65,7 +65,7 @@ export async function GET(request) {
       }
     }
     if (booking) {
-      const slotFound = booking.free_slots.some((slot) => {
+      const slotFound = booking.free_slots?.some((slot) => {
         return new Date(slot).getDate() === new Date(bookedDate).getDate();
       });
 
