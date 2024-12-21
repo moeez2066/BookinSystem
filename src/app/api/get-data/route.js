@@ -80,16 +80,35 @@ export async function GET(request) {
     const isWithinRange = (date, rangeStart, rangeEnd) => {
       return date >= rangeStart && date <= rangeEnd;
     };
-
+    
     const relevantBookings = bookings.filter((booking) => {
       const bookingStart = new Date(booking.valid_start_date);
       const bookingEnd = new Date(booking.valid_end_date);
-
-      return (
-        isWithinRange(valid_start_date, bookingStart, bookingEnd) ||
-        isWithinRange(valid_end_date, bookingStart, bookingEnd)
-      );
+    
+      // Check all overlap conditions
+      const startInRange = isWithinRange(valid_start_date, bookingStart, bookingEnd);
+      const endInRange = isWithinRange(valid_end_date, bookingStart, bookingEnd);
+      const bookingStartInRange = isWithinRange(bookingStart, valid_start_date, valid_end_date);
+      const bookingEndInRange = isWithinRange(bookingEnd, valid_start_date, valid_end_date);
+    
+      const isOverlapping = startInRange || endInRange || bookingStartInRange || bookingEndInRange;
+    
+      // Add logging for debugging
+      console.log({
+        bookingStart: bookingStart.toISOString(),
+        bookingEnd: bookingEnd.toISOString(),
+        validStart: valid_start_date.toISOString(),
+        validEnd: valid_end_date.toISOString(),
+        startInRange,
+        endInRange,
+        bookingStartInRange,
+        bookingEndInRange,
+        isOverlapping,
+      });
+    
+      return isOverlapping;
     });
+    
 
     console.log("Filtered relevant bookings:", relevantBookings);
 
