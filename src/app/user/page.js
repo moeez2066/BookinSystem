@@ -246,6 +246,22 @@ const UserPanel = () => {
               )}
             </div>
           </div>
+          {booking.free_slots && (
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355] mb-2">
+                Freed Slots
+              </p>
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                {booking.free_slots.map((slot, idx) => (
+                  <div key={`${idx}`} className="mb-2">
+                    <span className="font-medium text-sm sm:text-base text-[#8b7355]">
+                      {new Date(slot).toLocaleDateString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           <div>
             <div className="flex items-center mb-2">
               <MapPin className="h-4 w-4 text-[#baada6] mr-2" />
