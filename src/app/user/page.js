@@ -36,6 +36,8 @@ const UserPanel = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refetch, setRefetch] = useState(false);
+  const [refetchLoading, setRefetchLoading] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -79,6 +81,32 @@ const UserPanel = () => {
     fetchClientData();
   }, []);
 
+  useEffect(() => {
+    const fetchClientData = async () => {
+      setRefetchLoading(true);
+      setError(null);
+
+      try {
+        const clientId = sessionStorage.getItem("userId");
+        if (!clientId) throw new Error("Client ID is missing");
+
+        const response = await fetch(`/api/client?clientId=${clientId}`);
+        const data = await response.json();
+
+        if (!response.ok)
+          throw new Error(data.error || "Failed to fetch client data");
+        setBookings(data.bookings);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setRefetchLoading(false);
+      }
+    };
+    if (refetch) {
+      fetchClientData();
+      setRefetch(false);
+    }
+  }, [refetch]);
   const Sidebar = ({ className }) => (
     <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]`, className)}>
       <div className="space-y-4 py-4">
@@ -92,6 +120,11 @@ const UserPanel = () => {
               { icon: User, label: "Profile", value: "profile" },
               { icon: Calendar, label: "Bookings", value: "bookings" },
               { icon: Clock, label: "Rescheduling", value: "rescheduling" },
+              {
+                icon: Calendar,
+                label: "Rescheduled Bookings",
+                value: "rescheduledBookings",
+              },
             ].map((item) => (
               <Button
                 key={item.value}
@@ -174,11 +207,12 @@ const UserPanel = () => {
   );
 
   const BookingCard = ({ booking, index }) => (
-    <Card className="p-4 sm:p-6 mb-4 sm:mb-6 bg-[#f9f6f4] border-[#baada6]/20 hover:shadow-lg transition-shadow duration-200">
+    <Card className="p-4 sm:p-6 mb-4 sm:mb-0 bg-[#f9f6f4] border-[#baada6]/20 hover:shadow-lg transition-shadow duration-200">
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-md sm:text-lg font-semibold text-[#8b7355]">
-            Booking {index + 1}
+          <h3 className="text-md flex sm:text-lg items-center font-semibold text-[#8b7355]">
+            <Calendar size={19} />
+            &nbsp;Booking {index + 1}
           </h3>
           <span className="text-xs sm:text-sm text-[#a88a7d]">
             ID: {booking._id}
@@ -357,7 +391,7 @@ const UserPanel = () => {
                 ))}
 
               {activeTab === "bookings" &&
-                (loading ? (
+                (loading || refetchLoading ? (
                   <Card className="p-6 flex items-center justify-center border-0 shadow-none">
                     <Spin size="default" className="sm:hidden" />{" "}
                     <Spin size="large" className="hidden sm:block" />{" "}
@@ -365,13 +399,53 @@ const UserPanel = () => {
                 ) : (
                   <div className="space-y-6 bg-[#baada6] p-2">
                     {bookings.length > 0 ? (
-                      bookings.map((booking, index) => (
-                        <BookingCard
-                          key={index}
-                          booking={booking}
-                          index={index}
-                        />
-                      ))
+                      bookings
+                        .filter((booking) => !booking.rescheduled)
+                        .map((booking, index) => (
+                          <BookingCard
+                            key={index}
+                            booking={booking}
+                            index={index}
+                          />
+                        ))
+                    ) : (
+                      <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                        <p className="text-center text-[#a88a7d]">
+                          No bookings found.
+                        </p>
+                      </Card>
+                    )}
+                  </div>
+                ))}
+              {activeTab === "rescheduledBookings" &&
+                (loading || refetchLoading ? (
+                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                    <Spin size="default" className="sm:hidden" />
+                    <Spin size="large" className="hidden sm:block" />
+                  </Card>
+                ) : (
+                  <div className="space-y-6 bg-[#baada6] p-2">
+                    {bookings.length > 0 ? (
+                      bookings.filter((b) => b.rescheduled).length > 0 ? (
+                        bookings.reduce((acc, booking, index) => {
+                          if (booking.rescheduled) {
+                            acc.push(
+                              <BookingCard
+                                key={index}
+                                booking={booking}
+                                index={acc.length} // Use the length of the accumulator as the index
+                              />
+                            );
+                          }
+                          return acc;
+                        }, [])
+                      ) : (
+                        <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                          <p className="text-center text-[#a88a7d]">
+                            No rescheduled bookings found.
+                          </p>
+                        </Card>
+                      )
                     ) : (
                       <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
                         <p className="text-center text-[#a88a7d]">
@@ -382,7 +456,7 @@ const UserPanel = () => {
                   </div>
                 ))}
 
-              {activeTab === "rescheduling" && <Rescheduling />}
+              {activeTab === "rescheduling" && <Rescheduling setRefetch={setRefetch} />}
             </ScrollArea>
           </div>
         </main>

@@ -16,7 +16,7 @@ import { CalendarClock, Search } from "lucide-react";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const Rescheduling = () => {
+const Rescheduling = ({ setRefetch }) => {
   // State management
   const [bookingId, setBookingId] = useState("");
   const [bookingData, setBookingData] = useState(null);
@@ -167,7 +167,7 @@ const Rescheduling = () => {
         type: "success",
         message: "Booking rescheduled successfully!",
       });
-
+      setRefetch(true);
       // Reset state
       setBookingId("");
       setBookingData(null);
