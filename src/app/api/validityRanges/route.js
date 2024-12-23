@@ -28,24 +28,28 @@ export async function GET(request) {
         status: 404,
       });
     }
+    let validStartDate = booking.valid_start_date || null;
+    let validEndDate = booking.valid_end_date || null;
 
-    // Extract the valid start and end date
-    const {
-      valid_start_date,
-      valid_end_date,
-      client_id,
-      trainer_id,
-      bookedslots,
-      _id
-    } = booking;
+    if (booking.rescheduled) {
+      const parentBooking = await db.collection("Booking").findOne({
+        _id: new ObjectId(booking.parent_booking_id),
+      });
+
+      if (parentBooking) {
+        validStartDate = parentBooking.valid_start_date || validStartDate;
+        validEndDate = parentBooking.valid_end_date || validEndDate;
+      }
+    }
+    const { client_id, trainer_id, bookedslots, _id } = booking;
     return new Response(
       JSON.stringify({
-        valid_start_date: valid_start_date || null,
-        valid_end_date: valid_end_date || null,
+        valid_start_date: validStartDate || null,
+        valid_end_date: validEndDate || null,
         client_id: client_id,
         trainer_id: trainer_id,
-        location: bookedslots[0][Object.keys(bookedslots[0])[0]][0]['location'],
-        _id:_id
+        location: bookedslots[0][Object.keys(bookedslots[0])[0]][0]["location"],
+        _id: _id,
       }),
       {
         status: 200,
@@ -53,7 +57,7 @@ export async function GET(request) {
     );
   } catch (error) {
     console.log(error);
-    
+
     // Handle any errors that occur during the process
     return new Response(
       JSON.stringify({
