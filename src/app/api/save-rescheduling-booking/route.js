@@ -28,6 +28,8 @@ export async function POST(req) {
       valid_start_date: new Date(valid_start_date.$date),
       valid_end_date: new Date(valid_end_date.$date),
       date_of_creation: new Date(date_of_creation.$date),
+      rescheduled: true,
+      parent_booking_id: new ObjectId(parentBooking),
     };
 
     // Insert the booking into the database
@@ -50,7 +52,7 @@ export async function POST(req) {
       .collection("Booking")
       .updateOne(
         { _id: new ObjectId(parentBooking) },
-        { $push: { free_slots: new Date(freeSlot.$date), } }
+        { $push: { free_slots: new Date(freeSlot.$date) } }
       );
     return new Response(
       JSON.stringify({
