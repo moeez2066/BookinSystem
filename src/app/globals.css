@@ -261,7 +261,6 @@
     right: 0px;
     bottom: 23px;
   }
-  
 }
 
 @media (min-width: 601px) {
@@ -384,10 +383,20 @@
 
 :where(.css-dev-only-do-not-override-49qm) .ant-picker-outlined:focus,
 :where(.css-dev-only-do-not-override-49qm) .ant-picker-outlined:focus-within {
-    border-color:#473a3a!important;
-    box-shadow: none!important;
+  border-color: #473a3a !important;
+  box-shadow: none !important;
 }
-.ant-picker:hover{
-  border: 1px solid #473a3a!important;
-  box-shadow: none!important;
+.ant-picker:hover {
+  border: 1px solid #473a3a !important;
+  box-shadow: none !important;
+}
+
+.clientTable table {
+  border: 0.2px solid #baada660 !important;
+}
+.ant-table-cell {
+  border: 0.2px solid #baada660 !important;
+}
+:where(.css-dev-only-do-not-override-49qm).ant-table-wrapper .ant-table-pagination.ant-pagination {
+  margin-bottom: 0!important;
 }

@@ -1,38 +1,59 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Typography, Tabs, Card, Row, Col, Spin, Alert, Divider } from "antd";
+import { useRouter } from "next/navigation";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useMyContext } from "../MyContext";
-import { useRouter } from "next/navigation";
-import Rescheduling from "../components/reschedule";
-
-const { Title, Text } = Typography;
-const { TabPane } = Tabs;
+import Rescheduling from "../components/clientReschedule";
+import {
+  Menu,
+  LayoutDashboard,
+  User,
+  Calendar,
+  Clock,
+  MapPin,
+  Mail,
+  Phone,
+} from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
+import { ScrollArea } from "../components/ui/scroll-area";
+import { Skeleton } from "../components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+import { Separator } from "../components/ui/separator";
+import { cn } from "../../../lib/utils";
+import { Spin } from "antd";
 
 const mapContainerStyle = {
   width: "100%",
   height: "324px",
-  marginTop: "20px",
+  borderRadius: "0.75rem",
 };
 
 const TrainerPanel = () => {
-  const [activeTabKey, setActiveTabKey] = useState("Profile");
+  const [activeTab, setActiveTab] = useState("profile");
   const [trainerData, setTrainerData] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refetch, setRefetch] = useState(false);
+  const [refetchLoading, setRefetchLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey:
       "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly",
   });
+
   const router = useRouter();
-  const { isSignedIn, setIsSignedIn } = useMyContext();
+  const { isSignedIn } = useMyContext();
+
   useEffect(() => {
     if (!isSignedIn) {
       router.push("/");
     }
   }, []);
+
   useEffect(() => {
     const fetchTrainerData = async () => {
       setLoading(true);
@@ -40,16 +61,13 @@ const TrainerPanel = () => {
 
       try {
         const trainerId = sessionStorage.getItem("userId");
-        if (!trainerId) {
-          throw new Error("Trainer ID is missing");
-        }
+        if (!trainerId) throw new Error("Trainer ID is missing");
 
         const response = await fetch(`/api/trainer?trainerId=${trainerId}`);
         const data = await response.json();
 
-        if (!response.ok) {
+        if (!response.ok)
           throw new Error(data.error || "Failed to fetch trainer data");
-        }
 
         setTrainerData(data.trainer);
         setBookings(data.bookings);
@@ -63,138 +81,236 @@ const TrainerPanel = () => {
     fetchTrainerData();
   }, []);
 
-  const renderProfile = () => {
-    if (!trainerData) {
-      return <Text>No profile data available.</Text>;
+  useEffect(() => {
+    const fetchTrainerData = async () => {
+      setRefetchLoading(true);
+      setError(null);
+
+      try {
+        const trainerId = sessionStorage.getItem("userId");
+        if (!trainerId) throw new Error("Trainer ID is missing");
+
+        const response = await fetch(`/api/trainer?trainerId=${trainerId}`);
+        const data = await response.json();
+
+        if (!response.ok)
+          throw new Error(data.error || "Failed to fetch trainer data");
+        setBookings(data.bookings);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setRefetchLoading(false);
+      }
+    };
+    if (refetch) {
+      fetchTrainerData();
+      setRefetch(false);
     }
+  }, [refetch]);
 
-    return (
-      <Card
-        bordered={false}
-        className="bookingCard"
-        style={{
-          backgroundColor: "#ffffff",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          borderRadius: "12px",
-          padding: "20px",
-        }}
-      >
-        <Title level={4} style={{ color: "#a88a7d", marginBottom: "16px" }}>
-          Profile Information
-        </Title>
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
-            <Text strong>Name:</Text>
-            <Text style={{ marginLeft: "8px" }}>{trainerData.name}</Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Email:</Text>
-            <Text style={{ marginLeft: "8px" }}>{trainerData.email}</Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>WhatsApp:</Text>
-            <Text style={{ marginLeft: "8px" }}>{trainerData.whatsapp}</Text>
-          </Col>
-        </Row>
-      </Card>
-    );
-  };
+  const Sidebar = ({ className }) => (
+    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]`, className)}>
+      <div className="space-y-4 py-4">
+        <div className="px-3 py-2">
+          <div className="flex items-center px-4 mb-6 mt-5">
+            <LayoutDashboard className="h-6 w-6 text-[#8b7355] mr-2" />
+            <h2 className="text-xl font-semibold text-[#8b7355] ">Dashboard</h2>
+          </div>
+          <div className="space-y-2">
+            {[
+              { icon: User, label: "Profile", value: "profile" },
+              { icon: Calendar, label: "Bookings", value: "bookings" },
+              { icon: Clock, label: "Rescheduling", value: "rescheduling" },
+              {
+                icon: Calendar,
+                label: "Rescheduled Bookings",
+                value: "rescheduledBookings",
+              },
+            ].map((item) => (
+              <Button
+                key={item.value}
+                variant={activeTab === item.value ? "secondary" : "ghost"}
+                className={cn(
+                  "w-full justify-start transition-all duration-200",
+                  activeTab === item.value
+                    ? "bg-[#baada6] text-white hover:bg-[#a88a7d]"
+                    : "text-[#8b7355] hover:bg-[#baada6]/20"
+                )}
+                onClick={() => {
+                  setActiveTab(item.value);
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <item.icon className="mr-2 h-4 w-4" />
+                {item.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
-  const renderBookings = () =>
-    bookings.map((booking, index) => (
-      <Card
-        key={index}
-        bordered={false}
-        className="bookingCard"
-        style={{
-          marginBottom: "20px",
-          backgroundColor: "#f9f6f4",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          borderRadius: "12px",
-        }}
-      >
-        <Title
-          level={5}
-          style={{
-            color: "#473a3a",
-            marginBottom: "16px",
-            textAlign: "left",
-          }}
-        >
-          Booking {index + 1}
-        </Title>
-        <Divider style={{ margin: "12px 0", backgroundColor: "#d9cccc" }} />
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
-            <Text strong>Booking Id:</Text>
-            <Text style={{ marginLeft: "8px" }}>
-              {booking._id || "N/A"}
-            </Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Client Name:</Text>
-            <Text style={{ marginLeft: "8px" }}>
-              {booking.clientName || "N/A"}
-            </Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Client Email:</Text>
-            <Text style={{ marginLeft: "8px" }}>
-              {booking.clientEmail || "N/A"}
-            </Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Validity Start:</Text>
-            <Text style={{ marginLeft: "8px" }}>
-              {new Date(booking.validStartDate).toLocaleDateString()}
-            </Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Validity End:</Text>
-            <Text style={{ marginLeft: "8px" }}>
-              {new Date(booking.validEndDate).toLocaleDateString()}
-            </Text>
-          </Col>
-          <Col span={24}>
-            <Text strong>Booked Slots:</Text>
-            <ul style={{ marginTop: "8px", paddingLeft: "20px" }}>
+  const ProfileContent = () => (
+    <Card className="p-4 sm:p-8 bg-[#f9f6f4] border-[#baada6]/20">
+      {loading ? (
+        <div className="space-y-4">
+          <Skeleton className="h-4 w-3/4 sm:w-[250px]" />
+          <Skeleton className="h-4 w-2/3 sm:w-[200px]" />
+          <Skeleton className="h-4 w-3/4 sm:w-[220px]" />
+        </div>
+      ) : trainerData ? (
+        <div className="space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row items-center space-x-0 space-y-4 sm:space-x-6 sm:space-y-0">
+            <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[#baada6] flex items-center justify-center shadow-lg">
+              <User className="h-8 sm:h-12 w-8 sm:w-12 text-white" />
+            </div>
+            <div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-[#8b7355]">
+                {trainerData.name}
+              </h3>
+              <p className="text-[#a88a7d]">{trainerData.email}</p>
+            </div>
+          </div>
+          <Separator className="bg-[#baada6]/20" />
+          <div className="grid gap-4">
+            <div className="space-y-4">
+              <h4 className="text-base sm:text-lg font-medium text-[#8b7355]">
+                Contact Information
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center space-x-3">
+                  <Mail className="h-5 w-5 text-[#baada6]" />
+                  <div>
+                    <p className="text-sm font-medium text-[#8b7355]">Email</p>
+                    <p className="text-sm text-[#a88a7d]">
+                      {trainerData.email}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-5 w-5 text-[#baada6]" />
+                  <div>
+                    <p className="text-sm font-medium text-[#8b7355]">
+                      WhatsApp
+                    </p>
+                    <p className="text-sm text-[#a88a7d]">
+                      {trainerData.whatsapp}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p className="text-[#8b7355]">No profile data available.</p>
+      )}
+    </Card>
+  );
+
+  const BookingCard = ({ booking, index }) => (
+    <Card className="p-4 sm:p-6 mb-4 sm:mb-0 bg-[#f9f6f4] border-[#baada6]/20 hover:shadow-lg transition-shadow duration-200">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-md flex sm:text-lg items-center font-semibold text-[#8b7355]">
+            <Calendar size={19} />
+            &nbsp;Booking {index + 1}
+          </h3>
+          <span className="text-xs sm:text-sm text-[#a88a7d]">
+            ID: {booking._id}
+          </span>
+        </div>
+        <Separator className="bg-[#baada6]/20" />
+        <div className="grid gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Client Name
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                {booking.clientName}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Email
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                {booking.clientEmail}
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Start Date
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                {new Date(booking.validStartDate).toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                End Date
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                {new Date(booking.validEndDate).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-xs sm:text-sm font-medium text-[#8b7355] mb-2">
+              Booked Slots
+            </p>
+            <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
               {booking.bookedSlots.map((slot, idx) =>
                 Object.entries(slot).map(([day, details]) => (
-                  <li key={`${index}-${idx}`}>
-                    <Text strong>{day}:</Text>
-                    <span style={{ marginLeft: "8px" }}>
+                  <div key={`${index}-${idx}`} className="mb-2">
+                    <span className="font-medium text-sm sm:text-base text-[#8b7355]">
+                      {day}:
+                    </span>
+                    <span className="ml-2 text-xs sm:text-sm text-[#a88a7d]">
                       {details.map((detail, i) => (
-                        <span key={i}>{detail.time}</span>
+                        <span key={i}>
+                          {detail.time}
+                          {i < details.length - 1 ? ", " : ""}
+                        </span>
                       ))}
                     </span>
-                  </li>
+                  </div>
                 ))
               )}
-            </ul>
-          </Col>
-          <Col span={24}>
-            <Text strong>Booked Location:</Text>
-          </Col>
-          <Col span={24}>
+            </div>
+          </div>
+          {booking.free_slots && (
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355] mb-2">
+                Freed Slots
+              </p>
+              <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
+                {booking.free_slots.map((slot, idx) => (
+                  <div key={`${idx}`} className="mb-2">
+                    <span className="font-medium text-sm sm:text-base text-[#8b7355]">
+                      {new Date(slot).toLocaleDateString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <div>
+            <div className="flex items-center mb-2">
+              <MapPin className="h-4 w-4 text-[#baada6] mr-2" />
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Location
+              </p>
+            </div>
             {isLoaded && !loadError ? (
-              <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                center={{
-                  lat: parseFloat(
-                    booking.bookedSlots[0][
-                      Object.keys(booking.bookedSlots[0])[0]
-                    ][0].location.split(",")[0]
-                  ),
-                  lng: parseFloat(
-                    booking.bookedSlots[0][
-                      Object.keys(booking.bookedSlots[0])[0]
-                    ][0].location.split(",")[1]
-                  ),
-                }}
-                zoom={12}
-              >
-                <Marker
-                  position={{
+              <div className="rounded-lg overflow-hidden shadow-sm">
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  center={{
                     lat: parseFloat(
                       booking.bookedSlots[0][
                         Object.keys(booking.bookedSlots[0])[0]
@@ -206,104 +322,150 @@ const TrainerPanel = () => {
                       ][0].location.split(",")[1]
                     ),
                   }}
-                />
-              </GoogleMap>
+                  zoom={12}
+                >
+                  <Marker
+                    position={{
+                      lat: parseFloat(
+                        booking.bookedSlots[0][
+                          Object.keys(booking.bookedSlots[0])[0]
+                        ][0].location.split(",")[0]
+                      ),
+                      lng: parseFloat(
+                        booking.bookedSlots[0][
+                          Object.keys(booking.bookedSlots[0])[0]
+                        ][0].location.split(",")[1]
+                      ),
+                    }}
+                  />
+                </GoogleMap>
+              </div>
             ) : (
-              <Text>Map could not be loaded.</Text>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                Map could not be loaded.
+              </p>
             )}
-          </Col>
-        </Row>
-      </Card>
-    ));
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
 
   return (
-    <div style={{ padding: "17px" }}>
-      <section
-        className="cardHead"
-        style={{
-          maxWidth: "790px",
-          margin: "50px auto",
-          backgroundColor: "#f0eeeb",
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            padding: "20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Title
-            level={5}
-            style={{
-              color: "white",
-              backgroundColor: "#baada6",
-              padding: "12px 24px",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            }}
+    <div className="min-h-screen bg-background">
+      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+        <SheetTrigger asChild className="lg:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="mt-2 bg-[#baada6] ml-2"
           >
-            Trainer Panel
-          </Title>
-        </div>
+            <Menu className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="p-0">
+          <Sidebar />
+        </SheetContent>
+      </Sheet>
 
-        {error && (
-          <Alert
-            message="Error"
-            description={error}
-            type="error"
-            showIcon
-            style={{ marginBottom: "20px" }}
-          />
-        )}
+      <div className="flex">
+        <aside className="hidden lg:block w-64 border-r border-[#baada6]/20 bg-[#f9f6f4] ">
+          <Sidebar />
+        </aside>
 
-        {loading ? (
-          <div style={{ textAlign: "center", padding: "50px 0" }}>
-            <Spin size="default" />
-          </div>
-        ) : (
-          <Tabs
-            activeKey={activeTabKey}
-            onChange={(key) => setActiveTabKey(key)}
-            centered
-            tabBarStyle={{
-              border: "none",
-              color: "#a88a7d",
-              fontWeight: "bold",
-            }}
-            type="line"
-          >
-            <TabPane tab="Profile" key="Profile">
-              {renderProfile()}
-            </TabPane>
-            <TabPane tab="Bookings" key="Bookings">
-              {bookings.length > 0 ? (
-                renderBookings()
-              ) : (
-                <div
-                  style={{
-                    textAlign: "center",
-                    margin: "auto",
-                    margin: "33px auto",
-                    fontStyle: "italic",
-                  }}
-                >
-                  No bookings found.
-                </div>
+        <main className="flex-1 p-1 sm:p-8">
+          <div className="max-w-4xl mx-auto">
+            {error && (
+              <Alert variant="destructive" className="mb-6">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <ScrollArea className="h-[calc(100vh-2rem)] p-2 sm:mt-0">
+              {activeTab === "profile" &&
+                (loading ? (
+                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                    <Spin size="default" className="sm:hidden" />{" "}
+                    <Spin size="large" className="hidden sm:block" />{" "}
+                  </Card>
+                ) : (
+                  <ProfileContent />
+                ))}
+
+              {activeTab === "bookings" &&
+                (loading || refetchLoading ? (
+                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                    <Spin size="default" className="sm:hidden" />{" "}
+                    <Spin size="large" className="hidden sm:block" />{" "}
+                  </Card>
+                ) : (
+                  <div className="space-y-6 bg-[#baada6] p-2">
+                    {bookings.length > 0 ? (
+                      bookings
+                        .filter((booking) => !booking.rescheduled)
+                        .map((booking, index) => (
+                          <BookingCard
+                            key={index}
+                            booking={booking}
+                            index={index}
+                          />
+                        ))
+                    ) : (
+                      <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                        <p className="text-center text-[#a88a7d]">
+                          No bookings found.
+                        </p>
+                      </Card>
+                    )}
+                  </div>
+                ))}
+              {activeTab === "rescheduledBookings" &&
+                (loading || refetchLoading ? (
+                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                    <Spin size="default" className="sm:hidden" />
+                    <Spin size="large" className="hidden sm:block" />
+                  </Card>
+                ) : (
+                  <div className="space-y-6 bg-[#baada6] p-2">
+                    {bookings.length > 0 ? (
+                      bookings.filter((b) => b.rescheduled).length > 0 ? (
+                        bookings.reduce((acc, booking, index) => {
+                          if (booking.rescheduled) {
+                            acc.push(
+                              <BookingCard
+                                key={index}
+                                booking={booking}
+                                index={acc.length}
+                              />
+                            );
+                          }
+                          return acc;
+                        }, [])
+                      ) : (
+                        <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                          <p className="text-center text-[#a88a7d]">
+                            No rescheduled bookings found.
+                          </p>
+                        </Card>
+                      )
+                    ) : (
+                      <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                        <p className="text-center text-[#a88a7d]">
+                          No bookings found.
+                        </p>
+                      </Card>
+                    )}
+                  </div>
+                ))}
+
+              {activeTab === "rescheduling" && (
+                <Rescheduling setRefetch={setRefetch} />
               )}
-            </TabPane>
-            <TabPane tab="Rescheduling" key="Rescheduling">
-              {<Rescheduling trainerData={trainerData} />}
-            </TabPane>
-          </Tabs>
-        )}
-      </section>
+            </ScrollArea>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

@@ -189,16 +189,14 @@ const Rescheduling = ({ setRefetch }) => {
   return (
     <Card
       bordered={false}
-      className="sm:p-[20px]"
+      className="sm:p-[20px] bg-[#f9f6f4] border-[#baada6]/20 border"
       style={{
-        backgroundColor: "#efede9",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         borderRadius: "12px",
       }}
     >
       {/* Header */}
-      <div className="border-b border-[#baada6]/10 py-4 pt-0 bg-[#baada6]/5">
-        <div className="flex gap-2">
+      <div className=" py-4 pt-0">
+        <div className="flex gap-2 items-center  justify-center">
           <CalendarClock className="w-6 h-6 text-[#a88a7d]" />
           <h1 className="text-lg sm:text-xl font-semibold text-[#a88a7d]">
             Appointment Rescheduling

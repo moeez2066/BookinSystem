@@ -89,6 +89,8 @@ export async function GET(request) {
           validStartDate: booking.valid_start_date,
           validEndDate: booking.valid_end_date,
           bookedSlots: booking.bookedslots,
+          free_slots:booking.free_slots,
+          rescheduled:booking.rescheduled
         })),
       }),
       {
