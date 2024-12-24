@@ -49,6 +49,42 @@ export async function GET(request) {
       placeChords,
       bookedDate,
     });
+    if (booking) {
+      const checkDay = booking.bookedslots.find((slot) => {
+        return Object.keys(slot).includes(BookedDay);
+      });
+
+      if (checkDay) {
+        const time = checkDay[BookedDay][0]["time"].split("-")[0];
+        const bookingDateTime = new Date(`${bookedDate} ${time}`);
+        const currentDateTime = new Date();
+        const timeDifference =
+          (bookingDateTime - currentDateTime) / (1000 * 60 * 60);
+        if (timeDifference >= 24) {
+          console.log("Rescheduling allowed, 24 hours or more remaining.");
+        } else if (timeDifference > 0 && timeDifference < 24) {
+          return new Response(
+            JSON.stringify({
+              error: "Rescheduling not allowed, less than 24 hours remaining.",
+            }),
+            {
+              status: 404,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+        } else {
+          return new Response(
+            JSON.stringify({
+              error: "The booking time has already passed.",
+            }),
+            {
+              status: 404,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+        }
+      }
+    }
 
     if (booking) {
       const checkDay = booking.bookedslots.find((slot) => {
