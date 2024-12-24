@@ -456,7 +456,9 @@ const UserPanel = () => {
                   </div>
                 ))}
 
-              {activeTab === "rescheduling" && <Rescheduling setRefetch={setRefetch} />}
+              {activeTab === "rescheduling" && (
+                <Rescheduling setRefetch={setRefetch} />
+              )}
             </ScrollArea>
           </div>
         </main>
