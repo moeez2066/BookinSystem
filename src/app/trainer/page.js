@@ -13,6 +13,7 @@ import {
   MapPin,
   Mail,
   Phone,
+  CalendarX,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -125,6 +126,11 @@ const TrainerPanel = () => {
                 icon: Calendar,
                 label: "Rescheduled Bookings",
                 value: "rescheduledBookings",
+              },
+              {
+                icon: CalendarX,
+                label: "Canceled Bookings",
+                value: "cancelBookings",
               },
             ].map((item) => (
               <Button
@@ -350,9 +356,14 @@ const TrainerPanel = () => {
       </div>
     </Card>
   );
-  const filteredBoookings = bookings.filter((booking) => !booking.rescheduled);
+  const filteredBoookings = bookings.filter(
+    (booking) => !booking.rescheduled && !booking.canceled
+  );
   const filteredRescheduledBoookings = bookings.filter(
     (booking) => booking.rescheduled
+  );
+  const filteredCanceledBoookings = bookings.filter(
+    (booking) => booking.canceled
   );
   return (
     <div className="min-h-screen bg-background">
@@ -441,6 +452,31 @@ const TrainerPanel = () => {
                       <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
                         <p className="text-center text-[#a88a7d]">
                           No rescheduled bookings found.
+                        </p>
+                      </Card>
+                    )}
+                  </div>
+                ))}
+              {activeTab === "cancelBookings" &&
+                (loading || refetchLoading ? (
+                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                    <Spin size="default" className="sm:hidden" />
+                    <Spin size="large" className="hidden sm:block" />
+                  </Card>
+                ) : (
+                  <div className="space-y-6 bg-[#baada6] p-2">
+                    {filteredCanceledBoookings.length > 0 ? (
+                      filteredCanceledBoookings.map((booking, index) => (
+                        <BookingCard
+                          key={index}
+                          booking={booking}
+                          index={index}
+                        />
+                      ))
+                    ) : (
+                      <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                        <p className="text-center text-[#a88a7d]">
+                          No canceled bookings found.
                         </p>
                       </Card>
                     )}

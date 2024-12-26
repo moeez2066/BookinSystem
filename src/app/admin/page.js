@@ -12,6 +12,7 @@ import {
   CalendarPlus,
   CalendarClock,
   XCircle,
+  CalendarX,
 } from "lucide-react";
 import { Modal, message } from "antd";
 import { Button } from "../components/ui/button";
@@ -176,7 +177,7 @@ const AdminPanel = () => {
                 value: "extendValidity",
               },
               {
-                icon: CalendarPlus,
+                icon: CalendarX,
                 label: "Canceled Bookings",
                 value: "cancelBookings",
               },
