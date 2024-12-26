@@ -9,6 +9,8 @@ import {
   Calendar,
   Clock,
   MapPin,
+  CalendarPlus,
+  CalendarClock,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -20,6 +22,7 @@ import { cn } from "../../../lib/utils";
 import Rescheduling from "../components/clientReschedule";
 import { Spin, Table } from "antd";
 import { useMyContext } from "../MyContext";
+import ExtendValidity from "../components/ExtendValidity";
 
 const mapContainerStyle = {
   width: "100%",
@@ -113,9 +116,14 @@ const AdminPanel = () => {
               { icon: Calendar, label: "Bookings", value: "bookings" },
               { icon: Clock, label: "Rescheduling", value: "rescheduling" },
               {
-                icon: Calendar,
+                icon: CalendarClock,
                 label: "Rescheduled Bookings",
                 value: "rescheduledBookings",
+              },
+              {
+                icon: CalendarPlus,
+                label: "Extend Validity",
+                value: "extendValidity",
               },
             ].map((item) => (
               <Button
@@ -439,6 +447,9 @@ const AdminPanel = () => {
 
               {activeTab === "rescheduling" && (
                 <Rescheduling setRefetch={setRefetch} />
+              )}
+              {activeTab === "extendValidity" && (
+                <ExtendValidity setRefetch={setRefetch} />
               )}
             </ScrollArea>
           </div>
