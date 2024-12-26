@@ -57,6 +57,33 @@ export const sendEmail = async (params) => {
   }
 };
 
+export const sendCancelEmail = async (params) => {
+  const templateParams = {
+    recipient_email: params.recipient_email,
+    customer_name: params.customer_name,
+    company_name: params.company_name,
+    booking_reference: params.booking_reference,
+    client_name: params.client_name,
+    trainer_name: params.trainer_name,
+    client_panel_url: params.client_panel_url,
+    policy: params.policy,
+    support_email: params.support_email
+  };
+
+  try {
+    const response = await emailjs.send(
+      "service_k9d7vsz", // Replace with your actual service ID
+      "template_lbmlktf", // Replace with your actual template ID
+      templateParams,
+      "Q3_gtN9Q1I1cRT1RV" // Replace with your actual user/public key
+    );
+    console.log("Email sent successfully!", response.status, response.text);
+    return "Email sent successfully!";
+  } catch (error) {
+    console.error("Failed to send email.", error);
+    throw new Error("Failed to send email.");
+  }
+};
 
 /**
  * Sends an email using EmailJS.
@@ -106,6 +133,36 @@ export const sendTrainerEmail = async (params) => {
       "template_5wybo4e", // Replace with your actual template ID
       templateParams,
       "mjQTH4iM8w4jjnFHr" // Replace with your actual user/public key
+    );
+    console.log("Email sent successfully!", response.status, response.text);
+    return "Email sent successfully!";
+  } catch (error) {
+    console.error("Failed to send email.", error);
+    throw new Error("Failed to send email.");
+  }
+};
+
+
+export const sendCanceledTrainerEmail = async (params) => {
+  const templateParams = {
+    recipient_email: params.recipient_email,
+    customer_name: params.customer_name,
+    company_name: params.company_name,
+    booking_reference: params.booking_reference,
+    client_name: params.client_name,
+    trainer_name: params.trainer_name,
+    client_panel_url: params.client_panel_url,
+    policy: params.policy,
+    support_email: params.support_email,
+    current_year: params.current_year,
+  };
+
+  try {
+    const response = await emailjs.send(
+      "service_k9d7vsz", // Replace with your actual service ID
+      "template_vxygy71", // Replace with your actual template ID
+      templateParams,
+      "Q3_gtN9Q1I1cRT1RV" // Replace with your actual user/public key
     );
     console.log("Email sent successfully!", response.status, response.text);
     return "Email sent successfully!";

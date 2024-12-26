@@ -26,6 +26,30 @@ export async function DELETE(request) {
       });
     }
 
+    // Fetch client data
+    const clientData = await db.collection("users").findOne({
+      _id: new ObjectId(booking.client_id),
+    });
+
+    if (!clientData) {
+      return new Response(
+        JSON.stringify({ error: "Client data not found" }),
+        { status: 404 }
+      );
+    }
+
+    // Fetch trainer data
+    const trainerData = await db.collection("Trainers").findOne({
+      _id: new ObjectId(booking.trainer_id),
+    });
+
+    if (!trainerData) {
+      return new Response(
+        JSON.stringify({ error: "Trainer data not found" }),
+        { status: 404 }
+      );
+    }
+
     // Mark the booking as canceled
     const result = await db.collection("Booking").updateOne(
       { _id: new ObjectId(bookingId) },
@@ -39,10 +63,21 @@ export async function DELETE(request) {
       );
     }
 
-    return new Response(
-      JSON.stringify({ success: true, message: "Booking canceled successfully" }),
-      { status: 200 }
-    );
+    // Construct the response object
+    const responsePayload = {
+      success: true,
+      message: "Booking canceled successfully",
+      clientData: {
+        name: clientData.name,
+        email: clientData.email,
+      },
+      trainerData: {
+        name: trainerData.name,
+        email: trainerData.email,
+      },
+    };
+
+    return new Response(JSON.stringify(responsePayload), { status: 200 });
   } catch (error) {
     console.error(error);
 

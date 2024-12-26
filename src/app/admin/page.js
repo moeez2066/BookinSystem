@@ -26,6 +26,7 @@ import Rescheduling from "../components/clientReschedule";
 import { Spin, Table } from "antd";
 import { useMyContext } from "../MyContext";
 import ExtendValidity from "../components/ExtendValidity";
+import { sendCanceledTrainerEmail, sendCancelEmail } from "../sendEmail";
 
 const mapContainerStyle = {
   width: "100%",
@@ -82,10 +83,10 @@ const AdminPanel = () => {
         },
         body: JSON.stringify({ bookingId: currentBookingId }),
       });
-      const data = await response.json();
+      const result = await response.json();
 
       if (!response.ok)
-        throw new Error(data.error || "Failed to cancel booking");
+        throw new Error(result.error || "Failed to cancel booking");
 
       setAlertInfo({
         visible: true,
@@ -94,6 +95,45 @@ const AdminPanel = () => {
       });
       setRefetch(true);
       setIsModalVisible(false);
+      try {
+        const emailParams = {
+          recipient_email: result.clientData.email,
+          customer_name: result.clientData.name,
+          company_name: "Shaped",
+          booking_reference: currentBookingId,
+          client_name: result.clientData.name,
+          client_email: result.clientData.email.toString(),
+          trainer_name: result.trainerData.name,
+          trainer_email: result.trainerData.email.toString(),
+          client_panel_url: "https://bookin-system.vercel.app/signin",
+          policy: "None",
+          support_email: "sara@shaped.com",
+        };
+
+        const emailTrainerParams = {
+          recipient_email: result.trainerData.email,
+          customer_name: result.clientData.name,
+          company_name: "Shaped",
+          booking_reference: currentBookingId,
+          client_name: result.clientData.name,
+          client_email: result.clientData.email.toString(),
+          trainer_name: result.trainerData.name,
+          trainer_email: result.trainerData.email.toString(),
+          client_panel_url: "https://bookin-system.vercel.app/signin",
+          policy: "None",
+          support_email: "sara@shaped.com",
+        };
+        console.log(emailParams);
+        console.log(emailTrainerParams);
+        
+        
+
+        await sendCancelEmail(emailParams);
+        await sendCanceledTrainerEmail(emailTrainerParams);
+        console.log("Confirmation email sent successfully.");
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+      }
     } catch (err) {
       setAlertInfo({
         visible: true,
@@ -276,7 +316,7 @@ const AdminPanel = () => {
                 Client Name
               </p>
               <p className="text-xs sm:text-sm text-[#a88a7d]">
-                {booking.trainerName}
+                {booking.clientName}
               </p>
             </div>
             <div>
@@ -284,7 +324,7 @@ const AdminPanel = () => {
                 Client Email
               </p>
               <p className="text-xs sm:text-sm text-[#a88a7d]">
-                {booking.trainerEmail}
+                {booking.clientEmail}
               </p>
             </div>
           </div>
