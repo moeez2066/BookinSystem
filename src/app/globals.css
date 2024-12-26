@@ -400,3 +400,37 @@
 :where(.css-dev-only-do-not-override-49qm).ant-table-wrapper .ant-table-pagination.ant-pagination {
   margin-bottom: 0!important;
 }
+
+/* Centering and custom styles for the modal */
+.custom-modal .ant-modal-content {
+  background-color: #f9f6f4 !important; /* Background color */
+  border-radius: 8px;
+}
+
+.custom-modal .ant-modal-header {
+  /* background-color: #baada6 !important; Header background */
+  border-bottom: 1px solid #8b7355 !important; /* Header bottom border */
+}
+
+.custom-modal .ant-modal-title {
+  color: #8b7355 !important; /* Title color */
+}
+
+.custom-modal .ant-modal-footer {
+  background-color: #f9f6f4 !important; /* Footer background */
+  border-top: none !important;
+}
+
+.custom-modal .ant-btn-primary {
+  background-color: #8b7355 !important; /* Primary button background */
+  border-color: #8b7355 !important;
+}
+
+.custom-modal .ant-btn-primary:hover {
+  background-color: #a88a7d !important; /* Hover effect */
+}
+
+.custom-modal .ant-btn-default {
+  color: #8b7355 !important; /* Secondary button text */
+  border-color: #8b7355 !important; /* Secondary button border */
+}

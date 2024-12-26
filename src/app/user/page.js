@@ -347,7 +347,10 @@ const UserPanel = () => {
       </div>
     </Card>
   );
-
+  const filteredBoookings = bookings.filter((booking) => !booking.rescheduled);
+  const filteredRescheduledBoookings = bookings.filter(
+    (booking) => booking.rescheduled
+  );
   return (
     <div className="min-h-screen bg-background">
       <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -398,16 +401,14 @@ const UserPanel = () => {
                   </Card>
                 ) : (
                   <div className="space-y-6 bg-[#baada6] p-2">
-                    {bookings.length > 0 ? (
-                      bookings
-                        .filter((booking) => !booking.rescheduled)
-                        .map((booking, index) => (
-                          <BookingCard
-                            key={index}
-                            booking={booking}
-                            index={index}
-                          />
-                        ))
+                    {filteredBoookings.length > 0 ? (
+                      filteredBoookings.map((booking, index) => (
+                        <BookingCard
+                          key={index}
+                          booking={booking}
+                          index={index}
+                        />
+                      ))
                     ) : (
                       <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
                         <p className="text-center text-[#a88a7d]">
@@ -425,31 +426,18 @@ const UserPanel = () => {
                   </Card>
                 ) : (
                   <div className="space-y-6 bg-[#baada6] p-2">
-                    {bookings.length > 0 ? (
-                      bookings.filter((b) => b.rescheduled).length > 0 ? (
-                        bookings.reduce((acc, booking, index) => {
-                          if (booking.rescheduled) {
-                            acc.push(
-                              <BookingCard
-                                key={index}
-                                booking={booking}
-                                index={acc.length} // Use the length of the accumulator as the index
-                              />
-                            );
-                          }
-                          return acc;
-                        }, [])
-                      ) : (
-                        <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
-                          <p className="text-center text-[#a88a7d]">
-                            No rescheduled bookings found.
-                          </p>
-                        </Card>
-                      )
+                    {filteredRescheduledBoookings.length > 0 ? (
+                      filteredRescheduledBoookings.map((booking, index) => (
+                        <BookingCard
+                          key={index}
+                          booking={booking}
+                          index={index}
+                        />
+                      ))
                     ) : (
                       <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
                         <p className="text-center text-[#a88a7d]">
-                          No bookings found.
+                          No rescheduled bookings found.
                         </p>
                       </Card>
                     )}

@@ -72,6 +72,10 @@ export async function GET(request) {
       .find({
         trainer_id: new ObjectId(trainerId),
         bookedslots: { $elemMatch: { [day]: { $exists: true } } },
+        $or: [
+          { canceled: { $exists: false } }, // `canceled` field does not exist
+          { canceled: false }, // `canceled` field is explicitly false
+        ],
       })
       .toArray();
 
@@ -80,19 +84,36 @@ export async function GET(request) {
     const isWithinRange = (date, rangeStart, rangeEnd) => {
       return date >= rangeStart && date <= rangeEnd;
     };
-    
+
     const relevantBookings = bookings.filter((booking) => {
       const bookingStart = new Date(booking.valid_start_date);
       const bookingEnd = new Date(booking.valid_end_date);
-    
+
       // Check all overlap conditions
-      const startInRange = isWithinRange(valid_start_date, bookingStart, bookingEnd);
-      const endInRange = isWithinRange(valid_end_date, bookingStart, bookingEnd);
-      const bookingStartInRange = isWithinRange(bookingStart, valid_start_date, valid_end_date);
-      const bookingEndInRange = isWithinRange(bookingEnd, valid_start_date, valid_end_date);
-    
-      const isOverlapping = startInRange || endInRange || bookingStartInRange || bookingEndInRange;
-    
+      const startInRange = isWithinRange(
+        valid_start_date,
+        bookingStart,
+        bookingEnd
+      );
+      const endInRange = isWithinRange(
+        valid_end_date,
+        bookingStart,
+        bookingEnd
+      );
+      const bookingStartInRange = isWithinRange(
+        bookingStart,
+        valid_start_date,
+        valid_end_date
+      );
+      const bookingEndInRange = isWithinRange(
+        bookingEnd,
+        valid_start_date,
+        valid_end_date
+      );
+
+      const isOverlapping =
+        startInRange || endInRange || bookingStartInRange || bookingEndInRange;
+
       // Add logging for debugging
       console.log({
         bookingStart: bookingStart.toISOString(),
@@ -105,10 +126,9 @@ export async function GET(request) {
         bookingEndInRange,
         isOverlapping,
       });
-    
+
       return isOverlapping;
     });
-    
 
     console.log("Filtered relevant bookings:", relevantBookings);
 
@@ -147,7 +167,7 @@ export async function GET(request) {
 
     const generateTimeSlots = (start, end, bookedSlots) => {
       const slots = [];
-    
+
       // Parse booked ranges into start and end times in fractional hours
       const bookedRanges = bookedSlots.map((slot) => {
         const [startTime, endTime] = slot.time.split(" - ");
@@ -158,50 +178,50 @@ export async function GET(request) {
             : parseInt(hour);
         };
         const parseMinute = (time) => parseInt(time.split(":")[1] || 0);
-    
+
         const startHour = parseHour(startTime);
         const startMinute = parseMinute(startTime);
         const endHour = parseHour(endTime);
         const endMinute = parseMinute(endTime);
-    
+
         // Adding 10 minutes (buffer time) to the duration
         const durationInMinutes = parseInt(slot.duration.split(" ")[0]);
         const bufferTime = 10; // Buffer time in minutes
         const endHourWithDuration =
           endHour + (endMinute + durationInMinutes + bufferTime) / 60;
-    
+
         return {
           start: startHour + startMinute / 60,
           end: endHourWithDuration,
           exactStart: { hour: startHour, minute: startMinute }, // Exact start time for comparison
         };
       });
-    
+
       let currentHour = start;
       let currentMinute = 0; // Always start at 0 if no booked slots
-    
+
       while (
         currentHour < end ||
         (currentHour === end && currentMinute === 0)
       ) {
         const currentTime = currentHour + currentMinute / 60;
-    
+
         // Check if the current time overlaps with any booked range
         const overlappingRange = bookedRanges.find(
           (range) => currentTime >= range.start && currentTime < range.end
         );
-    
+
         if (overlappingRange) {
           // Skip this time range and adjust currentHour and currentMinute
           currentHour = Math.floor(overlappingRange.end);
           currentMinute = Math.round((overlappingRange.end % 1) * 60);
           continue;
         }
-    
+
         // Format the start and end times for the time slot
         const slotStart = new Date(1970, 0, 1, currentHour, currentMinute);
         const slotEnd = new Date(1970, 0, 1, currentHour + 1, currentMinute);
-    
+
         // Ensure the slot end time does not exceed the `end` hour
         if (
           slotEnd.getHours() > end ||
@@ -209,14 +229,14 @@ export async function GET(request) {
         ) {
           break;
         }
-    
+
         // Check if the end time matches the start time of any booked slot
         const isExcluded = bookedRanges.some(
           (range) =>
             slotEnd.getHours() === range.exactStart.hour &&
             slotEnd.getMinutes() === range.exactStart.minute
         );
-    
+
         if (!isExcluded) {
           slots.push(
             `${slotStart.toLocaleTimeString("en-US", {
@@ -230,15 +250,13 @@ export async function GET(request) {
             })}`
           );
         }
-    
+
         // Increment the time by 1 hour
         currentHour++;
       }
-    
+
       return slots;
     };
-    
-    
 
     const allSlots = generateTimeSlots(startHour, endHour, bookedSlots);
     console.log("Generated time slots:", allSlots);

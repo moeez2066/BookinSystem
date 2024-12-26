@@ -11,7 +11,9 @@ import {
   MapPin,
   CalendarPlus,
   CalendarClock,
+  XCircle,
 } from "lucide-react";
+import { Modal, message } from "antd";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
@@ -39,7 +41,14 @@ const AdminPanel = () => {
   const [refetch, setRefetch] = useState(false);
   const [refetchLoading, setRefetchLoading] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentBookingId, setCurrentBookingId] = useState(null);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({
+    visible: false,
+    type: "",
+    message: "",
+  });
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey:
       "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly",
@@ -53,6 +62,47 @@ const AdminPanel = () => {
       router.push("/");
     }
   }, []);
+  // Auto-hide alert after a few seconds
+  useEffect(() => {
+    if (alertInfo.visible) {
+      const timer = setTimeout(() => {
+        setAlertInfo({ ...alertInfo, visible: false });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertInfo]);
+  const handleCancelBooking = async () => {
+    setCancelLoading(true);
+    try {
+      const response = await fetch("/api/cancel-booking", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookingId: currentBookingId }),
+      });
+      const data = await response.json();
+
+      if (!response.ok)
+        throw new Error(data.error || "Failed to cancel booking");
+
+      setAlertInfo({
+        visible: true,
+        type: "success",
+        message: "Booking canceled successfully!",
+      });
+      setRefetch(true);
+      setIsModalVisible(false);
+    } catch (err) {
+      setAlertInfo({
+        visible: true,
+        type: "error",
+        message: err.message,
+      });
+    } finally {
+      setCancelLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -125,6 +175,11 @@ const AdminPanel = () => {
                 label: "Extend Validity",
                 value: "extendValidity",
               },
+              {
+                icon: CalendarPlus,
+                label: "Canceled Bookings",
+                value: "cancelBookings",
+              },
             ].map((item) => (
               <Button
                 key={item.value}
@@ -180,14 +235,37 @@ const AdminPanel = () => {
   const BookingCard = ({ booking, index }) => (
     <Card className="p-4 sm:p-6 mb-4 sm:mb-0 bg-[#f9f6f4] border-[#baada6]/20 hover:shadow-lg transition-shadow duration-200">
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-md flex sm:text-lg items-center font-semibold text-[#8b7355]">
-            <Calendar size={19} />
-            &nbsp;Booking {index + 1}
+        <div className="flex justify-between flex-col sm:flex-row sm:items-center">
+          <h3 className="text-md flex sm:text-lg items-center justify-between font-semibold text-[#8b7355]">
+            <div className="flex items-center justify-center">
+              {" "}
+              <Calendar size={19} />
+              &nbsp;Booking {index + 1}
+            </div>
+            {!booking.canceled && (
+              <XCircle
+                className="cursor-pointer sm:hidden block w-5 h-5 ml-5 text-red-500"
+                onClick={() => {
+                  setCurrentBookingId(booking._id); // Store the booking ID
+                  setIsModalVisible(true); // Open the modal
+                }}
+              />
+            )}
           </h3>
-          <span className="text-xs sm:text-sm text-[#a88a7d]">
-            ID: {booking._id}
-          </span>
+          <div className="flex sm:items-center mt-3 sm:mt-0 sm:justify-center">
+            <span className="text-xs sm:text-sm  text-[#a88a7d]">
+              ID: {booking._id}
+            </span>
+            {!booking.canceled && (
+              <XCircle
+                className="cursor-pointer sm:block hidden w-6 h-6 ml-5 text-red-500"
+                onClick={() => {
+                  setCurrentBookingId(booking._id); // Store the booking ID
+                  setIsModalVisible(true); // Open the modal
+                }}
+              />
+            )}
+          </div>
         </div>
         <Separator className="bg-[#baada6]/20" />
         <div className="grid gap-4">
@@ -336,126 +414,173 @@ const AdminPanel = () => {
       </div>
     </Card>
   );
-
+  const filteredBoookings = bookings.filter(
+    (booking) => !booking.rescheduled && !booking.canceled
+  );
+  const filteredRescheduledBoookings = bookings.filter(
+    (booking) => booking.rescheduled
+  );
+  const filteredCanceledBoookings = bookings.filter(
+    (booking) => booking.canceled
+  );
   return (
-    <div className="min-h-screen bg-background">
-      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-        <SheetTrigger asChild className="lg:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="mt-2 bg-[#baada6] ml-2"
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="p-0">
-          <Sidebar />
-        </SheetContent>
-      </Sheet>
+    <>
+      <div className="min-h-screen bg-background">
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild className="lg:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="mt-2 bg-[#baada6] ml-2"
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0">
+            <Sidebar />
+          </SheetContent>
+        </Sheet>
 
-      <div className="flex">
-        <aside className="hidden lg:block w-64 border-r border-[#baada6]/20 bg-[#f9f6f4] ">
-          <Sidebar />
-        </aside>
+        <div className="flex">
+          <aside className="hidden lg:block w-64 border-r border-[#baada6]/20 bg-[#f9f6f4] ">
+            <Sidebar />
+          </aside>
 
-        <main className="flex-1 p-1 sm:p-8">
-          <div className="max-w-4xl mx-auto">
-            {error && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
+          <main className="flex-1 p-1 sm:p-8">
+            <div className="max-w-4xl mx-auto">
+              {error && (
+                <Alert variant="destructive" className="mb-6">
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-            <ScrollArea className="h-[calc(100vh-2rem)] p-2 sm:mt-0">
-              {activeTab === "clients" &&
-                (loading ? (
-                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
-                    <Spin size="default" className="sm:hidden" />{" "}
-                    <Spin size="large" className="hidden sm:block" />{" "}
-                  </Card>
-                ) : (
-                  renderClients()
-                ))}
+              <ScrollArea className="h-[calc(100vh-2rem)] p-2 sm:mt-0">
+                {activeTab === "clients" &&
+                  (loading ? (
+                    <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                      <Spin size="default" className="sm:hidden" />{" "}
+                      <Spin size="large" className="hidden sm:block" />{" "}
+                    </Card>
+                  ) : (
+                    renderClients()
+                  ))}
 
-              {activeTab === "bookings" &&
-                (loading || refetchLoading ? (
-                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
-                    <Spin size="default" className="sm:hidden" />{" "}
-                    <Spin size="large" className="hidden sm:block" />{" "}
-                  </Card>
-                ) : (
-                  <div className="space-y-6 bg-[#baada6] p-2">
-                    {bookings.length > 0 ? (
-                      bookings
-                        .filter((booking) => !booking.rescheduled)
-                        .map((booking, index) => (
+                {activeTab === "bookings" &&
+                  (loading || refetchLoading ? (
+                    <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                      <Spin size="default" className="sm:hidden" />{" "}
+                      <Spin size="large" className="hidden sm:block" />{" "}
+                    </Card>
+                  ) : (
+                    <div className="space-y-6 bg-[#baada6] p-2">
+                      {filteredBoookings.length > 0 ? (
+                        filteredBoookings.map((booking, index) => (
                           <BookingCard
                             key={index}
                             booking={booking}
                             index={index}
                           />
                         ))
-                    ) : (
-                      <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
-                        <p className="text-center text-[#a88a7d]">
-                          No bookings found.
-                        </p>
-                      </Card>
-                    )}
-                  </div>
-                ))}
-              {activeTab === "rescheduledBookings" &&
-                (loading || refetchLoading ? (
-                  <Card className="p-6 flex items-center justify-center border-0 shadow-none">
-                    <Spin size="default" className="sm:hidden" />
-                    <Spin size="large" className="hidden sm:block" />
-                  </Card>
-                ) : (
-                  <div className="space-y-6 bg-[#baada6] p-2">
-                    {bookings.length > 0 ? (
-                      bookings.filter((b) => b.rescheduled).length > 0 ? (
-                        bookings.reduce((acc, booking, index) => {
-                          if (booking.rescheduled) {
-                            acc.push(
-                              <BookingCard
-                                key={index}
-                                booking={booking}
-                                index={acc.length} // Use the length of the accumulator as the index
-                              />
-                            );
-                          }
-                          return acc;
-                        }, [])
+                      ) : (
+                        <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                          <p className="text-center text-[#a88a7d]">
+                            No bookings found.
+                          </p>
+                        </Card>
+                      )}
+                    </div>
+                  ))}
+                {activeTab === "rescheduledBookings" &&
+                  (loading || refetchLoading ? (
+                    <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                      <Spin size="default" className="sm:hidden" />
+                      <Spin size="large" className="hidden sm:block" />
+                    </Card>
+                  ) : (
+                    <div className="space-y-6 bg-[#baada6] p-2">
+                      {filteredRescheduledBoookings.length > 0 ? (
+                        filteredRescheduledBoookings.map((booking, index) => (
+                          <BookingCard
+                            key={index}
+                            booking={booking}
+                            index={index}
+                          />
+                        ))
                       ) : (
                         <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
                           <p className="text-center text-[#a88a7d]">
                             No rescheduled bookings found.
                           </p>
                         </Card>
-                      )
-                    ) : (
-                      <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
-                        <p className="text-center text-[#a88a7d]">
-                          No bookings found.
-                        </p>
-                      </Card>
-                    )}
-                  </div>
-                ))}
+                      )}
+                    </div>
+                  ))}
+                {activeTab === "cancelBookings" &&
+                  (loading || refetchLoading ? (
+                    <Card className="p-6 flex items-center justify-center border-0 shadow-none">
+                      <Spin size="default" className="sm:hidden" />
+                      <Spin size="large" className="hidden sm:block" />
+                    </Card>
+                  ) : (
+                    <div className="space-y-6 bg-[#baada6] p-2">
+                      {filteredCanceledBoookings.length > 0 ? (
+                        filteredCanceledBoookings.map((booking, index) => (
+                          <BookingCard
+                            key={index}
+                            booking={booking}
+                            index={index}
+                          />
+                        ))
+                      ) : (
+                        <Card className="p-6 bg-[#f9f6f4] border-[#baada6]/20">
+                          <p className="text-center text-[#a88a7d]">
+                            No canceled bookings found.
+                          </p>
+                        </Card>
+                      )}
+                    </div>
+                  ))}
 
-              {activeTab === "rescheduling" && (
-                <Rescheduling setRefetch={setRefetch} />
-              )}
-              {activeTab === "extendValidity" && (
-                <ExtendValidity setRefetch={setRefetch} />
-              )}
-            </ScrollArea>
-          </div>
-        </main>
+                {activeTab === "rescheduling" && (
+                  <Rescheduling setRefetch={setRefetch} />
+                )}
+                {activeTab === "extendValidity" && (
+                  <ExtendValidity setRefetch={setRefetch} />
+                )}
+              </ScrollArea>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+      <Modal
+        title="Cancel Booking"
+        visible={isModalVisible}
+        onOk={handleCancelBooking}
+        onCancel={() => setIsModalVisible(false)}
+        confirmLoading={cancelLoading}
+        centered={true}
+        className="custom-modal"
+      >
+        <p className="text-[#8b7355]">
+          Are you sure you want to cancel this booking? This action cannot be
+          undone.
+        </p>
+      </Modal>
+      {alertInfo.visible && (
+        <Alert
+          message={alertInfo.message}
+          type={alertInfo.type}
+          closable
+          style={{
+            position: "fixed",
+            top: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        />
+      )}
+    </>
   );
 };
 
