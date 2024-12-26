@@ -169,6 +169,10 @@ export async function GET(request) {
       .find({
         trainer_id: new ObjectId(trainerId),
         bookedslots: { $elemMatch: { [day]: { $exists: true } } },
+        $or: [
+          { canceled: { $exists: false } }, // `canceled` field does not exist
+          { canceled: false }, // `canceled` field is explicitly false
+        ],
       })
       .toArray();
 
