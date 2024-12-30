@@ -42,7 +42,7 @@ export async function GET(request) {
         JSON.stringify({
           client: clientData,
           bookings: [],
-          message: "No bookings found for this client."
+          message: "No bookings found for this client.",
         }),
         {
           status: 200,
@@ -75,7 +75,7 @@ export async function GET(request) {
     return new Response(
       JSON.stringify({
         client: {
-          ...clientData
+          ...clientData,
         },
         bookings: enrichedBookings.map((booking) => ({
           _id: booking._id,
@@ -84,9 +84,12 @@ export async function GET(request) {
           validStartDate: booking.valid_start_date,
           validEndDate: booking.valid_end_date,
           bookedSlots: booking.bookedslots,
-          free_slots:booking.free_slots,
-          rescheduled:booking.rescheduled
-        }))
+          free_slots: booking.free_slots,
+          rescheduled: booking.rescheduled,
+          canceled: booking.canceled,
+          oldSlotDate: booking.oldSlotDate,
+          oldSlotTime: booking.oldSlotTime,
+        })),
       }),
       {
         status: 200,

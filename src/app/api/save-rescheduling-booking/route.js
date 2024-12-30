@@ -20,6 +20,30 @@ export async function POST(req) {
     const client = await clientPromise;
     const db = client.db("BookingSys");
 
+    // Fetch parent booking
+    const parentBookingDoc = await db.collection("Booking").findOne({
+      _id: new ObjectId(parentBooking),
+    });
+
+    if (!parentBookingDoc) {
+      return new Response(
+        JSON.stringify({ message: "Parent booking not found." }),
+        { status: 404 }
+      );
+    }
+
+    // Calculate the day of the free slot
+    const freeSlotDate = new Date(freeSlot.$date);
+    const dayOfWeek = freeSlotDate.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+
+    // Find the corresponding time for the day in parent booking
+    const oldSlotTime =
+      parentBookingDoc.bookedslots.find((slot) => slot[dayOfWeek])?.[
+        dayOfWeek
+      ]?.[0]?.time || null;
+
     // Construct the booking document
     const bookingDocument = {
       trainer_id: new ObjectId(trainer_id),
@@ -30,6 +54,8 @@ export async function POST(req) {
       date_of_creation: new Date(date_of_creation.$date),
       rescheduled: true,
       parent_booking_id: new ObjectId(parentBooking),
+      oldSlotDate: new Date(freeSlot.$date),
+      oldSlotTime: oldSlotTime,
     };
 
     // Insert the booking into the database

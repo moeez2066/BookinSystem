@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/navbar";
+import Footer from "./components/Footer";
 import { MyContextProvider } from "./MyContext";
 
 const geistSans = localFont({
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
           {/* Wrap with your context provider */}
           <Navbar />
           {children}
+          <Footer />
         </MyContextProvider>
       </body>
     </html>

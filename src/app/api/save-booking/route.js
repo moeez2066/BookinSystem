@@ -12,6 +12,7 @@ export async function POST(req) {
       valid_start_date,
       valid_end_date,
       date_of_creation,
+      no_of_sessions
     } = body;
 
     // Validation
@@ -40,6 +41,7 @@ export async function POST(req) {
       valid_start_date: new Date(valid_start_date.$date),
       valid_end_date: new Date(valid_end_date.$date),
       date_of_creation: new Date(date_of_creation.$date),
+      no_of_sessions: no_of_sessions,
     };
 
     // Insert the booking into the database

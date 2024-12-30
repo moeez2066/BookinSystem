@@ -58,7 +58,7 @@ const Rescheduling = ({ setRefetch }) => {
       if (!response.ok) {
         throw new Error(data.error || "Failed to fetch data");
       }
-
+      console.log(data);
       setBookingData(data);
     } catch (err) {
       setAlertInfo({
@@ -277,11 +277,21 @@ const Rescheduling = ({ setRefetch }) => {
                   marginTop: "8px",
                   marginBottom: "3px",
                 }}
-                disabledDate={(current) =>
-                  current &&
-                  (current.isBefore(bookingData.valid_start_date) ||
-                    current.isAfter(bookingData.valid_end_date))
-                }
+                disabledDate={(current) => {
+                  if (bookingData.child_start_date) {
+                    // Disable all dates except the child start date
+                    const childStartDate = new Date(
+                      bookingData.child_start_date
+                    );
+                    return current && !current.isSame(childStartDate, "day");
+                  }
+                  // Default behavior: Disable dates outside valid start and end range
+                  return (
+                    current &&
+                    (current.isBefore(bookingData.valid_start_date) ||
+                      current.isAfter(bookingData.valid_end_date))
+                  );
+                }}
               />
             </Col>
           </Row>

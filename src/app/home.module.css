@@ -1,0 +1,196 @@
+.container {
+  display: flex;
+  padding: 62px 0;
+  background-color: #efede9;
+  justify-content: center;
+}
+
+.leftColumn {
+  padding-right: 40px;
+  margin-bottom: 20px;
+  max-width: 266px;
+  margin-right: 135px;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 466px;
+}
+
+.title {
+  font-family: "Pinyon Script", Sans-serif;
+  font-size: 134px;
+  margin: 0;
+  color: #473a3a;
+  width: 700px;
+  position: relative;
+  top: -160px;
+  line-height: 112px;
+}
+
+.stepDescription {
+  margin-top: 20px;
+  font-family: Sans-serif;
+  color: #473a3a;
+}
+
+.stepNumber {
+  font-weight: 550;
+  margin-bottom: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.descriptionText {
+  font-size: 14px;
+  color: #473a3a;
+}
+
+.roundNumber {
+  font-weight: 550;
+  border: 2px solid #473a3a;
+  border-radius: 50%;
+  padding: 1px 2.9px;
+  margin-bottom: 10px;
+  margin-right: 6px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.packageCard {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  text-align: center;
+  width: 433px;
+}
+
+.imageWrapper {
+  width: 260px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.packageInfo {
+  font-family: Sans-serif;
+}
+
+.packageTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: #473a3a;
+  font-family: "Roboto", sans-serif;
+}
+
+.packageDescription {
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  color: #473a3a;
+  padding: 0 12px;
+}
+
+.selectButton {
+  padding: 4px 23px;
+  border: 2px solid #b4a597;
+  border-radius: 20px;
+  background: none;
+  color: #b4a597;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 27px;
+}
+.selectButton:active,
+.selectButton:focus {
+  border-color: #473a3a;
+  color: #ebeaea !important;
+  background-color: #41365e;
+  transform: 6px;
+  outline: none;
+}
+
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  .leftColumn {
+    padding-right: 0;
+    margin-right: 0;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .title {
+    font-family: "Pinyon Script", Sans-serif;
+    font-size: 68px;
+    margin: 0;
+    color: #473a3a;
+    width: 400px;
+    position: relative;
+    top: -100px;
+    line-height: 62px;
+  }
+  .imageWrapper {
+    width: 210px;
+    height: 100%;
+    overflow: hidden;
+  }
+  .stepDescription {
+    margin-top: 15px;
+  }
+
+  .stepNumber {
+    font-size: 14px;
+  }
+
+  .descriptionText {
+    font-size: 12px;
+  }
+
+  .roundNumber {
+    font-size: 14px;
+    padding: 3px 6px;
+  }
+
+  .rightColumn {
+    gap: 15px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .packageCard {
+    flex-direction: row; /* Ensure image stays on the left */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional for better visuals */
+  }
+
+  .packageInfo {
+    padding-left: 20px; /* Add spacing between image and text */
+    text-align: left;
+    width: 100%;
+  }
+
+  .packageTitle {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .packageDescription {
+    font-size: 12px;
+    margin: 5px 0;
+    padding: 0;
+  }
+
+  .selectButton {
+    font-size: 12px;
+    padding: 5px 15px;
+    margin-top: 10px;
+  }
+}

@@ -171,6 +171,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       valid_end_date: { $date: valid_end_date },
       date_of_creation: { $date: new Date().toISOString() },
       client_id: { $oid: sessionStorage.getItem("userId") },
+      no_of_sessions: sessionPackage.count.toString(),
     };
 
     try {

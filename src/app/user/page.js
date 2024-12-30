@@ -244,13 +244,45 @@ const UserPanel = () => {
               </p>
             </div>
           </div>
+          {booking.rescheduled && booking.oldSlotDate && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                  Old Slot Date
+                </p>
+                <p className="text-xs sm:text-sm text-[#a88a7d]">
+                  {new Intl.DateTimeFormat("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })
+                    .format(new Date(booking.oldSlotDate))
+                    .replace(/(\s\w{3})\s/, "$1, ")}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                  Old Slot Time
+                </p>
+                <p className="text-xs sm:text-sm text-[#a88a7d]">
+                  {booking.oldSlotTime}
+                </p>
+              </div>
+            </div>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
                 Start Date
               </p>
               <p className="text-xs sm:text-sm text-[#a88a7d]">
-                {new Date(booking.validStartDate).toLocaleDateString()}
+                {new Intl.DateTimeFormat("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+                  .format(new Date(booking.validStartDate))
+                  .replace(/(\s\w{3})\s/, "$1, ")}
               </p>
             </div>
             <div>
@@ -258,10 +290,17 @@ const UserPanel = () => {
                 End Date
               </p>
               <p className="text-xs sm:text-sm text-[#a88a7d]">
-                {new Date(booking.validEndDate).toLocaleDateString()}
+                {new Intl.DateTimeFormat("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+                  .format(new Date(booking.validEndDate))
+                  .replace(/(\s\w{3})\s/, "$1, ")}
               </p>
             </div>
           </div>
+
           <div>
             <p className="text-xs sm:text-sm font-medium text-[#8b7355] mb-2">
               Booked Slots
@@ -295,13 +334,20 @@ const UserPanel = () => {
                 {booking.free_slots.map((slot, idx) => (
                   <div key={`${idx}`} className="mb-2">
                     <span className="font-medium text-sm sm:text-base text-[#8b7355]">
-                      {new Date(slot).toLocaleDateString()}
+                      {new Intl.DateTimeFormat("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                        .format(new Date(slot))
+                        .replace(/(\s\w{3})\s/, "$1, ")}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
           )}
+
           <div>
             <div className="flex items-center mb-2">
               <MapPin className="h-4 w-4 text-[#baada6] mr-2" />

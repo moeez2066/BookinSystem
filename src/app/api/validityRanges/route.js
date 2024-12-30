@@ -28,10 +28,12 @@ export async function GET(request) {
         status: 404,
       });
     }
+
     let validStartDate = booking.valid_start_date || null;
     let validEndDate = booking.valid_end_date || null;
+    let childStartDate = null;
 
-    if (booking.rescheduled) {
+    if (booking.rescheduled && booking.parent_booking_id) {
       const parentBooking = await db.collection("Booking").findOne({
         _id: new ObjectId(booking.parent_booking_id),
       });
@@ -39,13 +41,17 @@ export async function GET(request) {
       if (parentBooking) {
         validStartDate = parentBooking.valid_start_date || validStartDate;
         validEndDate = parentBooking.valid_end_date || validEndDate;
+        childStartDate = booking.valid_start_date || null; // Set child start date
       }
     }
+
     const { client_id, trainer_id, bookedslots, _id } = booking;
+
     return new Response(
       JSON.stringify({
-        valid_start_date: validStartDate || null,
-        valid_end_date: validEndDate || null,
+        valid_start_date: validStartDate || null, // Parent booking start date
+        valid_end_date: validEndDate || null, // Parent booking end date
+        child_start_date: childStartDate, // Child booking start date (null if not a child booking)
         client_id: client_id,
         trainer_id: trainer_id,
         location: bookedslots[0][Object.keys(bookedslots[0])[0]][0]["location"],
