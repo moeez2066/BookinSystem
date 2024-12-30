@@ -311,10 +311,12 @@ const Rescheduling = ({ setRefetch }) => {
                   marginTop: "8px",
                   marginBottom: "3px",
                 }}
-                disabledDate={(current) =>
-                  current &&
-                  (current.isBefore(bookingData.valid_start_date) ||
-                    current.isAfter(bookingData.valid_end_date))
+                disabledDate={
+                  (current) =>
+                    current &&
+                    (current.isBefore(bookingData.valid_start_date) ||
+                      current.isAfter(bookingData.valid_end_date) ||
+                      current.day() === 5) // Disables Fridays
                 }
               />
             </Col>
