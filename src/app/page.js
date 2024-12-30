@@ -18,12 +18,13 @@ export default function Home() {
           >
             <div className={styles.imageWrapper}>
               <Image
-                src="/general-fitness.jpg"
+                src="/empowering.jpg"
                 alt="General Fitness"
                 layout="responsive"
                 width={300}
                 height={300}
                 objectFit="cover"
+                style={{ transform: "scaleX(-1)" }} // Mirrors the image horizontally
               />
             </div>
           </div>
@@ -55,9 +56,9 @@ export default function Home() {
         </div>
 
         <div className="bg-[#efede9] mt-10 flex flex-col lg:flex-row items-center justify-center">
-          <div className="w-full lg:w-[933px] py-0 mx-auto flex flex-col lg:flex-row items-center justify-center lg:items-start gap-8 lg:gap-0 px-6 lg:px-16">
+          <div className="w-full lg:w-[1133px] py-0 mx-auto  flex flex-col lg:flex-row items-center justify-center  gap-8  px-6 lg:px-16">
             {/* Left Content */}
-            <div className="w-full lg:w-1/2 text-center my-auto pt-9 sm:pt-0 lg:text-left pr-0 lg:pr-20">
+            <div className="w-full lg:w-1/2 text-center my-auto pt-9 sm:pt-0 lg:text-left pr-0 lg:pr-[185px]">
               <h2
                 className="text-[49px] lg:text-[68px] text-[#473a3a]"
                 style={{ fontFamily: '"Pinyon Script", Sans-serif' }}
@@ -77,35 +78,43 @@ export default function Home() {
             </div>
 
             {/* Right Content */}
-            <div className="relative w-full lg:w-1/2 pb-12 sm:pb-0 flex justify-center items-center">
-              {/* Vertical divider for large screens */}
-              <div className="absolute top-0 left-0 h-full w-[3px] bg-gray-300 hidden lg:block"></div>
-              <div className="relative w-[280px] h-[320px] sm:w-80 sm:h-96 lg:w-full lg:h-[480px]">
-                <Image
-                  src="/pilates.jpg"
+            <div className="relative pb-12 sm:pb-0 flex ">
+              <p
+                className="bg-[#baada6] text-center text-white p-3  text-nowrap h:[90vh]"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  
+                  width: "53px",
+                }}
+              >
+                <p className="transform rotate-90 ">EMPOWERING EVERY BODY</p>
+              </p>
+              <div className="relative lg:w-[450px] lg:h-[90vh]">
+                <img
+                  src="/empowering.jpg"
                   alt="Empowering Every Body"
-                  layout="fill"
+                  width={450}
+                  height={450}
                   objectFit="cover"
+                  style={{ transform: "scaleX(-1)" }}
                 />
               </div>
-              {/* Rotated Text for large screens */}
-              <p className="absolute hidden lg:block bg-[#baada6] w-[102.5%] sm:w-[119%] left-[-38.5%] text-center sm:left-[-13.5rem] top-[40%] sm:top-[45%] text-white p-3 transform rotate-90 px-[13px]">
-                EMPOWERING EVERY BODY
-              </p>
             </div>
           </div>
         </div>
 
         <div
-          className="relative h-[446px] w-full bg-cover bg-center"
+          className="relative h-[444px]  bg-top sm:h-[646px] w-full bg-cover lg:bg-top"
           style={{
-            backgroundImage: "url('/general-fitness.jpg')", // Replace with your image path
+            backgroundImage: "url('/quote.jpg')", // Replace with your image path
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center">
+          <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex flex-col justify-center items-center">
             {/* Quote Text */}
             <h1
-              className="text-white text-4xl lg:text-[90px] text-center"
+              className="text-white text-5xl lg:text-[120px] text-center"
               style={{ fontFamily: '"Pinyon Script", Sans-serif' }}
             >
               “quote goes here”
@@ -142,7 +151,7 @@ export default function Home() {
             {/* Trainer Card */}
             {[
               {
-                img: "/pilates.jpg",
+                img: "/general-fitness.jpg",
                 name: "TRAINER NAME",
                 description:
                   "Specializing in [specialty, e.g., general fitness, bodybuilding], [Trainer Name] combines years of experience with a personalized approach to create effective and engaging workouts tailored to your needs.",
@@ -154,7 +163,7 @@ export default function Home() {
                   "With a focus on [specialty, e.g., Pilates, Yoga], [Trainer Name] offers a supportive and motivating environment, helping you enhance flexibility and strength while promoting overall wellness.",
               },
               {
-                img: "/pilates.jpg",
+                img: "/trainer3.jpg",
                 name: "TRAINER NAME",
                 description:
                   "Expert in [specialty, e.g., kickboxing, CrossFit], [Trainer Name] delivers dynamic and challenging sessions designed to push your limits and elevate your performance.",
@@ -164,7 +173,7 @@ export default function Home() {
                 <img
                   src={trainer.img}
                   alt={trainer.name}
-                  className="w-full h-[200px] sm:h-[300px] object-cover"
+                  className="w-full h-[200px] sm:h-[340px] object-cover"
                 />
                 <div className="text-center relative h-[213px] flex flex-col">
                   <h3 className="my-3 mt-5 font-bold text-[#473a3a] uppercase">
@@ -209,19 +218,19 @@ export default function Home() {
                   title: "CUSTOMIZED PERSONAL TRAINING",
                   description:
                     "Personalized workouts in general fitness, bodybuilding, kickboxing, CrossFit, Pilates, and Yoga tailored to your goals.",
-                  image: "/pilates.jpg",
+                  image: "/service.jpg",
                 },
                 {
                   title: "NUTRITIONAL GUIDANCE",
                   description:
                     "We provide high-quality workout equipment, ensuring you have everything you need to train effectively at home.",
-                  image: "/pilates.jpg",
+                  image: "/general-fitness.jpg",
                 },
                 {
                   title: "WORKOUT ESSENTIALS",
                   description:
                     "We provide high-quality workout equipment, ensuring you have everything you need to train effectively at home.",
-                  image: "/pilates.jpg",
+                  image: "/service.jpg",
                 },
               ].map((service, index) => (
                 <div
