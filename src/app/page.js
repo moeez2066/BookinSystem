@@ -21,8 +21,8 @@ export default function Home() {
                 src="/empowering.jpg"
                 alt="General Fitness"
                 layout="responsive"
-                width={300}
-                height={300}
+                width={400}
+                height={400}
                 objectFit="cover"
                 style={{ transform: "scaleX(-1)" }} // Mirrors the image horizontally
               />
@@ -35,7 +35,7 @@ export default function Home() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "white",
+            backgroundColor: "white"
           }}
         >
           <h1 className={styles.title} style={{ textAlign: "center" }}>

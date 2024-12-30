@@ -68,7 +68,7 @@
 }
 
 .imageWrapper {
-  width: 260px;
+  width: 294px;
   height: 100%;
   overflow: hidden;
 }
@@ -192,5 +192,34 @@
     font-size: 12px;
     padding: 5px 15px;
     margin-top: 10px;
+  }
+}
+.title {
+  font-family: "Pinyon Script", Sans-serif;
+  font-size: 158px;
+  margin: 0 auto;
+  color: #473a3a;
+  width: 666px; /* Make width responsive */
+  position: relative;
+  top: -186px;
+  line-height: 142px;
+  text-align: center; /* Center align for better layout on mobile */
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 48px; /* Adjust font size for smaller screens */
+    line-height: 52px;
+    top: -50px; /* Reduce the negative offset */
+    width: 90%; /* Ensure the title doesn't overflow */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 69px; /* Further reduce font size for smaller screens */
+    line-height: 72px;
+    top: -113px; /* Reduce offset more */
+    max-width: 100vw; /* Full width for very small screens */
   }
 }
