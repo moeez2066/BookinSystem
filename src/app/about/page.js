@@ -308,4 +308,12 @@
 //   );
 // };
 
-// export default FAQ;
+
+export default FAQ = () => {
+    
+    return (
+        <div className="min-h-screen">
+        </div>
+    );
+
+};
