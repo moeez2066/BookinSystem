@@ -42,7 +42,7 @@ const SignUpComponent = () => {
     if (signedIn === "true" && storedName) {
       setIsSignedIn(true);
       setUserName(storedName);
-      setUserRole(storedRole)
+      setUserRole(storedRole);
       router.push("/");
     }
   }, []);
@@ -67,7 +67,7 @@ const SignUpComponent = () => {
         setIsSignedIn(true);
         setUserName(data.name || values.name);
         setUserRole(data.role);
-        
+
         // setAlertInfo({
         //   visible: true,
         //   message: data.message || "Sign In / Sign Up successful!",
@@ -127,7 +127,7 @@ const SignUpComponent = () => {
               }}
             >
               <Image
-                src="https://mayra.majetics.com/wp-content/uploads/2024/09/logo-removebg_edited_edited.png"
+                src="/shaped.webp"
                 alt="Logo"
                 width={205}
                 height={93}

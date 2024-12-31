@@ -3,15 +3,15 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className="bg-[#BAADA6ff]">
-      <footer className="bg-[#BAADA6ff] w-full lg:w-[1233px] mx-auto text-[13px] tracking-widest py-16 px-4 text-white">
+    <div className="bg-[#BAADA6ff] tracking-[0.2rem] Helvetica font-[500px]">
+      <footer className="bg-[#BAADA6ff] w-full lg:w-[1233px] mx-auto text-[13px] py-16 px-4 text-white">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
           {/* Column 1: Logo */}
           <div className="flex items-center justify-center lg:justify-start">
             <img
-              src="/logo.png"
+              src="/brand.png"
               alt="Logo"
-              className="w-16 h-16"
+              className="w-[9rem] h-[8rem]"
             />
           </div>
 
@@ -26,7 +26,7 @@ export default function Footer() {
               @SHAPED.FITNESS
             </p>
             <p>012 345 6789</p>
-            <p>shaped@shaped.com</p>
+            <p>SHAPED@SHAPED.COM</p>
           </div>
 
           {/* Column 3: Navigation Links */}

@@ -75,7 +75,7 @@ export default function Navbar() {
         </Link>
         <div className={styles.logoContainer}>
           <Image
-            src="https://mayra.majetics.com/wp-content/uploads/2024/09/logo-removebg_edited_edited.png"
+            src="/shaped.webp"
             alt="Logo"
             width={205}
             height={93}

@@ -132,8 +132,17 @@
     font-size: 14px;
   }
 
+  .stepNumberr {
+    font-size: 17px !important;
+  }
+
   .descriptionText {
     font-size: 12px;
+  }
+  .descriptionTextt {
+    font-size: 14px;
+    margin-top: 12px;
+    text-align: justify;
   }
 
   .roundNumber {

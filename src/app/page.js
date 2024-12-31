@@ -35,7 +35,7 @@
 //             display: "flex",
 //             alignItems: "center",
 //             justifyContent: "center",
-//             backgroundColor: "white"
+//             backgroundColor: "white",
 //           }}
 //         >
 //           <h1 className={styles.title} style={{ textAlign: "center" }}>
@@ -43,10 +43,10 @@
 //           </h1>
 //         </div>
 //         <div className="flex  flex-col items-center justify-center text-center px-6 py-12 pt-8 sm:pt-0 sm:-mt-[122px] -mt-[100px] bg-white">
-//           <h1 className="sm:text-4xl text-2xl sm:w-[450px] w-[300px] sm:leading-[50px] leading-9 font-semibold text-[#473a3a]">
+//           <h1 className="sm:text-[40px] Manrope text-[22px] sm:w-[530px] w-[300px] sm:leading-[60px] leading-9 font-semibold text-[#473a3a]">
 //             Discover the ease of workouts that come to you.
 //           </h1>
-//           <p className="mt-4 w-[315px] text-[#473a3a] text-sm md:text-base lg:text-lg max-w-2xl">
+//           <p className="mt-4 sm:w-[371px] Helvetica text-[#473a3a] text-sm md:text-base lg:text-lg max-w-4xl">
 //             With personalized sessions, we create a space where your fitness
 //             journey feels natural, inspired, and uniquely yours.
 //           </p>
@@ -65,7 +65,7 @@
 //               >
 //                 about us
 //               </h2>
-//               <p className="text-[#473a3a] text-[14px]">
+//               <p className="text-[#473a3a] text-[14px] Helvetica">
 //                 At Shaped, a proud Saudi brand based in Riyadh, we believe that
 //                 fitness should be as personal as it is empowering. That’s why we
 //                 bring the gym to you— whether in your living room, home gym, or
@@ -85,11 +85,13 @@
 //                   display: "flex",
 //                   alignItems: "center",
 //                   justifyContent: "center",
-                  
+
 //                   width: "53px",
 //                 }}
 //               >
-//                 <p className="transform rotate-90 ">EMPOWERING EVERY BODY</p>
+//                 <p className="transform rotate-90 Helvetica ">
+//                   EMPOWERING EVERY BODY
+//                 </p>
 //               </p>
 //               <div className="relative lg:w-[450px] lg:h-[90vh]">
 //                 <img
@@ -114,7 +116,7 @@
 //           <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex flex-col justify-center items-center">
 //             {/* Quote Text */}
 //             <h1
-//               className="text-white text-5xl lg:text-[120px] text-center"
+//               className="text-white text-5xl lg:text-[120px] mb-5 text-center"
 //               style={{ fontFamily: '"Pinyon Script", Sans-serif' }}
 //             >
 //               “quote goes here”
@@ -123,9 +125,9 @@
 //             {/* Small Image Below Text */}
 //             <div className="mt-6">
 //               <img
-//                 src="small-image-path.png" // Replace with the small image path
+//                 src="/brand.png" // Replace with the small image path
 //                 alt="small decorative image"
-//                 className="w-12 h-12"
+//                 className="sm:w-20 -mb-14 w-14 h-14  sm:h-20"
 //               />
 //             </div>
 //           </div>
@@ -139,7 +141,7 @@
 //             >
 //               meet our trainers
 //             </h2>
-//             <p className="text-[#473a3a] text-sm mt-3 sm:text-base max-w-[550px] mx-auto px-4 sm:px-0">
+//             <p className="text-[#473a3a] Helvetica text-sm mt-3 sm:text-base max-w-[550px] mx-auto px-4 sm:px-0">
 //               At Shaped, our trainers are the heart of our personalized fitness
 //               experience. Each of our dedicated professionals brings a wealth of
 //               expertise and a passion for helping you achieve your goals.
@@ -176,10 +178,10 @@
 //                   className="w-full h-[200px] sm:h-[340px] object-cover"
 //                 />
 //                 <div className="text-center relative h-[213px] flex flex-col">
-//                   <h3 className="my-3 mt-5 font-bold text-[#473a3a] uppercase">
+//                   <h3 className="my-3 mt-5 font-bold text-[#473a3a] uppercase Manrope">
 //                     {trainer.name}
 //                   </h3>
-//                   <p className="text-[#473a3a] text-[13px] px-4 sm:px-2">
+//                   <p className="text-[#473a3a] text-[13px] px-4 sm:px-2 Helvetica">
 //                     {trainer.description}
 //                   </p>
 //                   <button
@@ -243,8 +245,8 @@
 //                     className="w-full lg:w-[700px] h-[170px] object-cover"
 //                   />
 //                   <div className="lg:ml-8 mt-4 lg:mt-0 text-center lg:text-left">
-//                     <h3 className="font-semibold">{service.title}</h3>
-//                     <p className="text-[13px] mt-2 lg:pr-14 px-4 lg:px-0">
+//                     <h3 className="font-semibold Manrope">{service.title}</h3>
+//                     <p className="text-[13px] Helvetica mt-2 lg:pr-14 px-4 lg:px-0">
 //                       {service.description}
 //                     </p>
 //                   </div>
@@ -255,7 +257,7 @@
 //         </div>
 //         <div className="flex flex-col items-center justify-center bg-white py-28 px-4 sm:px-0">
 //           {/* Heading */}
-//           <h1 className="text-3xl text-[#473a3a] md:text-5xl font-semibold text-center px-4 sm:px-0">
+//           <h1 className="text-3xl Manrope  text-[#473a3a] md:text-5xl font-semibold text-center px-4 sm:px-0">
 //             book your{" "}
 //             <span
 //               className="text-5xl md:text-7xl font-normal text-[#473a3a]"
@@ -267,7 +269,7 @@
 //           </h1>
 
 //           {/* Description */}
-//           <p className="mt-4 w-full sm:w-[394px] text-center text-[#473a3a] text-base md:text-lg max-w-xl px-6 sm:px-0">
+//           <p className="mt-4 w-full Helvetica sm:w-[394px] text-center text-[#473a3a] text-base md:text-lg max-w-xl px-6 sm:px-0">
 //             Experience a complimentary 40-minute session to explore the basics
 //             of different workouts and get acquainted with our specialized
 //             equipment. All fitness levels are welcome.
@@ -286,10 +288,10 @@
 
 "use client";
 import React, { useState } from "react";
-import FirstStep from "./components/FirstStep";
-import SecondStep from "./components/SecondStep";
-import ThirdStep from "./components/ThirdStep";
-import FourthStep from "./components/FourthStep";
+import FirstStep from "../components/FirstStep";
+import SecondStep from "../components/SecondStep";
+import ThirdStep from "../components/ThirdStep";
+import FourthStep from "../components/FourthStep";
 
 export default function Home() {
   const [step, setStep] = useState(1);

@@ -99,7 +99,7 @@ const AuthenticationModal = ({ visible, onCancel }) => {
           }}
         >
           <Image
-            src="https://mayra.majetics.com/wp-content/uploads/2024/09/logo-removebg_edited_edited.png"
+            src="/shaped.webp"
             alt="Logo"
             width={205}
             height={93}
@@ -151,7 +151,9 @@ const AuthenticationModal = ({ visible, onCancel }) => {
                 label="Password"
                 name="password"
                 validateTrigger="onSubmit"
-                rules={[{ required: true, message: "Please enter your password" }]}
+                rules={[
+                  { required: true, message: "Please enter your password" },
+                ]}
               >
                 <Input
                   type="password"
@@ -196,7 +198,9 @@ const AuthenticationModal = ({ visible, onCancel }) => {
                 name="name"
                 autoComplete="off"
                 validateTrigger="onSubmit"
-                rules={[{ required: true, message: "Please enter your username" }]}
+                rules={[
+                  { required: true, message: "Please enter your username" },
+                ]}
               >
                 <Input
                   placeholder="Enter your username"

@@ -1,7 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 .navbar {
   background-color: #baada6;
   padding: 1rem;
@@ -433,4 +433,15 @@
 .custom-modal .ant-btn-default {
   color: #8b7355 !important; /* Secondary button text */
   border-color: #8b7355 !important; /* Secondary button border */
+}
+
+
+
+
+.Manrope {
+    font-family: 'Manrope', sans-serif;
+}
+
+.Helvetica {
+  font-family: 'Helvetica', sans-serif;
 }
