@@ -309,7 +309,7 @@
 // };
 
 
-export default FAQ = () => {
+export default function Home() {
     
     return (
         <div className="min-h-screen">
