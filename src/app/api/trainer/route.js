@@ -69,7 +69,13 @@ export async function GET(request) {
       );
       return {
         ...booking,
-        client: client ? { name: client.name, email: client.email } : null,
+        client: client
+          ? {
+              name: client.name,
+              email: client.email,
+              whatsapp: client.whatsapp,
+            }
+          : null,
       };
     });
 
@@ -86,6 +92,7 @@ export async function GET(request) {
           _id: booking._id,
           clientName: booking.client?.name || "N/A",
           clientEmail: booking.client?.email || "N/A",
+          clientNumber: booking.client?.whatsapp || "N/A",
           validStartDate: booking.valid_start_date,
           validEndDate: booking.valid_end_date,
           bookedSlots: booking.bookedslots,

@@ -263,6 +263,7 @@ const TrainerPanel = () => {
       )}
     </Card>
   );
+console.log(bookings);
 
   const BookingCard = ({ booking, index }) => (
     <Card className="p-4 sm:p-6 mb-4 sm:mb-0 bg-[#f9f6f4] border-[#baada6]/20 hover:shadow-lg transition-shadow duration-200">
@@ -289,10 +290,18 @@ const TrainerPanel = () => {
             </div>
             <div>
               <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
-                Email
+                Client Email
               </p>
               <p className="text-xs sm:text-sm text-[#a88a7d]">
                 {booking.clientEmail}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Client Number
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                {booking.clientNumber}
               </p>
             </div>
           </div>
