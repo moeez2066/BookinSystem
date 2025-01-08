@@ -59,7 +59,7 @@ export default function Navbar() {
           &nbsp;Dashboard
         </Link>
       </Menu.Item>
-      {userRole === "client" && (
+      {/* {userRole === "client" && (
         <Menu.Item key="cart">
           <Link href={"/cart"}>
             <ShoppingCartOutlined
@@ -68,7 +68,7 @@ export default function Navbar() {
             &nbsp;Cart
           </Link>
         </Menu.Item>
-      )}
+      )} */}
       <Menu.Item key="logout" onClick={handleLogout}>
         <LogoutOutlined style={{ fontSize: "17px", marginBottom: "-12px" }} />
         &nbsp;Logout
