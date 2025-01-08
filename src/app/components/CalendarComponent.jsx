@@ -13,7 +13,6 @@ import { days } from "../days/dat";
 import moment from "moment";
 import { parseValidity } from "../trainers/dat";
 import CheckSignInModal from "./AuthenticationModal";
-import { sendEmail, sendTrainerEmail } from "../sendEmail";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -120,28 +119,130 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       [selectedDay]: value,
     }));
   };
-  const fetchLocationName = async (location) => {
-    const apiKey = "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o";
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location}&key=${apiKey}`;
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+  // const handleRegister = async () => {
+  //   const isSignedIn = sessionStorage.getItem("isSignedIn");
 
-      const data = await response.json();
+  //   if (!isSignedIn) {
+  //     setIsModalVisible(true);
+  //     return;
+  //   }
+  //   const { valid_start_date, valid_end_date } = parseValidity(
+  //     sessionPackage.validity,
+  //     selectedDate.toISOString()
+  //   );
+  //   const bookedslots = Object.entries(selectedSlots).map(([day, time]) => ({
+  //     [day]: [
+  //       {
+  //         time,
+  //         location: placeChords,
+  //       },
+  //     ],
+  //   }));
 
-      if (data.status === "OK") {
-        return data.results[0]?.formatted_address || "Location not found";
-      } else {
-        throw new Error("Failed to fetch location name.");
-      }
-    } catch (error) {
-      console.error("Error fetching location:", error);
-      return "Location not found";
-    }
-  };
+  //   const payload = {
+  //     trainer_id: { $oid: data._id },
+  //     client_id: { $oid: sessionStorage.getItem("userId") },
+  //     bookedslots,
+  //     valid_start_date: { $date: valid_start_date },
+  //     valid_end_date: { $date: valid_end_date },
+  //     date_of_creation: { $date: new Date().toISOString() },
+  //     client_id: { $oid: sessionStorage.getItem("userId") },
+  //     no_of_sessions: sessionPackage.count.toString(),
+  //   };
+
+  //   try {
+  //     setLoadingBook(true);
+  //     const response = await fetch("/api/save-booking", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(payload),
+  //     });
+
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       setAlertInfo({
+  //         visible: true,
+  //         type: "success",
+  //         message: "Booking saved successfully!",
+  //       });
+  //       setLoadingBook(false);
+  //       const schedulingDates = bookedslots
+  //         .map((slot) =>
+  //           Object.entries(slot)
+  //             .map(([day, times]) => {
+  //               const timeRanges = times.map((t) => t.time).join(", ");
+  //               return `${day}: ${timeRanges}`;
+  //             })
+  //             .join("\n")
+  //         )
+  //         .join("\n");
+  //       try {
+  //         const emailParams = {
+  //           recipient_email: result.clientData.email,
+  //           customer_name: result.clientData.name,
+  //           company_name: "Shaped",
+  //           booking_reference: result.booking._id,
+  //           client_name: result.clientData.name,
+  //           client_email: result.clientData.email.toString(),
+  //           trainer_name: result.trainerData.name,
+  //           trainer_email: result.trainerData.email.toString(),
+  //           package_size: sessionPackage.name.toString(),
+  //           package_price: sessionPackage.price.toString(),
+  //           no_of_sessions: sessionPackage.count.toString(),
+  //           start_period: result.booking.valid_start_date.toString(),
+  //           scheduling_dates: schedulingDates,
+  //           end_date: result.booking.valid_end_date.toString(),
+  //           location: await fetchLocationName(result.location),
+  //           client_panel_url: "https://bookin-system.vercel.app/signin",
+  //           policy: "None",
+  //           support_email: "sara@shaped.com",
+  //         };
+
+  //         const emailTrainerParams = {
+  //           recipient_email: result.trainerData.email,
+  //           customer_name: result.clientData.name,
+  //           company_name: "Shaped",
+  //           booking_reference: result.booking._id,
+  //           client_name: result.clientData.name,
+  //           client_email: result.clientData.email.toString(),
+  //           trainer_name: result.trainerData.name,
+  //           trainer_email: result.trainerData.email.toString(),
+  //           package_size: sessionPackage.name.toString(),
+  //           package_price: sessionPackage.price.toString(),
+  //           no_of_sessions: sessionPackage.count.toString(),
+  //           start_period: result.booking.valid_start_date.toString(),
+  //           scheduling_dates: schedulingDates,
+  //           end_date: result.booking.valid_end_date.toString(),
+  //           location: await fetchLocationName(result.location),
+  //           client_panel_url: "https://bookin-system.vercel.app/signin",
+  //           policy: "None",
+  //           support_email: "sara@shaped.com",
+  //         };
+
+  //         await sendEmail(emailParams);
+  //         await sendTrainerEmail(emailTrainerParams);
+  //         console.log("Confirmation email sent successfully.");
+  //       } catch (emailError) {
+  //         console.error("Failed to send confirmation email:", emailError);
+  //       }
+  //     } else {
+  //       throw new Error("Failed to save booking.");
+  //     }
+  //     setLoadingBook(false);
+  //   } catch (error) {
+  //     console.error("Error saving booking:", error);
+  //     setAlertInfo({
+  //       visible: true,
+  //       type: "error",
+  //       message:
+  //         "An error occurred while saving your booking. Please try again.",
+  //     });
+  //     setLoadingBook(false);
+  //   }
+  // };
 
   const handleRegister = async () => {
     const isSignedIn = sessionStorage.getItem("isSignedIn");
@@ -172,11 +273,14 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       date_of_creation: { $date: new Date().toISOString() },
       client_id: { $oid: sessionStorage.getItem("userId") },
       no_of_sessions: sessionPackage.count.toString(),
+      price: sessionPackage.price.toString().replace(/,/g, "").split(" ")[1],
+      name: sessionPackage.name.toString(),
+      count: sessionPackage.count.toString(),
     };
 
     try {
       setLoadingBook(true);
-      const response = await fetch("/api/save-booking", {
+      const response = await fetch("/api/save-package-to-cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -185,83 +289,21 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
       });
 
       if (response.ok) {
-        const result = await response.json();
         setAlertInfo({
           visible: true,
           type: "success",
-          message: "Booking saved successfully!",
+          message: "Package added to cart",
         });
         setLoadingBook(false);
-        const schedulingDates = bookedslots
-          .map((slot) =>
-            Object.entries(slot)
-              .map(([day, times]) => {
-                const timeRanges = times.map((t) => t.time).join(", ");
-                return `${day}: ${timeRanges}`;
-              })
-              .join("\n")
-          )
-          .join("\n");
-        try {
-          const emailParams = {
-            recipient_email: result.clientData.email,
-            customer_name: result.clientData.name,
-            company_name: "Shaped",
-            booking_reference: result.booking._id,
-            client_name: result.clientData.name,
-            client_email: result.clientData.email.toString(),
-            trainer_name: result.trainerData.name,
-            trainer_email: result.trainerData.email.toString(),
-            package_size: sessionPackage.name.toString(),
-            package_price: sessionPackage.price.toString(),
-            no_of_sessions: sessionPackage.count.toString(),
-            start_period: result.booking.valid_start_date.toString(),
-            scheduling_dates: schedulingDates,
-            end_date: result.booking.valid_end_date.toString(),
-            location: await fetchLocationName(result.location),
-            client_panel_url: "https://bookin-system.vercel.app/signin",
-            policy: "None",
-            support_email: "sara@shaped.com",
-          };
-
-          const emailTrainerParams = {
-            recipient_email: result.trainerData.email,
-            customer_name: result.clientData.name,
-            company_name: "Shaped",
-            booking_reference: result.booking._id,
-            client_name: result.clientData.name,
-            client_email: result.clientData.email.toString(),
-            trainer_name: result.trainerData.name,
-            trainer_email: result.trainerData.email.toString(),
-            package_size: sessionPackage.name.toString(),
-            package_price: sessionPackage.price.toString(),
-            no_of_sessions: sessionPackage.count.toString(),
-            start_period: result.booking.valid_start_date.toString(),
-            scheduling_dates: schedulingDates,
-            end_date: result.booking.valid_end_date.toString(),
-            location: await fetchLocationName(result.location),
-            client_panel_url: "https://bookin-system.vercel.app/signin",
-            policy: "None",
-            support_email: "sara@shaped.com",
-          };
-
-          await sendEmail(emailParams);
-          await sendTrainerEmail(emailTrainerParams);
-          console.log("Confirmation email sent successfully.");
-        } catch (emailError) {
-          console.error("Failed to send confirmation email:", emailError);
-        }
       } else {
-        throw new Error("Failed to save booking.");
+        throw new Error("Failed to add package to cart");
       }
       setLoadingBook(false);
     } catch (error) {
-      console.error("Error saving booking:", error);
       setAlertInfo({
         visible: true,
         type: "error",
-        message:
-          "An error occurred while saving your booking. Please try again.",
+        message: "An error occurred while adding package",
       });
       setLoadingBook(false);
     }
@@ -466,7 +508,7 @@ const CalendarComponent = ({ data, sessionPackage, placeChords }) => {
             loading={loadingBook}
             onClick={handleRegister}
           >
-            Register
+            Add to cart
           </Button>
         </>
       )}

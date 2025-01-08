@@ -9,6 +9,7 @@ export const MyContextProvider = ({ children }) => {
   const [isSignedIn, setIsSignedIn] = useState(false); // State for tracking sign-in status
   const [userName, setUserName] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [userId, setUserId] = useState("");
   return (
     <MyContext.Provider
       value={{
@@ -18,6 +19,8 @@ export const MyContextProvider = ({ children }) => {
         setUserName,
         userRole,
         setUserRole,
+        userId,
+        setUserId
       }}
     >
       {children}

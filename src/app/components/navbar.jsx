@@ -11,13 +11,16 @@ import {
   LogoutOutlined,
   UserOutlined,
   ProfileOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
+import { ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
   const { isSignedIn, setIsSignedIn } = useMyContext();
   const { userName, setUserName } = useMyContext();
   const { userRole, setUserRole } = useMyContext();
   const router = useRouter();
+
   useEffect(() => {
     const signedIn = sessionStorage.getItem("isSignedIn");
     const storedName = sessionStorage.getItem("userName");
@@ -46,9 +49,8 @@ export default function Navbar() {
     if (userRole === "trainer") return "/trainer";
     return "/";
   };
-
   const menu = (
-    <Menu>
+    <Menu className="flex  justify-center flex-col">
       <Menu.Item key="dashboard">
         <Link href={getDashboardLink()}>
           <ProfileOutlined
@@ -57,6 +59,16 @@ export default function Navbar() {
           &nbsp;Dashboard
         </Link>
       </Menu.Item>
+      {userRole === "client" && (
+        <Menu.Item key="cart">
+          <Link href={"/cart"}>
+            <ShoppingCartOutlined
+              style={{ fontSize: "20px", marginBottom: "-12px" }}
+            />
+            &nbsp;Cart
+          </Link>
+        </Menu.Item>
+      )}
       <Menu.Item key="logout" onClick={handleLogout}>
         <LogoutOutlined style={{ fontSize: "17px", marginBottom: "-12px" }} />
         &nbsp;Logout

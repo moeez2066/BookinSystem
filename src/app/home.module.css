@@ -34,7 +34,6 @@
   margin-top: 20px;
   font-family: Sans-serif;
   color: #473a3a;
-  
 }
 
 .stepNumber {
@@ -106,7 +105,7 @@
 .selectButton:active,
 .selectButton:focus {
   border-color: #473a3a;
-  color: #ebeaea !important;
+  color: #ebeaea;
   background-color: #41365e;
   transform: 6px;
   outline: none;

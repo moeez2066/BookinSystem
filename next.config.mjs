@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default nextConfig;
+const nextConfig = {
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'cdn.dribbble.com',
+          pathname: '/users/**/screenshots/**/media/**'
+        },
+      ],
+    },
+  };
+  
+  export default nextConfig;
+  
