@@ -13,6 +13,7 @@ import {
   CalendarClock,
   XCircle,
   CalendarX,
+  ShoppingBag,
 } from "lucide-react";
 import { Modal, message } from "antd";
 import { Button } from "../components/ui/button";
@@ -27,6 +28,7 @@ import { Spin, Table } from "antd";
 import { useMyContext } from "../MyContext";
 import ExtendValidity from "../components/ExtendValidity";
 import { sendCanceledTrainerEmail, sendCancelEmail } from "../sendEmail";
+import PurchasedProducts from "../components/PurchasedProducts";
 
 const mapContainerStyle = {
   width: "100%",
@@ -192,7 +194,7 @@ const AdminPanel = () => {
   }, [refetch]);
 
   const Sidebar = ({ className }) => (
-    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]`, className)}>
+    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]  Manrope`, className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="flex items-center px-4 mb-6 mt-5">
@@ -218,6 +220,11 @@ const AdminPanel = () => {
                 icon: CalendarX,
                 label: "Canceled Bookings",
                 value: "cancelBookings",
+              },
+              {
+                icon: ShoppingBag,
+                label: "Purchased Products",
+                value: "purchasedProducts",
               },
             ].map((item) => (
               <Button
@@ -634,6 +641,7 @@ const AdminPanel = () => {
                 {activeTab === "extendValidity" && (
                   <ExtendValidity setRefetch={setRefetch} />
                 )}
+                {activeTab === "purchasedProducts" && <PurchasedProducts />}
               </ScrollArea>
             </div>
           </main>

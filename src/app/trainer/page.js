@@ -159,7 +159,7 @@ const TrainerPanel = () => {
   }, [refetch]);
 
   const Sidebar = ({ className }) => (
-    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]`, className)}>
+    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]  Manrope`, className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="flex items-center px-4 mb-6 mt-5">

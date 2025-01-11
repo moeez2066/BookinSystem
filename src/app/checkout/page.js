@@ -479,40 +479,42 @@ export default function Checkout() {
                           <ShoppingBag className="sm:h-7 sm:w-8 w-7 h-6 text-[#a88a7d] mr-2" />
                           Products
                         </h2>
-                        {products.map((product) => (
-                          <div
-                            key={product.id}
-                            className="flex  gap-3 sm:gap-4 p-2 sm:p-6 bg-white rounded-xl shadow-sm border border-[#baada6]/20  transition-shadow duration-200"
-                          >
-                            <div className="relative h-32 w-32 rounded-lg overflow-hidden">
-                              <Image
-                                src={product.image}
-                                alt={product.name}
-                                fill
-                                className="object-cover transform hover:scale-105 transition-transform duration-200"
-                              />
-                            </div>
-                            <div className="flex-1 space-y-2 ">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h3 className="font-semibold Manrope text-[#473a3a] text-xs pr-1 sm:pr-0 sm:text-lg">
-                                    {product.name}{" "}
-                                    <span className=" text-green-600">
-                                      {" "}
-                                      &nbsp; X {product.quantity}
+                        {products.map((product, index) => (
+                          <div key={product.id}>
+                            {index > 0 && <Separator className="my-4" />}
+                            <div className="flex gap-3 sm:gap-4  p-2 sm:p-6 bg-white rounded-xl shadow-sm border border-[#baada6]/20  transition-shadow duration-200">
+                              <div className="relative h-26 w-24 rounded-lg overflow-hidden flex-shrink-0">
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="font-medium Manrope">
+                                  {product.name}
+                                </h4>
+                                <span className="inline-flex items-center Manrope mb-2 px-2.5 py-0.5 rounded-full text-[9px] sm:text-xs font-medium bg-[#efede9] text-[#a88a7d]">
+                                  {product.type}
+                                </span>
+                                <p className="sm:text-sm text-xs mt-1 Helvetica">
+                                  {product.description}
+                                </p>
+                                <div className="flex items-center justify-between mt-1">
+                                  <span className="text-sm Helvetica">
+                                    Quantity{" "}
+                                    <span className="text-green-500 Manrope">
+                                      X {product.quantity}
                                     </span>
-                                  </h3>
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full  text-[9px] sm:text-xs font-medium bg-[#efede9] text-[#a88a7d]">
-                                    {product.type}
+                                  </span>
+                                  <span className="font-medium text-sm sm:text-base Manrope">
+                                    SAR{" "}
+                                    {parseFloat(product.price)}
+                                    .00
                                   </span>
                                 </div>
-                                <span className="font-semibold text-xs sm:text-lg Manrope text-nowrap text-[#473a3a]">
-                                  SAR {product.price}
-                                </span>
                               </div>
-                              <p className="sm:text-sm text-xs text-[#473a3a] Helvetica">
-                                {product.description}
-                              </p>
                             </div>
                           </div>
                         ))}
@@ -716,6 +718,85 @@ export default function Checkout() {
                       </div>
                     );
                   }
+                })()}
+
+                {/* Display Packages */}
+                {(() => {
+                  const cartData = sessionStorage.getItem("cartData");
+                  const parsedData = cartData
+                    ? JSON.parse(cartData)
+                    : { products: [], packages: [], totalAmount: 0 };
+                  return (
+                    <div className="space-y-4  sm:w-[812px] text-sm sm:text-base mx-auto">
+                      <div className="Manrope py-6">
+                        {/* Shipping Address Section */}
+                        <div className="bg-[#efede9] p-6 rounded-lg shadow-sm mb-6">
+                          <h3 className="text-lg font-semibold text-[#473a3a] mb-4">
+                            Shipping Address
+                          </h3>
+                          <div className="space-y-2 text-sm text-[#473a3a]">
+                            <p>
+                              <span className="font-medium">Full Name: </span>
+                              <span className="Helvetica">
+                                {shippingAddress.fullName}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="font-medium">Phone: </span>
+                              <span className="Helvetica">
+                                {shippingAddress.phone}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="font-medium">
+                                Address Line 1:{" "}
+                              </span>
+                              <span className="Helvetica">
+                                {shippingAddress.addressLine1}
+                              </span>
+                            </p>
+                            {shippingAddress.addressLine2 && (
+                              <p>
+                                <span className="font-medium">
+                                  Address Line 2:{" "}
+                                </span>
+                                <span className="Helvetica">
+                                  {shippingAddress.addressLine2}
+                                </span>
+                              </p>
+                            )}
+                            <p>
+                              <span className="font-medium">City: </span>
+                              <span className="Helvetica">
+                                {shippingAddress.city}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="font-medium">State: </span>
+                              <span className="Helvetica">
+                                {shippingAddress.state}
+                              </span>
+                            </p>
+                            <p>
+                              <span className="font-medium">ZIP Code: </span>
+
+                              <span className="Helvetica">
+                                {shippingAddress.zipCode}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Total Amount Section */}
+                        <div className="flex justify-end sm:text-lg font-semibold">
+                          <span className="text-[#473a3a]">TOTAL &nbsp;</span>
+                          <span className="text-[#a88a7d]">
+                            SAR {parsedData.totalAmount?.toFixed(2) || 0}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
                 })()}
               </div>
             </div>

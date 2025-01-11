@@ -8,6 +8,7 @@ export async function POST(req) {
     // Database connection
     const client = await clientPromise;
     const db = client.db("BookingSys");
+    console.log(body);
 
     // Construct the order document
     const orderDocument = {
@@ -15,6 +16,7 @@ export async function POST(req) {
       products: body.products.map((product) => ({
         product_id: new ObjectId(product._id),
         quantity: product.quantity,
+        price: product.price,
       })),
       order_date: new Date(),
     };

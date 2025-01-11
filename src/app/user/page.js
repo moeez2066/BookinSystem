@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useMyContext } from "../MyContext";
 import Rescheduling from "../components/clientReschedule";
+import PurchasedProducts from "../components/PurchasedProducts";
 import {
   Menu,
   LayoutDashboard,
@@ -14,16 +15,19 @@ import {
   Mail,
   Phone,
   CalendarX,
+  ShoppingBag,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Skeleton } from "../components/ui/skeleton";
+import ClientProfileModal from "../components/clientProfileModal";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Separator } from "../components/ui/separator";
 import { cn } from "../../../lib/utils";
 import { Spin } from "antd";
+import { Edit } from "lucide-react";
 
 const mapContainerStyle = {
   width: "100%",
@@ -40,12 +44,15 @@ const UserPanel = () => {
   const [refetch, setRefetch] = useState(false);
   const [refetchLoading, setRefetchLoading] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editloading, setEditLoading] = useState(false);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey:
       "AIzaSyC89Gb8SwfNkgEuBuOi0COhSBxJamM7t4o&callback=initMap&libraries=&v=weekly",
   });
-
+  const handleEditClick = () => {
+    setIsModalOpen(true);
+  };
   const router = useRouter();
   const { isSignedIn } = useMyContext();
 
@@ -109,7 +116,7 @@ const UserPanel = () => {
     }
   }, [refetch]);
   const Sidebar = ({ className }) => (
-    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4]`, className)}>
+    <div className={cn(`pb-12 h-[100%] bg-[#f9f6f4] Manrope`, className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="flex items-center px-4 mb-6 mt-5">
@@ -130,6 +137,11 @@ const UserPanel = () => {
                 icon: CalendarX,
                 label: "Canceled Bookings",
                 value: "cancelBookings",
+              },
+              {
+                icon: ShoppingBag,
+                label: "Purchased Products",
+                value: "purchasedProducts",
               },
             ].map((item) => (
               <Button
@@ -156,60 +168,78 @@ const UserPanel = () => {
     </div>
   );
 
-  const ProfileContent = () => (
-    <Card className="p-4 sm:p-8 bg-[#f9f6f4] border-[#baada6]/20">
-      {loading ? (
-        <div className="space-y-4">
-          <Skeleton className="h-4 w-3/4 sm:w-[250px]" />
-          <Skeleton className="h-4 w-2/3 sm:w-[200px]" />
-          <Skeleton className="h-4 w-3/4 sm:w-[220px]" />
-        </div>
-      ) : clientData ? (
-        <div className="space-y-4 sm:space-y-6">
-          <div className="flex flex-col sm:flex-row items-center space-x-0 space-y-4 sm:space-x-6 sm:space-y-0">
-            <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[#baada6] flex items-center justify-center shadow-lg">
-              <User className="h-8 sm:h-12 w-8 sm:w-12 text-white" />
-            </div>
-            <div>
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#8b7355]">
-                {clientData.name}
-              </h3>
-              <p className="text-[#a88a7d]">{clientData.email}</p>
-            </div>
+  const ProfileContent = ({ setRefetch }) => (
+    <>
+      <Card className="p-4 sm:p-8 bg-[#f9f6f4] border-[#baada6]/20">
+        {loading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-3/4 sm:w-[250px]" />
+            <Skeleton className="h-4 w-2/3 sm:w-[200px]" />
+            <Skeleton className="h-4 w-3/4 sm:w-[220px]" />
           </div>
-          <Separator className="bg-[#baada6]/20" />
-          <div className="grid gap-4">
-            <div className="space-y-4">
-              <h4 className="text-base sm:text-lg font-medium text-[#8b7355]">
-                Contact Information
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-[#baada6]" />
-                  <div>
-                    <p className="text-sm font-medium text-[#8b7355]">Email</p>
-                    <p className="text-sm text-[#a88a7d]">{clientData.email}</p>
-                  </div>
+        ) : clientData ? (
+          <div className="space-y-4 sm:space-y-6">
+            <div className="flex flex-col sm:flex-row items-center space-x-0 space-y-4 sm:space-x-6 sm:space-y-0">
+              <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[#baada6] flex items-center justify-center shadow-lg">
+                <User className="h-8 sm:h-12 w-8 sm:w-12 text-white" />
+              </div>
+              <div className="flex items-center">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-semibold text-[#8b7355]">
+                    {clientData.name}
+                  </h3>
+                  <p className="text-[#a88a7d]">{clientData.email}</p>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-[#baada6]" />
-                  <div>
-                    <p className="text-sm font-medium text-[#8b7355]">
-                      WhatsApp
-                    </p>
-                    <p className="text-sm text-[#a88a7d]">
-                      {clientData.whatsapp}
-                    </p>
+                <Edit
+                  className="h-5 w-5 text-[#baada6] mb-5 ml-4 cursor-pointer"
+                  onClick={handleEditClick}
+                />
+              </div>
+            </div>
+            <Separator className="bg-[#baada6]/20" />
+            <div className="grid gap-4">
+              <div className="space-y-4">
+                <h4 className="text-base sm:text-lg font-medium text-[#8b7355]">
+                  Contact Information
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-3">
+                    <Mail className="h-5 w-5 text-[#baada6]" />
+                    <div>
+                      <p className="text-sm font-medium text-[#8b7355]">
+                        Email
+                      </p>
+                      <p className="text-sm text-[#a88a7d]">
+                        {clientData.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Phone className="h-5 w-5 text-[#baada6]" />
+                    <div>
+                      <p className="text-sm font-medium text-[#8b7355]">
+                        WhatsApp
+                      </p>
+                      <p className="text-sm text-[#a88a7d]">
+                        {clientData.whatsapp}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <p className="text-[#8b7355]">No profile data available.</p>
-      )}
-    </Card>
+        ) : (
+          <p className="text-[#8b7355]">No profile data available.</p>
+        )}
+      </Card>
+
+      <ClientProfileModal
+        visible={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        setRefetch={setRefetch}
+      />
+    </>
   );
 
   const BookingCard = ({ booking, index }) => (
@@ -300,7 +330,24 @@ const UserPanel = () => {
               </p>
             </div>
           </div>
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Total no of sessions
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d]">
+                {booking.no_of_sessions}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-[#8b7355]">
+                Total no of completed sessions
+              </p>
+              <p className="text-xs sm:text-sm text-[#a88a7d] flex items-center">
+                {booking.no_of_completed_sessions ?? 0}
+              </p>
+            </div>
+          </div>
           <div>
             <p className="text-xs sm:text-sm font-medium text-[#8b7355] mb-2">
               Booked Slots
@@ -447,7 +494,7 @@ const UserPanel = () => {
                     <Spin size="large" className="hidden sm:block" />{" "}
                   </Card>
                 ) : (
-                  <ProfileContent />
+                  <ProfileContent setRefetch={setRefetch} />
                 ))}
 
               {activeTab === "bookings" &&
@@ -529,6 +576,7 @@ const UserPanel = () => {
               {activeTab === "rescheduling" && (
                 <Rescheduling setRefetch={setRefetch} />
               )}
+              {activeTab === "purchasedProducts" && <PurchasedProducts />}
             </ScrollArea>
           </div>
         </main>
