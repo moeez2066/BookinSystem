@@ -55,7 +55,7 @@ export async function GET(request) {
     const trainerIds = bookings.map((booking) => booking.trainer_id);
 
     const trainers = await db
-      .collection("Trainers")
+      .collection("users")
       .find({ _id: { $in: trainerIds.map((id) => new ObjectId(id)) } })
       .toArray();
 

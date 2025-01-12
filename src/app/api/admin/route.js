@@ -15,7 +15,7 @@ export async function GET() {
       });
     }
     const bookings = await db.collection("Booking").find({}).toArray();
-    const trainers = await db.collection("Trainers").find({}).toArray();
+    const trainers = await db.collection("users").find({role:'trainer'}).toArray();
     const enrichedBookings = bookings.map((booking) => {
       const client = clients.find(
         (client) => client._id.toString() === booking.client_id.toString()

@@ -33,7 +33,7 @@ export async function GET(request) {
     console.log("Fetching bookings for trainer");
     const bookings = await db
       .collection("Booking")
-      .find({ trainer_id: new ObjectId(trainerData.trainer_id) })
+      .find({ trainer_id: new ObjectId(trainerData._id) })
       .toArray();
 
     if (!bookings.length) {
@@ -83,7 +83,7 @@ export async function GET(request) {
     return new Response(
       JSON.stringify({
         trainer: {
-          trainer_id: trainerData.trainer_id,
+          trainer_id: trainerData._id,
           name: trainerData.name,
           email: trainerData.email,
           whatsapp: trainerData.whatsapp,

@@ -1,6 +1,6 @@
 export const trainers = [
   {
-    _id: "673cc6e1bb6e84489791b051",
+    _id: "673cc732bb6e84489791b053",
     name: "Iasmin",
     description:
       "Specializing in [specialty, e.g., general fitness, bodybuilding],[Trainer Name] combines years of experience with a personalized approach to create effective and engaging workouts tailored to your needs.",

@@ -23,7 +23,7 @@ export async function GET(request) {
     const db = client.db("BookingSys");
 
     const trainer = await db
-      .collection("Trainers")
+      .collection("users")
       .findOne(
         { _id: new ObjectId(trainerId) },
         { projection: { working_hours: 1 } }

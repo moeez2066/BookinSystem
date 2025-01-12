@@ -96,7 +96,7 @@ const PurchasedProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-1.5 sm:px-6 lg:px-8 Helvetica text-[#473a3a]">
+    <div className="min-h-screen bg-gray-50 py-8 pt-3 px-1.5 sm:px-6 lg:px-8 Helvetica text-[#473a3a]">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center sm:gap-3 gap-1 mb-8">
           <ShoppingBag className="sm:h-7 sm:w-7 w-6 h-6 text-[#a88a7d]" />

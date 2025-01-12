@@ -509,8 +509,7 @@ export default function Checkout() {
                                     </span>
                                   </span>
                                   <span className="font-medium text-sm sm:text-base Manrope">
-                                    SAR{" "}
-                                    {parseFloat(product.price)}
+                                    SAR {parseFloat(product.price)}
                                     .00
                                   </span>
                                 </div>
@@ -648,79 +647,11 @@ export default function Checkout() {
                             </div>
                           </div>
                         ))}
-                        <div className="Manrope py-6">
-                          {/* Shipping Address Section */}
-                          <div className="bg-[#efede9] p-6 rounded-lg shadow-sm mb-6">
-                            <h3 className="text-lg font-semibold text-[#473a3a] mb-4">
-                              Shipping Address
-                            </h3>
-                            <div className="space-y-2 text-sm text-[#473a3a]">
-                              <p>
-                                <span className="font-medium">Full Name: </span>
-                                <span className="Helvetica">
-                                  {shippingAddress.fullName}
-                                </span>
-                              </p>
-                              <p>
-                                <span className="font-medium">Phone: </span>
-                                <span className="Helvetica">
-                                  {shippingAddress.phone}
-                                </span>
-                              </p>
-                              <p>
-                                <span className="font-medium">
-                                  Address Line 1:{" "}
-                                </span>
-                                <span className="Helvetica">
-                                  {shippingAddress.addressLine1}
-                                </span>
-                              </p>
-                              {shippingAddress.addressLine2 && (
-                                <p>
-                                  <span className="font-medium">
-                                    Address Line 2:{" "}
-                                  </span>
-                                  <span className="Helvetica">
-                                    {shippingAddress.addressLine2}
-                                  </span>
-                                </p>
-                              )}
-                              <p>
-                                <span className="font-medium">City: </span>
-                                <span className="Helvetica">
-                                  {shippingAddress.city}
-                                </span>
-                              </p>
-                              <p>
-                                <span className="font-medium">State: </span>
-                                <span className="Helvetica">
-                                  {shippingAddress.state}
-                                </span>
-                              </p>
-                              <p>
-                                <span className="font-medium">ZIP Code: </span>
-
-                                <span className="Helvetica">
-                                  {shippingAddress.zipCode}
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Total Amount Section */}
-                          <div className="flex justify-end sm:text-lg font-semibold">
-                            <span className="text-[#473a3a]">TOTAL &nbsp;</span>
-                            <span className="text-[#a88a7d]">
-                              SAR {parsedData.totalAmount?.toFixed(2) || 0}
-                            </span>
-                          </div>
-                        </div>
                       </div>
                     );
                   }
                 })()}
 
-                {/* Display Packages */}
                 {(() => {
                   const cartData = sessionStorage.getItem("cartData");
                   const parsedData = cartData

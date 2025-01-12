@@ -39,7 +39,7 @@ export async function DELETE(request) {
     }
 
     // Fetch trainer data
-    const trainerData = await db.collection("Trainers").findOne({
+    const trainerData = await db.collection("users").findOne({
       _id: new ObjectId(booking.trainer_id),
     });
 

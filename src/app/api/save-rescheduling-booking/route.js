@@ -68,7 +68,7 @@ export async function POST(req) {
       .collection("users")
       .findOne({ _id: new ObjectId(client_id) });
     const trainerData = await db
-      .collection("Trainers")
+      .collection("users")
       .findOne({ _id: new ObjectId(trainer_id) });
 
     const location =
