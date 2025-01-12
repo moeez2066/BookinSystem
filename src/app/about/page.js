@@ -6,23 +6,33 @@ import Image from "next/image";
 
 const faqs = [
   {
-    question: "QUESTION ONE",
+    question: "Can I reschedule my sessions?",
     answer:
-      "Answer to the question goes here. Answer to the question goes here. Answer to the question goes here. Answer to the question goes here. Answer to the question goes here.",
+      "Yes, you can reschedule your sessions through our website at least 24 hours before your scheduled time. For requests made within 24 hours, please contact your trainer directly via WhatsApp. Rescheduling is subject to trainer availability. Please note, all rescheduled sessions must be completed within the validity period of your package.",
   },
   {
-    question: "QUESTION TWO",
+    question: "Can I cancel my package and get a refund?",
     answer:
-      "Answer to the question goes here. Answer to the question goes here. Answer to the question goes here. Answer to the question goes here. Answer to the question goes here.",
+      "There are no cancellations or refunds for purchased packages. Once a package is bought, it must be completed within the designated validity period.",
   },
   {
-    question: "QUESTION THREE",
+    question: "What happens if I’m late to my session?",
     answer:
-      "Answer to the question goes here. Answer to the question goes here. Answer to the question goes here. Answer to the question goes here. Answer to the question goes here.",
+      "If you arrive late without prior notice, the time you’re late will be deducted from your session. Sessions will end at the originally scheduled time.",
+  },
+  {
+    question: "What is the policy for no-shows?",
+    answer:
+      "If you do not attend a session without prior notice, the session will be cancelled, and no refund or rescheduling options will be provided.",
+  },
+  {
+    question: "What if my trainer is late or doesn’t show to our appointment?",
+    answer:
+      "If your trainer is late, that time will be added to your session or carried over to a future session, depending on availability. If the trainer doesn’t show without prior notice, your session will be rescheduled, and you will receive one free session as compensation.",
   },
 ];
 
-export default function FAQ () {
+export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleQuestion = (index) => {
@@ -60,7 +70,7 @@ export default function FAQ () {
             FREQUENTLY ASKED QUESTIONS
           </h2>
 
-          <div className="sm:w-[544px] Helvetica">
+          <div className="sm:w-[544px] Helvetica text-justify">
             {faqs.map((faq, index) => (
               <div
                 key={index}
@@ -70,21 +80,27 @@ export default function FAQ () {
                 }`}
               >
                 <button
-                  className="w-full py-3 tracking-widest font-semibold flex justify-between items-center text-left"
+                  className="w-full py-3 tracking-wide text-sm sm:text-base font-semibold flex justify-between items-center text-left"
                   onClick={() => toggleQuestion(index)}
                 >
-                  <span className="text-[#473a3a]">
+                  <div className="text-[#473a3a] Manrope">
                     {index + 1}. {faq.question}
-                  </span>
+                  </div>
                   <ChevronDown
                     className={`w-5 h-5 text-[#473a3a] border-[1px] rounded-full border-[#473a3a] transition-transform duration-200 ${
                       openIndex === index ? "transform rotate-180" : ""
                     }`}
+                    style={{
+                      minWidth: "1.25rem", // Ensures consistent width
+                      minHeight: "1.25rem", // Ensures consistent height
+                    }}
                   />
                 </button>
 
                 {openIndex === index && (
-                  <div className="pb-6 text-gray-600">{faq.answer}</div>
+                  <div className="pb-6 text-[#473a3a] sm:text-sm text-[13px]">
+                    {faq.answer}
+                  </div>
                 )}
               </div>
             ))}
@@ -306,6 +322,4 @@ export default function FAQ () {
       </section>
     </div>
   );
-};
-
-
+}

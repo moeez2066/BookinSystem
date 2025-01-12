@@ -225,7 +225,7 @@ export default function Home() {
                 {
                   title: "NUTRITIONAL GUIDANCE",
                   description:
-                    "We provide high-quality workout equipment, ensuring you have everything you need to train effectively at home.",
+                    "Expert advice to support your fitness journey and help you achieve lasting results.",
                   image: "/general-fitness.jpg",
                 },
                 {
@@ -239,14 +239,16 @@ export default function Home() {
                   key={index}
                   className="flex flex-col lg:flex-row items-center lg:items-start"
                 >
-                  <img
+                  <Image
                     src={service.image}
                     alt={service.title}
-                    className="w-full lg:w-[700px] h-[170px] object-cover"
+                    width={700}
+                    height={170}
+                    className="w-full lg:w-[700px] max-h-[170px] object-cover"
                   />
                   <div className="lg:ml-8 mt-4 lg:mt-0 text-center lg:text-left">
                     <h3 className="font-semibold Manrope">{service.title}</h3>
-                    <p className="text-[13px] Helvetica mt-2 lg:pr-14 px-4 lg:px-0">
+                    <p className="text-[13px] sm:w-[255px] Helvetica mt-2 lg:pr-14 px-4 lg:px-0">
                       {service.description}
                     </p>
                   </div>
@@ -284,4 +286,3 @@ export default function Home() {
     </>
   );
 }
-

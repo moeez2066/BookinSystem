@@ -132,29 +132,32 @@ export default function ProductSection() {
             </div>
           </>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-4 sm:w-[988px] mx-auto sm:gap-4 px-4 gap-3 ">
-            {subProducts.map((subProduct) => (
-              <div
-                key={subProduct.id}
-                className="cursor-pointer bg-white"
-                onClick={() => handleSubProductClick(subProduct)}
-              >
-                <Image
-                  src={subProduct.image}
-                  alt={subProduct.name}
-                  width={384} // Width of 96 * 4 in pixels
-                  height={256} // Height of 64 * 4 in pixels
-                  className="object-cover w-full h-64"
-                />
-                <h3 className="text-center uppercase Manrope text-[#473a3a] text-sm sm:text-base font-medium my-5 mb-1 tracking-widest">
-                  {subProduct.name}
-                </h3>
-                <p className="text-center text-[13px] sm:text-base text-[#473a3a] Helvetica">
-                  {subProduct.price}
-                </p>
-              </div>
-            ))}
-          </div>
+          <>
+        
+            <div className="grid grid-cols-2 sm:grid-cols-4 sm:w-[1088px] mx-auto sm:gap-8 px-4 gap-3 ">
+              {subProducts.map((subProduct) => (
+                <div
+                  key={subProduct.id}
+                  className="cursor-pointer bg-white"
+                  onClick={() => handleSubProductClick(subProduct)}
+                >
+                  <Image
+                    src={subProduct.image}
+                    alt={subProduct.name}
+                    width={384} // Width of 96 * 4 in pixels
+                    height={256} // Height of 64 * 4 in pixels
+                    className="object-cover w-full h-64"
+                  />
+                  <h3 className="text-center uppercase Manrope text-[#473a3a] text-sm sm:text-base font-medium my-5 mb-1 tracking-widest">
+                    {subProduct.name}
+                  </h3>
+                  <p className="text-center text-[13px] sm:text-base text-[#473a3a] Helvetica">
+                    SAR {subProduct.price}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
       <Modal
@@ -166,14 +169,16 @@ export default function ProductSection() {
         className="products-modal"
       >
         {selectedProduct ? (
-          <section className="bg-[#efede9] py-8 sm:py-14 text-[#473a3a] flex flex-col-reverse sm:flex-row justify-between px-2  sm:px-20 ">
+          <section className="bg-[#efede9] py-8 sm:py-14 text-[#473a3a] flex flex-col-reverse sm:flex-row justify-between px-0 sm:px-20">
             <div className="flex justify-between flex-col">
               <div>
                 <p className="uppercase tracking-widest font-semibold text-xl mb-2 Manrope">
                   {selectedProduct.name}
                 </p>
-                <p className="my-3 Helvetica">{selectedProduct.description}</p>
-                <p className="Helvetica">{selectedProduct.price}</p>
+                <p className="my-3 Helvetica sm:w-[444px] text-justify">
+                  {selectedProduct.description}
+                </p>
+                <p className="Helvetica">Price: SAR {selectedProduct.price}</p>
                 {cartLoading ? (
                   <Spin
                     style={{
@@ -195,11 +200,11 @@ export default function ProductSection() {
                       color: "#473a3a",
                     }}
                   >
-                    add to cart
+                    Add to Cart
                   </button>
                 )}
               </div>
-              <div className="sm:w-[344px] mt-[75px]  Helvetica">
+              <div className="sm:w-[344px] mt-[75px] Helvetica">
                 {[
                   "Product Description",
                   "Shipping and Returns",
@@ -225,8 +230,104 @@ export default function ProductSection() {
                     </button>
 
                     {openIndex === index && (
-                      <div className="pb-2  text-[#473a3a] text-[13px]">
-                        {selectedProduct?.description}
+                      <div className="pb-2 text-[#473a3a] text-[13px] text-justify">
+                        {index === 0 && selectedProduct.description}
+                        {index === 1 && selectedProduct.shippingAndReturns && (
+                          <div className="pb-2 mt-2 text-[#473a3a] text-[13px]">
+                            {/* Shipping Information */}
+                            {selectedProduct.shippingAndReturns.shipping && (
+                              <div className="mb-4">
+                                <h4 className="text-xs Manrope uppercase mb-1">
+                                  Shipping Information
+                                </h4>
+                                <ul className="list-disc pl-5">
+                                  {Object.entries(
+                                    selectedProduct.shippingAndReturns.shipping
+                                  ).map(([region, time], i) => (
+                                    <li key={i}>
+                                      <span>
+                                        {region} <strong>:</strong>
+                                      </span>{" "}
+                                      {time}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Return Eligibility */}
+                            {selectedProduct.shippingAndReturns
+                              .returnEligibility && (
+                              <div className="mb-4">
+                                <h4 className="text-xs Manrope uppercase mb-1">
+                                  Return Eligibility
+                                </h4>
+                                <p>
+                                  {
+                                    selectedProduct.shippingAndReturns
+                                      .returnEligibility
+                                  }
+                                </p>
+                              </div>
+                            )}
+
+                            {/* Conditions */}
+                            {selectedProduct.shippingAndReturns.conditions && (
+                              <div className="mb-4">
+                                <h4 className="text-xs Manrope uppercase mb-1">
+                                  Return Conditions
+                                </h4>
+                                <p>
+                                  {
+                                    selectedProduct.shippingAndReturns
+                                      .conditions
+                                  }
+                                </p>
+                              </div>
+                            )}
+
+                            {/* Non-Returnable Items */}
+                            {selectedProduct.shippingAndReturns
+                              .nonReturnable && (
+                              <div className="mb-4">
+                                <h4 className="text-xs Manrope uppercase mb-1">
+                                  Non-Returnable Items
+                                </h4>
+                                <p>
+                                  {
+                                    selectedProduct.shippingAndReturns
+                                      .nonReturnable
+                                  }
+                                </p>
+                              </div>
+                            )}
+
+                            {/* Refund Process */}
+                            {selectedProduct.shippingAndReturns
+                              .refundProcess && (
+                              <div>
+                                <h4 className="text-xs Manrope uppercase mb-1">
+                                  Refund Process
+                                </h4>
+                                <p>
+                                  {
+                                    selectedProduct.shippingAndReturns
+                                      .refundProcess
+                                  }
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {index === 2 &&
+                          selectedProduct.attributes?.[
+                            "Care Instructions"
+                          ]?.map((instruction, i) => (
+                            <p key={i} className="text-left ">
+                              &bull;&nbsp;&nbsp;{instruction}
+                            </p>
+                          ))}
                       </div>
                     )}
                   </div>

@@ -1,0 +1,213 @@
+[
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d1"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Yoga Mat",
+      "price": "79.00",
+      "description": "Our mat is crafted with a natural rubber base and a specially engineered eco-polyurethane top layer. It’s designed to be both longer and wider, offering ample space for your practice while striking the perfect balance between firm support and soft cushioning.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Grip": "Unmatched grip ensuring stability even during sweaty sessions.",
+        "Comfort": "Enhanced stability and cushioning with a durable rubber foundation.",
+        "Material": "Natural rubber base and polyurethane top surface",
+        "Care Instructions": [
+          "Put a little soap on a damp soft sponge or damp microfiber towel.",
+          "Apply evenly across mat.",
+          "Take a clean towel and wipe the mat.",
+          "Leave it rolled out to dry.",
+          "Do not leave the mat out in the sun for extended periods of time."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    },
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d2"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Resistance Bands Set",
+      "price": "39.00",
+      "description": "Shaped resistance bands are designed for premium performance, staying securely in place during workouts with wide silicone taping for a no-slip grip.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Design": "Elegant design with 3 resistance levels.",
+        "Material": "Cotton, Latex, Silicone",
+        "Care Instructions": [
+          "Hand wash in cold water (Each color washed in fresh new water).",
+          "Lay them out to air dry."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    },
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d3"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Dumbbells",
+      "price": "59.00",
+      "description": "Weighing 2 kg each, Shaped Bars are built for both strength and versatility. Their sleek and ergonomic design ensures balanced weight distribution for a comfortable, seamless workout experience.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Ideal for": "Walking, Pilates, strength training, HIIT, boxing, and aerobics.",
+        "Dimensions": "14.8 x 3.6 cm per bar",
+        "Material": "Premium steel with a smooth silicone coating",
+        "Care Instructions": [
+          "Wipe after each use with a damp cloth to remove sweat and dirt.",
+          "Use mild soap and water for deeper cleaning, avoiding harsh chemicals.",
+          "Dry thoroughly before storing to prevent rusting.",
+          "Store in a cool, dry place away from direct sunlight."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    },
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d4"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Barbell",
+      "price": "119.00",
+      "description": "Shaped's ergonomic bar is designed for targeted and full-body exercises, perfect for both isolated and compound movements.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Ideal for": "Strength training.",
+        "Dimensions": "90 x 4.2 cm",
+        "Material": "Premium steel with a smooth silicone coating",
+        "Care Instructions": [
+          "Wipe after each use with a damp cloth to remove sweat and dirt.",
+          "Dry thoroughly before storing to prevent rusting.",
+          "Store in a cool, dry place away from direct sunlight."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    },
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d5"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Power Ring",
+      "price": "79.00",
+      "description": "Introducing the newest addition to your fitness routine: a blend of kettlebell and dumbbell that's both functional and stylish.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Ideal for": "Strength training, Pilates, HIIT, and aerobic workouts.",
+        "Dimensions": "25 x 3.5 cm",
+        "Material": "Premium steel with a smooth silicone coating",
+        "Care Instructions": [
+          "Wipe after each use with a damp cloth to remove sweat and dirt.",
+          "Dry thoroughly before storing to prevent rusting.",
+          "Store in a cool, dry place away from direct sunlight."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    },
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d6"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Ankle Weights",
+      "price": "59.00",
+      "description": "Designed for comfort and effectiveness, these bangles can be worn on your wrists or ankles, adding a constant challenge to various activities.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Ideal for": "Yoga, aerobics, boxing, Pilates, walking, and rehabilitation.",
+        "Dimensions": "6 x 2 cm per bangle",
+        "Material": "Steel encased in soft silicone with adjustable fasteners",
+        "Care Instructions": [
+          "Wipe after each use with a damp cloth to remove sweat and dirt.",
+          "Dry thoroughly before storing to prevent rusting.",
+          "Store in a cool, dry place away from direct sunlight."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    },
+    {
+      "_id": {
+        "$oid": "6778dacf65722262288a47d7"
+      },
+      "image": "/general-fitness.jpg",
+      "name": "Massage Balls",
+      "price": "49.00",
+      "description": "Prioritize your well-being with Shaped’s Massage ball. This targets every area of your body, enhancing strength, mobility, recovery, and relieving tension.",
+      "type": "THE YOGA KIT",
+      "attributes": {
+        "Ideal for": "Self-muscle release, acupressure, plantar fasciitis relief, and reflexology.",
+        "Material": "Ultra-soft silicone",
+        "Care Instructions": [
+          "Wipe after each use with a damp cloth to remove sweat and dirt.",
+          "Dry thoroughly before storing to prevent rusting.",
+          "Store in a cool, dry place away from direct sunlight."
+        ]
+      },
+      "shippingAndReturns": {
+        "shipping": {
+          "Riyadh": "2 days",
+          "Outside Riyadh": "7-10 days"
+        },
+        "returnEligibility": "Within 3 days of receiving the product",
+        "conditions": "Products must be in original packaging and condition. Defective items require details upon return request.",
+        "nonReturnable": "No returns or refunds after 3 days. Items showing excessive use or misuse are ineligible for return or refund.",
+        "refundProcess": "Refunds will be issued to the original payment method within 7-10 business days after inspection of the returned product."
+      }
+    }
+  ]
+  
