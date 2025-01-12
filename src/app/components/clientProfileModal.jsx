@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useMyContext } from "../MyContext";
 
 const { Text } = Typography;
-const { TabPane } = Tabs;
 
 const AuthenticationModal = ({ visible, onCancel, setRefetch }) => {
   const [form] = Form.useForm();
@@ -32,7 +31,7 @@ const AuthenticationModal = ({ visible, onCancel, setRefetch }) => {
 
       if (response.ok) {
         setUserName(values.name);
-        sessionStorage.setItem('userName',values.name)
+        sessionStorage.setItem("userName", values.name);
         setAlertInfo({
           visible: true,
           message: data.message || "Sign In / Sign Up successful!",
@@ -101,9 +100,7 @@ const AuthenticationModal = ({ visible, onCancel, setRefetch }) => {
             height={93}
             style={{ backgroundColor: "#baada6", marginBottom: "15px" }}
           />
-          <Text style={{ color: "#473a3a" }}>
-            Please sign in or sign up to proceed with your registration.
-          </Text>
+          <Text style={{ color: "#473a3a" }}>Update Your Profile !</Text>
         </div>
 
         <Form
@@ -111,6 +108,7 @@ const AuthenticationModal = ({ visible, onCancel, setRefetch }) => {
           layout="vertical"
           onFinish={onFinish}
           style={{ marginTop: "20px" }}
+          className="Helvetica"
         >
           <Form.Item
             label="Username"
