@@ -14,7 +14,7 @@ const AuthenticationModal = ({ visible, onCancel, setRefetch }) => {
     type: "",
   });
   const [loading, setLoading] = useState(false);
-
+  const { userName, setUserName } = useMyContext();
   const onFinish = async (values) => {
     setLoading(true);
     try {
@@ -31,6 +31,8 @@ const AuthenticationModal = ({ visible, onCancel, setRefetch }) => {
       const data = await response.json();
 
       if (response.ok) {
+        setUserName(values.name);
+        sessionStorage.setItem('userName',values.name)
         setAlertInfo({
           visible: true,
           message: data.message || "Sign In / Sign Up successful!",

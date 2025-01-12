@@ -13,7 +13,6 @@ import {
   ProfileOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
   const { isSignedIn, setIsSignedIn } = useMyContext();

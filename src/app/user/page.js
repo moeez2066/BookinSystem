@@ -104,6 +104,7 @@ const UserPanel = () => {
         if (!response.ok)
           throw new Error(data.error || "Failed to fetch client data");
         setBookings(data.bookings);
+        setClientData(data.client);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -488,7 +489,7 @@ const UserPanel = () => {
 
             <ScrollArea className="h-[calc(100vh-2rem)] p-2 sm:mt-0">
               {activeTab === "profile" &&
-                (loading ? (
+                (loading || refetchLoading ? (
                   <Card className="p-6 flex items-center justify-center border-0 shadow-none">
                     <Spin size="default" className="sm:hidden" />{" "}
                     <Spin size="large" className="hidden sm:block" />{" "}
