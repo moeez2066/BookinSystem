@@ -7,7 +7,7 @@ export const trainers = [
     image: "/pilates.jpg",
   },
   {
-    _id: "67316f84ca5ca26e76850b1e",
+    _id: "6739dd5ec785a7965d4370cb",
     name: "Patricia",
     description:
       "With a focus on [specialty, e.g., Pilates, Yoga],[Trainer Name] offers a supportive and motivating environment, helping you enhance flexibility and strength while promoting overall wellness.",
